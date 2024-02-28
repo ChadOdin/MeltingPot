@@ -50,7 +50,7 @@ function Print-FormattedTable {
     # Move the cursor to the top-left position
     try {
         [Console]::SetCursorPosition(0, 0)
-    } catch {
+    } catch [System.IO.IOException] {
         $null = $host.UI.RawUI.FlushInputBuffer()
         Start-Sleep -Milliseconds 50
         [Console]::SetCursorPosition(0, 0)
@@ -62,7 +62,7 @@ function Print-FormattedTable {
         # Move the cursor to the next line
         try {
             [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
-        } catch {
+        } catch [System.IO.IOException] {
             $null = $host.UI.RawUI.FlushInputBuffer()
             Start-Sleep -Milliseconds 50
             [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
