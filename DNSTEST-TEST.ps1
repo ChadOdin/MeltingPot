@@ -1,22 +1,26 @@
-$ips = "127.0.0.1", "8.8.8.8", "1.1.1.1", "1.0.0.1", "8.8.4.4", "0.0.0.0"  # Replace with your list of IPs
+$ips = "127.0.0.1:443", "8.8.8.8:80", "1.1.1.1:53", "1.0.0.1:80", "8.8.4.4:53", "0.0.0.0"  # Replace with your list of IPs and ports
 
 function Get-DnsStatus {
     param (
-        [string]$ip
+        [string]$ip,
+        [int]$port
     )
 
     try {
-        $pingResult = Test-Connection -ComputerName $ip -Count 2 -ErrorAction Stop
+        $connectionResult = Test-NetConnection -ComputerName $ip -Port $port -ErrorAction Stop
 
-        if ($pingResult.ResponseTime -eq $null) {
-            $responseTime = "N/A"
+        if ($connectionResult.TcpTestSucceeded) {
+            $responseTime = $connectionResult.PingReplyTime
+            $status = "Online"
         } else {
-            $responseTime = $pingResult.ResponseTime
+            $responseTime = "N/A"
+            $status = "Offline"
         }
 
         $result = [PSCustomObject]@{
             IP = $ip
-            Status = "Online"
+            Port = $port
+            Status = $status
             ResponseTime = $responseTime
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         }
@@ -25,6 +29,7 @@ function Get-DnsStatus {
     } catch {
         $result = [PSCustomObject]@{
             IP = $ip
+            Port = $port
             Status = "Offline"
             ResponseTime = "N/A"
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -33,6 +38,8 @@ function Get-DnsStatus {
         $result
     }
 }
+
+# unchanged below
 
 # Function to print formatted table
 function Print-FormattedTable {
