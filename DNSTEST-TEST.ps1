@@ -46,15 +46,9 @@ function Print-FormattedTable {
         # Clear the console
         Clear-Host
 
-        # Move the cursor to the top-left position
-        [Console]::SetCursorPosition(0, 0)
-
         Write-Host ($formatString -f "IP", "Status", "ResponseTime (ms)", "Timestamp")
 
         foreach ($result in $Results) {
-            # Move the cursor to the next line
-            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
-
             # Format ResponseTime explicitly
             $responseTime = if ($result.ResponseTime -eq "N/A") { $result.ResponseTime } else { "$($result.ResponseTime) ms" }
 
