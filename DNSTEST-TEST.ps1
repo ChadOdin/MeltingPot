@@ -48,22 +48,34 @@ function Print-FormattedTable {
     Clear-Host
 
     # Move the cursor to the top-left position
-    [Console]::SetCursorPosition(0, 0)
+    try {
+        [Console]::SetCursorPosition(0, 0)
+    } catch {
+        $null = $host.UI.RawUI.FlushInputBuffer()
+        Start-Sleep -Milliseconds 50
+        [Console]::SetCursorPosition(0, 0)
+    }
 
     Write-Host ($formatString -f "IP", "Status", "ResponseTime (ms)", "Timestamp")
 
     foreach ($result in $Results) {
         # Move the cursor to the next line
-        [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
+        try {
+            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
+        } catch {
+            $null = $host.UI.RawUI.FlushInputBuffer()
+            Start-Sleep -Milliseconds 50
+            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
+        }
 
         # Format ResponseTime explicitly
         $responseTime = if ($result.ResponseTime -eq "N/A") { $result.ResponseTime } else { "$($result.ResponseTime) ms" }
 
         # Set color based on Status
         if ($result.Status -eq "Online") {
-            Write-Host ($formatString -f $result.IP, ("Online"), $responseTime, $result.Timestamp) -ForegroundColor Green
+            Write-Host ($formatString -f $result.IP, ("Online"), $responseTime, "$($result.Timestamp) <--- UP") -ForegroundColor Green
         } else {
-            Write-Host ($formatString -f "$($result.IP) <--- DOWN", ("Offline"), $responseTime, $result.Timestamp) -ForegroundColor Red
+            Write-Host ($formatString -f "$($result.IP) <--- DOWN", ("Offline"), $responseTime, "$($result.Timestamp)") -ForegroundColor Red
         }
     }
 }
