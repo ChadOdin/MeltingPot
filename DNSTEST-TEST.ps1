@@ -1,5 +1,3 @@
-#test ver of DNS test script I've already written, this one includes a rudimentary logging function
-
 $ips = "127.0.0.1", "8.8.8.8", "1.1.1.1", "1.0.0.1", "8.8.4.4", "0.0.0.0"  # Replace with your list of IPs
 
 function Get-DnsStatus {
@@ -44,27 +42,31 @@ function Print-FormattedTable {
 
     $formatString = "{0,-15} {1,-8} {2,-18} {3,-19}"
 
-    # Clear the console
-    Clear-Host
+    try {
+        # Clear the console
+        Clear-Host
 
-    # Move the cursor to the top-left position
-    [Console]::SetCursorPosition(0, 0)
+        # Move the cursor to the top-left position
+        [Console]::SetCursorPosition(0, 0)
 
-    Write-Host ($formatString -f "IP", "Status", "ResponseTime (ms)", "Timestamp")
+        Write-Host ($formatString -f "IP", "Status", "ResponseTime (ms)", "Timestamp")
 
-    foreach ($result in $Results) {
-        # Move the cursor to the next line
-        [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
+        foreach ($result in $Results) {
+            # Move the cursor to the next line
+            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
 
-        # Format ResponseTime explicitly
-        $responseTime = if ($result.ResponseTime -eq "N/A") { $result.ResponseTime } else { "$($result.ResponseTime) ms" }
+            # Format ResponseTime explicitly
+            $responseTime = if ($result.ResponseTime -eq "N/A") { $result.ResponseTime } else { "$($result.ResponseTime) ms" }
 
-        # Set color based on Status
-        if ($result.Status -eq "Online") {
-            Write-Host ($formatString -f $result.IP, ("Online"), $responseTime, "$($result.Timestamp) <--- UP") -ForegroundColor Green
-        } else {
-            Write-Host ($formatString -f "$($result.IP) <--- DOWN", ("Offline"), $responseTime, "$($result.Timestamp)") -ForegroundColor Red
+            # Set color based on Status
+            if ($result.Status -eq "Online") {
+                Write-Host ($formatString -f $result.IP, ("Online"), $responseTime, "$($result.Timestamp) <--- UP") -ForegroundColor Green
+            } else {
+                Write-Host ($formatString -f "$($result.IP) <--- DOWN", ("Offline"), $responseTime, "$($result.Timestamp)") -ForegroundColor Red
+            }
         }
+    } catch [System.IO.IOException] {
+        $null  # Ignore IOException and do nothing
     }
 }
 
