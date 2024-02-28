@@ -48,25 +48,13 @@ function Print-FormattedTable {
     Clear-Host
 
     # Move the cursor to the top-left position
-    try {
-        [Console]::SetCursorPosition(0, 0)
-    } catch [System.IO.IOException] {
-        $null = $host.UI.RawUI.FlushInputBuffer()
-        Start-Sleep -Milliseconds 50
-        [Console]::SetCursorPosition(0, 0)
-    }
+    [Console]::SetCursorPosition(0, 0)
 
     Write-Host ($formatString -f "IP", "Status", "ResponseTime (ms)", "Timestamp")
 
     foreach ($result in $Results) {
         # Move the cursor to the next line
-        try {
-            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
-        } catch [System.IO.IOException] {
-            $null = $host.UI.RawUI.FlushInputBuffer()
-            Start-Sleep -Milliseconds 50
-            [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
-        }
+        [Console]::SetCursorPosition(0, [Console]::CursorTop + 1)
 
         # Format ResponseTime explicitly
         $responseTime = if ($result.ResponseTime -eq "N/A") { $result.ResponseTime } else { "$($result.ResponseTime) ms" }
@@ -109,4 +97,3 @@ while ($true) {
     # Sleep for 3 seconds
     Start-Sleep -Seconds 3
 }
-
