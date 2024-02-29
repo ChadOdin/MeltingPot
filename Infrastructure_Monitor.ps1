@@ -1,5 +1,5 @@
 $ipsWithPorts = @("127.0.0.1:443", "8.8.8.8:80", "1.1.1.1:53", "1.0.0.1:80", "8.8.4.4:53")
-$ipsWithoutPorts = @("0.0.0.0")  # Replace with your list of IPs without ports
+$ipsWithoutPorts = @("0.0.0.0")  # Replace with your list of IPs Accordingly
 
 # List of hostnames formatted as "HOSTNAME:IP"
 $hostnameMapping = @(
@@ -11,6 +11,7 @@ $hostnameMapping = @(
     "Dud-IP:0.0.0.0"
 )
 
+# Using .NET Classes & Framework to send TCP packets as apposed to using Test-Connection/NetConnection, i find this looks a lot cleaner
 function Test-PortConnection {
     param (
         [string]$ip,
@@ -160,6 +161,6 @@ while ($true) {
     # Log the results to the initial log file
     Log-ToFile -filePath $logFilePath -Results $previousResults
 
-    # Sleep for 3 seconds
+    # Sleep for 3 seconds - Change to what a prefered timing
     Start-Sleep -Seconds 3
 }
