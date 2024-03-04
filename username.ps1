@@ -1,9 +1,36 @@
 # Function to add or remove users from distribution group
+
 function ManageDistributionGroup {
     param (
         [string]$action,
         [string]$userUPN
     )
+
+# Function to create shared mailbox with user input for name and recursive name check with custom AD OU Setting
+
+function CreateSharedMailbox {
+    $mailboxName = $null
+
+    # Loop until a unique name is provided
+    do {
+        $mailboxName = Read-Host "Enter the name for the shared mailbox"
+        
+        # Check if the mailbox name already exists
+        $existingMailbox = Get-Mailbox -Filter {DisplayName -eq $mailboxName} -ErrorAction SilentlyContinue
+
+        if ($existingMailbox) {
+            Write-Host "The mailbox name '$mailboxName' is already in use. Please choose a different name."
+        }
+    } while ($existingMailbox)
+
+    # Create the shared mailbox
+    New-Mailbox -Name $mailboxName -Shared
+    Write-Host "Shared mailbox '$mailboxName' created successfully."
+    Log-Action "Created shared mailbox '$mailboxName'."
+
+    # Sanatise loop so sending vsriable stored to $null
+    $mailboxName = $null
+}
 
     switch ($action) {
         'Add' {
@@ -98,4 +125,5 @@ switch ($mainChoice) {
 Remove-PSSession $session
 
 Clear-Host
-Write-Host "Script exited successfully. All user actions have been logged for auditing purposes."
+Write-Host "Script exited successfully. All user actions have been logged for
+auditing purposes."
