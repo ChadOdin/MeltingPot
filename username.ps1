@@ -1,18 +1,27 @@
 # Function to add or remove users from distribution group
-
 function ManageDistributionGroup {
     param (
         [string]$action,
         [string]$userUPN
     )
 
-# Function to create shared mailbox with user input for name and recursive name check with custom AD OU Setting
+#function to create shared mailbox with custom OU setting for ActiveDirectory
 
 function CreateSharedMailbox {
+    param (
+        [string]$Input
+    )
+
+    # Parse the input to derive values for first name, last name, email name, and UPN
+    $FirstName, $LastName, $EmailName = $Input -split ' ', 3
+    $UPN = "$EmailName@yourdomain.com"
+    $SamAccountName = "$FirstName.$LastName"
+
     $mailboxName = $null
 
     # Loop until a unique name is provided
-    do {
+    do
+    {
         $mailboxName = Read-Host "Enter the name for the shared mailbox"
         
         # Check if the mailbox name already exists
@@ -21,16 +30,20 @@ function CreateSharedMailbox {
         if ($existingMailbox) {
             Write-Host "The mailbox name '$mailboxName' is already in use. Please choose a different name."
         }
+
     } while ($existingMailbox)
 
-    # Create the shared mailbox
-    New-Mailbox -Name $mailboxName -Shared
+    # Create the shared mailbox with derived attributes
+    New-Mailbox -Alias $EmailName -Name "$FirstName $LastName" -FirstName $FirstName -LastName $LastName -UserPrincipalName $UPN -SamAccountName $SamAccountName -Shared
+
     Write-Host "Shared mailbox '$mailboxName' created successfully."
     Log-Action "Created shared mailbox '$mailboxName'."
 
-    # Sanatise loop so sending vsriable stored to $null
+    # Clear the variable after mailbox creation
     $mailboxName = $null
 }
+
+
 
     switch ($action) {
         'Add' {
