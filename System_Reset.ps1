@@ -38,7 +38,7 @@ if ($removableDrive) {
     Start-Sleep -Seconds 10
 
     # Determine the BitLocker-protected drive dynamically
-    $bitLockerDriveLetter = Get-BitLockerVolume -MountPoint $removableDrive | Select-Object -ExpandProperty VolumeLetter
+    $bitLockerDriveLetter = Get-BitLockerVolume -MountPoint $removableDrive | Select-Object -ExpandProperty DriveLetter
 
     if ($bitLockerDriveLetter) {
         $password = Read-Host "Enter BitLocker password" -AsSecureString
@@ -91,4 +91,3 @@ if ($removableDrive) {
 } else {
     Write-Host "No valid removable drive found. Aborting script."
 }
-
