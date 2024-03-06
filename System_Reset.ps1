@@ -19,8 +19,26 @@ if ($usbDrive) {
     # Use the hostname as a new folder
     $hostnameFolder = "$env:COMPUTERNAME"
 
-    # Create the full path of the parent directory on the USB drive
-    $fullParentPath = Join-Path -Path $usbDrive -ChildPath "YourParentDirectory"  # Replace with your desired parent directory path on USB
+    # Create the hostname folder on the USB drive if it doesn't exist
+$fullFolderPath = Join-Path -Path $fullParentPath -ChildPath $hostnameFolder
+
+# Check if the directory already exists
+if (-not (Test-Path -Path $fullFolderPath)) {
+    try {
+        $directory = New-Item -Path $fullFolderPath -ItemType Directory -Force -ErrorAction Stop
+        Write-Host "Directory created: $($directory.FullName)"
+    }
+    catch {
+        Write-Host "Error creating directory: $_"
+        Write-Host "Aborting script."
+        return
+    }
+}
+else {
+    Write-Host "Directory already exists: $fullFolderPath"
+    Write-Host "Aborting script."
+    return
+}
 
     # Create the full path of the hostname folder
     $fullFolderPath = Join-Path -Path $fullParentPath -ChildPath $hostnameFolder
