@@ -8,9 +8,6 @@ function Get-UsbDrives {
 # Determine the system drive letter
 $systemDrive = $env:SystemDrive
 
-# Declare the full path of the parent directory
-$parentDirectoryPath = "D:\YourParentDirectory"  # Replace with your desired parent directory path
-
 # Get USB drives
 $usbDrives = Get-UsbDrives
 
@@ -22,8 +19,8 @@ if ($usbDrive) {
     # Use the hostname as a new folder
     $hostnameFolder = "$env:COMPUTERNAME"
 
-    # Create the full path of the parent directory
-    $fullParentPath = Join-Path -Path $usbDrive -ChildPath $parentDirectoryPath
+    # Create the full path of the parent directory on the USB drive
+    $fullParentPath = Join-Path -Path $usbDrive -ChildPath "YourParentDirectory"  # Replace with your desired parent directory path on USB
 
     # Create the full path of the hostname folder
     $fullFolderPath = Join-Path -Path $fullParentPath -ChildPath $hostnameFolder
@@ -44,18 +41,11 @@ if ($usbDrive) {
         return
     }
 
-    # Check for the "Root" folder on the USB drive
-    $rootFolder = Join-Path -Path $usbDrive -ChildPath "Root"
-    if (-not (Test-Path $rootFolder)) {
-        Write-Host "Error: 'Root' folder not found on the USB drive. Aborting script."
-        return
-    }
-
     # Create the full destination path for the CSV file on the USB drive
     $csvDestination = Join-Path -Path $usbDrive -ChildPath $fullFolderPath
 
     # Export CSV to the new folder on the USB drive
-    $csvPath = Join-Path -Path $systemDrive -ChildPath "C:\path\to\your\data.csv"
+    $csvPath = Join-Path -Path $usbDrive -ChildPath "path\to\your\data.csv"  # Replace with the path on the USB drive
     try {
         Copy-Item -Path $csvPath -Destination $csvDestination -ErrorAction Stop
     }
