@@ -1,28 +1,22 @@
 # Determine the system drive letter
 $systemDrive = $env:SystemDrive
 
-# Specify the possible removable drive letters
-$possibleRemovableDrives = @("D:", "E:")
+# Get removable drives using Get-Disk, Get-Partition, and Get-Volume
+$removableDrives = Get-Disk | Where-Object { $_.BusType -eq 'USB' } | 
+                   Get-Partition | Get-Volume | 
+                   Select-Object -ExpandProperty DriveLetter
 
 # Find the first available removable drive
-$removableDrive = $possibleRemovableDrives | Where-Object { Test-Path "$_\path\to\your\data.csv" } | Select-Object -First 1
+$removableDrive = $removableDrives | Select-Object -First 1
 
 # Check if a valid removable drive is found
 if ($removableDrive) {
     # Use the hostname as a new folder
     $hostnameFolder = "$env:COMPUTERNAME"
     
-    # Check for existing files in both D:\ and E:\
-    $existingFiles = @()
-    foreach ($driveLetter in $possibleRemovableDrives) {
-        $csvPath = Join-Path -Path $driveLetter -ChildPath $hostnameFolder
-        if (Test-Path $csvPath) {
-            $existingFiles += $csvPath
-        }
-    }
-
-    # If existing files are found, append "_duplicate" tag
-    if ($existingFiles.Count -gt 0) {
+    # Check for existing files in removable drive
+    $csvPath = Join-Path -Path $removableDrive -ChildPath $hostnameFolder
+    if (Test-Path $csvPath) {
         $hostnameFolder += "_duplicate"
         Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
     }
@@ -97,3 +91,4 @@ if ($removableDrive) {
 } else {
     Write-Host "No valid removable drive found. Aborting script."
 }
+
