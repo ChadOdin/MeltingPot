@@ -26,8 +26,15 @@ if ($usbDrive) {
         Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
     }
     else {
-        # Create the hostname folder on the USB drive if it doesn't exist
-        New-Item -Path $csvPath -ItemType Directory
+        try {
+            # Create the hostname folder on the USB drive if it doesn't exist
+            New-Item -Path $csvPath -ItemType Directory -ErrorAction Stop
+        }
+        catch {
+            Write-Host "Error creating directory: $_"
+            Write-Host "Aborting script."
+            return
+        }
     }
 
     # Check for the "Root" folder on the USB drive
@@ -42,7 +49,14 @@ if ($usbDrive) {
 
     # Export CSV to the new folder on the USB drive
     $csvPath = Join-Path -Path $systemDrive -ChildPath "path\to\your\data.csv"
-    Copy-Item -Path $csvPath -Destination $csvDestination
+    try {
+        Copy-Item -Path $csvPath -Destination $csvDestination -ErrorAction Stop
+    }
+    catch {
+        Write-Host "Error copying CSV file: $_"
+        Write-Host "Aborting script."
+        return
+    }
 
     # Print both serial numbers to the terminal for review
     $localSerial = (wmic bios get serialnumber).Trim()
