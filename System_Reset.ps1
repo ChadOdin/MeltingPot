@@ -8,18 +8,13 @@ function Get-UsbDrives {
 # Determine the system drive letter
 $systemDrive = $env:SystemDrive
 
-# Get USB drives
-$usbDrives = Get-UsbDrives
+# Use the hostname as a new folder
+$hostnameFolder = "$env:COMPUTERNAME"
 
-# Find the first available USB drive
-$usbDrive = $usbDrives | Select-Object -First 1
+# Create the full path of the parent directory on the USB drive
+$fullParentPath = Join-Path -Path $PSScriptRoot -ChildPath "YourParentDirectory"  # Replace with your desired parent directory path on USB
 
-# Check if a valid USB drive is found
-if ($usbDrive) {
-    # Use the hostname as a new folder
-    $hostnameFolder = "$env:COMPUTERNAME"
-
-    # Create the hostname folder on the USB drive if it doesn't exist
+# Create the full path of the hostname folder
 $fullFolderPath = Join-Path -Path $fullParentPath -ChildPath $hostnameFolder
 
 # Check if the directory already exists
@@ -36,8 +31,6 @@ if (-not (Test-Path -Path $fullFolderPath)) {
 }
 else {
     Write-Host "Directory already exists: $fullFolderPath"
-    Write-Host "Aborting script."
-    return
 }
 
     # Create the full path of the hostname folder
