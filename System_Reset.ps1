@@ -21,6 +21,10 @@ if ($removableDrive) {
         $hostnameFolder += "_duplicate"
         Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
     }
+    else {
+        # Create the hostname folder on the removable drive if it doesn't exist
+        New-Item -Path $csvPath -ItemType Directory
+    }
 
     # Create the full destination path for the CSV file on the removable drive
     $csvDestination = Join-Path -Path $removableDrive -ChildPath $hostnameFolder
