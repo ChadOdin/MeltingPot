@@ -82,6 +82,8 @@ if ($usbDrive) {
     Write-Host "Reviewing serial numbers. Pausing for 10 seconds..."
     Start-Sleep -Seconds 10
 
+    # ... (rest of the script remains unchanged)
+
 } else {
     Write-Host "No valid USB drive found. Aborting script."
 }
