@@ -19,15 +19,27 @@ if ($usbDrive) {
     # Use the hostname as a new folder
     $hostnameFolder = "$env:COMPUTERNAME"
 
-    # Check for existing files on the USB drive
-    $csvPath = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
-    if (Test-Path $csvPath) {
-        $hostnameFolder += "_duplicate"
-        Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
-    }
-    else {
-        try {
-            # Create the hostname folder on the USB drive if it doesn't exist
+# Use the hostname as a new folder
+$hostnameFolder = "$env:COMPUTERNAME"
+
+# Check for existing files on the USB drive
+$csvPath = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
+if (Test-Path $csvPath) {
+    $hostnameFolder += "_duplicate"
+    Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
+}
+
+# Create the hostname folder on the USB drive if it doesn't exist
+try {
+    $fullFolderPath = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
+    New-Item -Path $fullFolderPath -ItemType Directory -ErrorAction Stop
+}
+catch {
+    Write-Host "Error creating directory: $_"
+    Write-Host "Aborting script."
+    return
+}
+
             New-Item -Path $csvPath -ItemType Directory -ErrorAction Stop
         }
         catch {
