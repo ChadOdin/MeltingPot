@@ -4,6 +4,7 @@ $systemDrive = $env:SystemDrive
 # Get removable drives using Get-Disk, Get-Partition, and Get-Volume
 $removableDrives = Get-Disk | Where-Object { $_.BusType -eq 'USB' } | 
                    Get-Partition | Get-Volume | 
+                   Where-Object { Test-Path (Join-Path $_.DriveLetter "Root") } |
                    Select-Object -ExpandProperty DriveLetter
 
 # Find the first available removable drive
