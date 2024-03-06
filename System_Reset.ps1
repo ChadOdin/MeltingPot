@@ -21,11 +21,11 @@ if ($removableDrive) {
         Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
     }
 
-    # Create the full destination path for the CSV file
+    # Create the full destination path for the CSV file on the removable drive
     $csvDestination = Join-Path -Path $removableDrive -ChildPath $hostnameFolder
 
-    # Export CSV to the new folder
-    $csvPath = "$systemDrive\path\to\your\data.csv"
+    # Export CSV to the new folder on the removable drive
+    $csvPath = Join-Path -Path $systemDrive -ChildPath "path\to\your\data.csv"
     Copy-Item -Path $csvPath -Destination $csvDestination
 
     # Print both serial numbers to the terminal for review
