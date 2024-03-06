@@ -8,6 +8,9 @@ function Get-UsbDrives {
 # Determine the system drive letter
 $systemDrive = $env:SystemDrive
 
+# Declare the full path of the parent directory
+$parentDirectoryPath = "D:\YourParentDirectory"  # Replace with your desired parent directory path
+
 # Get USB drives
 $usbDrives = Get-UsbDrives
 
@@ -19,16 +22,20 @@ if ($usbDrive) {
     # Use the hostname as a new folder
     $hostnameFolder = "$env:COMPUTERNAME"
 
+    # Create the full path of the parent directory
+    $fullParentPath = Join-Path -Path $usbDrive -ChildPath $parentDirectoryPath
+
+    # Create the full path of the hostname folder
+    $fullFolderPath = Join-Path -Path $fullParentPath -ChildPath $hostnameFolder
+
     # Check for existing files on the USB drive
-    $csvPath = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
-    if (Test-Path $csvPath) {
+    if (Test-Path $fullFolderPath) {
         $hostnameFolder += "_duplicate"
         Write-Host "Duplicate files found. Appending '_duplicate' tag to the folder name."
     }
 
     # Create the hostname folder on the USB drive if it doesn't exist
     try {
-        $fullFolderPath = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
         New-Item -Path $fullFolderPath -ItemType Directory -ErrorAction Stop
     }
     catch {
@@ -45,7 +52,7 @@ if ($usbDrive) {
     }
 
     # Create the full destination path for the CSV file on the USB drive
-    $csvDestination = Join-Path -Path $usbDrive -ChildPath $hostnameFolder
+    $csvDestination = Join-Path -Path $usbDrive -ChildPath $fullFolderPath
 
     # Export CSV to the new folder on the USB drive
     $csvPath = Join-Path -Path $systemDrive -ChildPath "C:\path\to\your\data.csv"
