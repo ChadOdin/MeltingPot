@@ -1,5 +1,5 @@
-$ipsWithPorts = @("127.0.0.1:443", "8.8.8.8:80", "1.1.1.1:53", "1.0.0.1:80", "8.8.4.4:53")
-$ipsWithoutPorts = @("0.0.0.0")  # Replace with your list of IPs Accordingly
+# Define list of IPs with ports formatted as "IP:Port" or "IP:Port:PacketType"
+$ipsWithPorts = @("127.0.0.1:443", "8.8.8.8:80", "1.1.1.1:53", "1.0.0.1:80", "8.8.4.4:53", "192.168.1.1:9001:UDP")
 
 # List of hostnames formatted as "HOSTNAME:IP"
 $hostnameMapping = @(
@@ -7,11 +7,11 @@ $hostnameMapping = @(
     "Google:8.8.8.8",
     "Cloudflare:1.1.1.1",
     "Cloudflare2nd:1.0.0.1",
-    "Google2nd:8.8.4.4"
-    "Dud-IP:0.0.0.0"
+    "Google2nd:8.8.4.4",
+    "UDPIP:192.168.1.1"
 )
 
-# Using .NET Classes & Framework to send TCP packets as apposed to using Test-Connection/NetConnection, i find this looks a lot cleaner
+# Function to test TCP port connection using .NET classes
 function Test-PortConnection {
     param (
         [string]$ip,
@@ -41,6 +41,22 @@ function Test-PortConnection {
     $result
 }
 
+# Function to send UDP packet using .NET classes
+function Send-UDPPacket {
+    param (
+        [string]$ip,
+        [int]$port,
+        [string]$data
+    )
+
+    $udpClient = New-Object System.Net.Sockets.UdpClient
+    $udpClient.Connect($ip, $port)
+
+    $sendBytes = [System.Text.Encoding]::ASCII.GetBytes($data)
+    $udpClient.Send($sendBytes, $sendBytes.Length)
+}
+
+# Function to get status with both TCP and UDP functionality
 function Get-Status {
     param (
         [string]$ip
@@ -49,10 +65,20 @@ function Get-Status {
     $ipParts = $ip -split ":"
     $ipAddress = $ipParts[0]
     $port = if ($ipParts.Length -gt 1) { [int]$ipParts[1] } else { $null }
-
+    
     $hostname = $hostnameMapping | Where-Object { $_ -like "*:$ipAddress" } | ForEach-Object { ($_ -split ":")[0] }
+    $isUDP = $ip -like "*:UDP"
 
     try {
+        if ($isUDP) {
+            # Define UDP parameters
+            $udpPort = $port
+            $udpData = "Printer UDP Packet"
+
+            # Send UDP packet
+            $udpResult = Send-UDPPacket -ip $ipAddress -port $udpPort -data $udpData
+        }
+
         if ($port -ne $null) {
             $portTestResult = Test-PortConnection -ip $ipAddress -port $port
         } else {
@@ -70,6 +96,7 @@ function Get-Status {
             Hostname = $hostname
             IP = $ipAddress
             Port = $port
+            PacketType = if ($isUDP) { "UDP" } else { "TCP" }
             Status = if ($portTestResult -eq $null) { $status } else { if ($portTestResult) { $status } else { "Offline" } }
             ResponseTime = if ($null -eq $icmpResult.ResponseTime) { "N/A" } else { ($icmpResult.ResponseTime | Measure-Object -Average).Average }
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -81,6 +108,7 @@ function Get-Status {
             Hostname = $hostname
             IP = $ipAddress
             Port = $port
+            PacketType = if ($isUDP) { "UDP" } else { "TCP" }
             Status = "Offline"
             ResponseTime = "N/A"
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -90,19 +118,19 @@ function Get-Status {
     }
 }
 
-# Function to print formatted table
+# Function to print formatted table with a dynamic header
 function Print-FormattedTable {
     param (
         [array]$Results
     )
 
-    $formatString = "{0,-15} {1,-15} {2,-8} {3,-18} {4,-19} {5,-5}"
+    $formatString = "{0,-15} {1,-15} {2,-8} {3,-12} {4,-18} {5,-19} {6,-5}"
 
     try {
         # Clear the console
         Clear-Host
 
-        Write-Host ($formatString -f "Hostname", "IP", "Port", "Status", "ResponseTime (ms)", "Timestamp")
+        Write-Host ($formatString -f "Hostname", "IP", "Port", "PacketType", "Status", "ResponseTime (ms)", "Timestamp")
 
         foreach ($result in $Results) {
             # Format ResponseTime explicitly
@@ -110,9 +138,9 @@ function Print-FormattedTable {
 
             # Set color based on Status
             if ($result.Status -eq "Online") {
-                Write-Host ($formatString -f $result.Hostname, $result.IP, $result.Port, "Online", $responseTime, "$($result.Timestamp)") -ForegroundColor Green
+                Write-Host ($formatString -f $result.Hostname, $result.IP, $result.Port, $result.PacketType, "Online", $responseTime, "$($result.Timestamp)") -ForegroundColor Green
             } else {
-                Write-Host ($formatString -f $result.Hostname, $result.IP, $result.Port, "Offline", $responseTime, "$($result.Timestamp)    !!!DOWN!!!") -ForegroundColor Red
+                Write-Host ($formatString -f $result.Hostname, $result.IP, $result.Port, $result.PacketType, "Offline", $responseTime, "$($result.Timestamp)    !!!DOWN!!!") -ForegroundColor Red
             }
         }
     } catch [System.IO.IOException] {
@@ -120,40 +148,11 @@ function Print-FormattedTable {
     }
 }
 
-# Logging function
-function Log-ToFile {
-    param (
-        [string]$filePath,
-        [array]$Results
-    )
-
-    $Results | ForEach-Object {
-        $logEntry = "$($_.Timestamp): $($_.Hostname) - $($_.IP) - $($_.Port) - $($_.Status) - $($_.ResponseTime)"
-        Add-Content -Path $filePath -Value $logEntry
-    }
-}
-
-# Log file path
-$logFolderPath = Join-Path $env:USERPROFILE "DnsLogs"
-$logFilePath = Join-Path $logFolderPath "Log.log"
-
-# Check if the initial log file exists
-$initialLogFileExists = Test-Path $logFilePath
-
-# Create the initial log file if it doesn't exist
-if (-not $initialLogFileExists) {
-    # Create the log folder if it doesn't exist
-    if (-not (Test-Path -Path $logFolderPath -PathType Container)) {
-        New-Item -Path $logFolderPath -ItemType Directory
-    }
-
-    # Create the initial log file
-    New-Item -Path $logFilePath -ItemType File
-}
-
+# Main loop
 while ($true) {
     # Get the results only once
-    $previousResults = $ipsWithPorts + $ipsWithoutPorts | ForEach-Object { Get-Status -ip $_ }
+    $previousResults = $ipsWithPorts | ForEach-
+    $ipsWithPorts | ForEach-Object { Get-Status -ip $_ }
 
     # Print the formatted table
     Print-FormattedTable -Results $previousResults
@@ -161,6 +160,7 @@ while ($true) {
     # Log the results to the initial log file
     Log-ToFile -filePath $logFilePath -Results $previousResults
 
-    # Sleep for 3 seconds - Change to what a prefered timing
+    # Sleep for 3 seconds - Change to your preferred timing
     Start-Sleep -Seconds 3
 }
+
