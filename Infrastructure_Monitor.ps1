@@ -1,5 +1,18 @@
+<<<<<<< HEAD
+# List of IP addresses with ports and packet types
+$ipsWithPorts = @(
+    @{ IP = "127.0.0.1:443"; PacketType = "TCP" },
+    @{ IP = "8.8.8.8:80"; PacketType = "TCP" },
+    @{ IP = "1.1.1.1:53"; PacketType = "TCP" },
+    @{ IP = "1.0.0.1:80"; PacketType = "TCP" },
+    @{ IP = "8.8.4.4:53"; PacketType = "TCP" },
+    @{ IP = "192.168.1.1:9001"; PacketType = "UDP" },  # Example UDP IP and port
+    # Add more entries as needed
+)
+=======
 # Define list of IPs with ports formatted as "IP:Port" or "IP:Port:PacketType"
 $ipsWithPorts = @("127.0.0.1:443", "8.8.8.8:80", "1.1.1.1:53", "1.0.0.1:80", "8.8.4.4:53", "192.168.1.1:9001:UDP")
+>>>>>>> 6b254259d2973a6e9a3e08ffd56fa4cae4a2f0e2
 
 # List of hostnames formatted as "HOSTNAME:IP"
 $hostnameMapping = @(
@@ -11,7 +24,36 @@ $hostnameMapping = @(
     "UDPIP:192.168.1.1"
 )
 
+<<<<<<< HEAD
+# Function to send UDP packets
+function Send-UDPPacket {
+    param (
+        [string]$ip,
+        [int]$port,
+        [string]$data
+    )
+
+    try {
+        $udpClient = New-Object System.Net.Sockets.UdpClient
+        $endpoint = New-Object System.Net.IPEndPoint ([System.Net.IPAddress]::Parse($ip), $port)
+
+        $bytes = [System.Text.Encoding]::ASCII.GetBytes($data)
+        $udpClient.Send($bytes, $bytes.Length, $endpoint)
+
+        $result = $true
+    } catch {
+        $result = $false
+    } finally {
+        $udpClient.Close()
+    }
+
+    $result
+}
+
+# Function to test TCP port connection
+=======
 # Function to test TCP port connection using .NET classes
+>>>>>>> 6b254259d2973a6e9a3e08ffd56fa4cae4a2f0e2
 function Test-PortConnection {
     param (
         [string]$ip,
@@ -41,6 +83,9 @@ function Test-PortConnection {
     $result
 }
 
+<<<<<<< HEAD
+# Function to get status with both TCP and UDP functionality
+=======
 # Function to send UDP packet using .NET classes
 function Send-UDPPacket {
     param (
@@ -57,9 +102,11 @@ function Send-UDPPacket {
 }
 
 # Function to get status with both TCP and UDP functionality
+>>>>>>> 6b254259d2973a6e9a3e08ffd56fa4cae4a2f0e2
 function Get-Status {
     param (
-        [string]$ip
+        [string]$ip,
+        [string]$PacketType
     )
 
     $ipParts = $ip -split ":"
@@ -81,6 +128,18 @@ function Get-Status {
 
         if ($port -ne $null) {
             $portTestResult = Test-PortConnection -ip $ipAddress -port $port
+
+            # Check if the port is in the printer port range (9000-12001) for UDP
+            $isPrinterPort = ($PacketType -eq "UDP" -and $port -ge 9000 -and $port -le 12001)
+
+            if ($isPrinterPort) {
+                # Define UDP parameters
+                $udpPort = $port
+                $udpData = "Printer UDP Packet"
+
+                # Send UDP packet
+                $udpResult = Send-UDPPacket -ip $ipAddress -port $udpPort -data $udpData
+            }
         } else {
             $portTestResult = $null
         }
@@ -148,13 +207,56 @@ function Print-FormattedTable {
     }
 }
 
+<<<<<<< HEAD
+# Function to log results to a file
+function Log-ToFile {
+    param (
+        [string]$filePath,
+        [array]$Results
+    )
+
+    $Results | ForEach-Object {
+        $logEntry = "$($_.Timestamp): $($_.Hostname) - $($_.IP) - $($_.Port) - $($_.Status) - $($_.ResponseTime)"
+        Add-Content -Path $filePath
+        -Value $logEntry
+    }
+}
+
+# Log file path
+$logFolderPath = Join-Path $env:USERPROFILE "DnsLogs"
+$logFilePath = Join-Path $logFolderPath "Log.log"
+
+# Check if the initial log file exists
+$initialLogFileExists = Test-Path $logFilePath
+
+# Create the initial log file if it doesn't exist
+if (-not $initialLogFileExists) {
+    # Create the log folder if it doesn't exist
+    if (-not (Test-Path -Path $logFolderPath -PathType Container)) {
+        New-Item -Path $logFolderPath -ItemType Directory
+    }
+
+    # Create the initial log file
+    New-Item -Path $logFilePath -ItemType File
+}
+
+=======
 # Main loop
+>>>>>>> 6b254259d2973a6e9a3e08ffd56fa4cae4a2f0e2
 while ($true) {
     # Get the results only once
+<<<<<<< HEAD
+    $previousResults = $ipsWithPorts | ForEach-Object {
+        $ip = $_.IP
+        $packetType = $_.PacketType
+        Get-Status -ip $ip -PacketType $packetType
+    }
+=======
     $previousResults = $ipsWithPorts | ForEach-
     $ipsWithPorts | ForEach-Object { Get-Status -ip $_ }
+>>>>>>> 6b254259d2973a6e9a3e08ffd56fa4cae4a2f0e2
 
-    # Print the formatted table
+    # Print the formatted table with dynamic header based on IP-specific packet type
     Print-FormattedTable -Results $previousResults
 
     # Log the results to the initial log file
