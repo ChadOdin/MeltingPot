@@ -5,16 +5,26 @@
 ## OSI 7 Layer Model:
 - **Layer 1 - Physical:** Involves the physical aspects of transmitting data, such as voltage levels, cable types, and physical network topologies.  
   - **Typical services:** Cable infrastructure, NICs.
+
+
 - **Layer 2 - Data Link:** Divided into two sublayers: Logical Link Control (LLC) and Media Access Control (MAC).  
   - **Typical services:** Ethernet, MAC addresses.
+
+
 - **Layer 3 - Network:** Concerned with logical addressing, routing, and packet forwarding to ensure data reaches its destination across multiple networks.  
   - **Typical services:** IP addressing, routing.
+
+
 - **Layer 4 - Transport:** Responsible for end-to-end communication and data delivery. Protocols like TCP and UDP operate at this layer.  
   - **Typical services:** Reliable data transfer, flow control, error recovery.
 - **Layer 5 - Session:** Establishes, manages, and terminates sessions between applications, ensuring data synchronization and dialogue control.  
   - **Typical services:** NetBIOS, RPC.
+
+
 - **Layer 6 - Presentation:** Responsible for data translation, encryption, and compression to ensure compatibility between different systems.  
   - **Typical services:** SSL/TLS, ASCII.
+
+
 - **Layer 7 - Application:** Interacts directly with end-users and provides network services to applications. Protocols like HTTP, FTP, and SMTP operate at this layer.  
   - **Typical services:** Web browsing (HTTP), email (SMTP), file transfer (FTP).
 
