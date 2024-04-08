@@ -16,7 +16,9 @@
 
 
 - **Layer 4 - Transport:** Responsible for end-to-end communication and data delivery. Protocols like TCP and UDP operate at this layer.  
-  - **Typical services:** Reliable data transfer, flow control, error recovery.
+  - **Typical services:** network traffic between hosts and end systems to ensure complete data transfers. Transport-layer protocols such as TCP, UDP, DCCP, and SCTP are used to control the volume of data, where it is sent, and at what rate.
+
+
 - **Layer 5 - Session:** Establishes, manages, and terminates sessions between applications, ensuring data synchronization and dialogue control.  
   - **Typical services:** NetBIOS, RPC.
 
