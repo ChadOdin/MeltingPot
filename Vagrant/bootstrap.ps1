@@ -4,10 +4,13 @@
     Restart-Computer -Wait
 }
 
+Write-Host "Initial Setup Starting. `nPlease Wait...."
+
 # Declaring services to check
 $adDsFeatureInstalled = Get-WindowsFeature -Name AD-Domain-Services | Where-Object { $_.Installed }
 $dnsFeatureInstalled = Get-WindowsFeature -Name DNS | Where-Object { $_.Installed }
 $rdpFeatureInstalled = Get-WindowsFeature -Name RDS-RDS-Role-infrastructure | Where-Object { $_.Installed }
+$DhcpFeatureInstalled = Get-WindowsFeature -Name DHCPServer | Where-Object { $_.Installed }
 
 # Do checks for various Services
 if (-not $adDsFeatureInstalled) {
@@ -18,6 +21,11 @@ if (-not $adDsFeatureInstalled) {
 if (-not $dnsFeatureInstalled) {
     Write-Host "AD DS Feature not running! `nStarting Service...."
     Start-Service -Name DNS
+}
+
+if (-not $DhcpFeatureInstalled) {
+    Write-Host "DHCP Server not running! `nInstalling Service...."
+    Install-WindowsFeature DHCPServer
 }
 
 if (-not $rdpFeatureInstalled) {
@@ -45,4 +53,4 @@ $domainName = Read-Host "Enter Desired Domain Name:"
 $netBiosName = Read-Host "Enter Desired NetBIOS Domain Name"
 
 # Start Domain Config
-Install-ADDSForest -DomainName $domainName -DominNetbiosName $netBiosName -ForestMode "WinThreshold" -DomainMode "WinThreshold" -InstallDns:$true -NoRebootOnCompletion:$false
+Install-ADDSForest -DomainName $domainName -DominNetbiosName $netBiosName -ForestMode "WinThreshold" -DomainMode "WinThreshold" -InstallDns:$true -NoRebootOnCompletion:$false -LogPath 'C:\%SystemRoot\NTDS' 
