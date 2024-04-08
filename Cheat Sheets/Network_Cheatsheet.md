@@ -1,6 +1,6 @@
 # Packet Protocol Cheat Sheet
 
-## OSI 7 Layer Model:
+## OSI 7 Layer Model
 - **Layer 1 - Physical:** Involves the physical aspects of transmitting data, such as voltage levels, cable types, and physical network topologies.  
   - **Typical services:** Cable infrastructure, NICs.
 
@@ -32,7 +32,7 @@
 - **Category 7 (Cat7):** Offers even better performance and shielding than Cat6a, supporting 10 Gigabit Ethernet over longer distances and frequencies up to 600 MHz.  
   - **Typical services:** 10 Gigabit Ethernet (shielded).
 
-## IP Addressing, DHCP, and DNS:
+## IP Addressing, DHCP, and DNS
 - **IPv4 (Internet Protocol version 4):** 
   - **Definition:** The fourth version of the Internet Protocol, using 32-bit addresses.
   - **Typical services:** Host addressing, packet routing.
@@ -46,7 +46,7 @@
   - **Definition:** Protocol used to translate domain names into IP addresses and vice versa.
   - **Typical services:** Domain name resolution, IP address management.
 
-## Encryption:
+## Encryption
 - **SSL/TLS (Secure Sockets Layer/Transport Layer Security):** 
   - **Definition:** Protocols used to secure communications over a computer network.
   - **Typical services:** Web browsing (HTTPS), email encryption.
