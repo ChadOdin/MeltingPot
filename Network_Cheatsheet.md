@@ -18,6 +18,8 @@
 - **Layer 7 - Application:** Interacts directly with end-users and provides network services to applications. Protocols like HTTP, FTP, and SMTP operate at this layer.  
   - **Typical services:** Web browsing (HTTP), email (SMTP), file transfer (FTP).
 
+----
+
 ## Ethernet Cable Classifications and Speeds:
 - **Category 5e (Cat5e):** Enhanced version of Cat5 cable, supports Gigabit Ethernet and is backward compatible with Cat5.  
   - **Typical services:** Ethernet networking, Gigabit Ethernet.
@@ -27,6 +29,8 @@
   - **Typical services:** 10 Gigabit Ethernet (longer distances).
 - **Category 7 (Cat7):** Offers even better performance and shielding than Cat6a, supporting 10 Gigabit Ethernet over longer distances and frequencies up to 600 MHz.  
   - **Typical services:** 10 Gigabit Ethernet (shielded).
+
+----
 
 ## IP Addressing, DHCP, and DNS:
 - **IPv4 (Internet Protocol version 4):** 
@@ -42,6 +46,8 @@
   - **Definition:** Protocol used to translate domain names into IP addresses and vice versa.
   - **Typical services:** Domain name resolution, IP address management.
 
+----
+
 ## Encryption:
 - **SSL/TLS (Secure Sockets Layer/Transport Layer Security):** 
   - **Definition:** Protocols used to secure communications over a computer network.
@@ -51,7 +57,7 @@
   - **Typical services:** VPNs, secure data transmission over IP networks.
 - **SSH (Secure Shell):**
   - **Definition:** Protocol used to securely connect to a remote computer or server.
-  - **Typical services:** Remote administration, secure file transfer.
+  - **Typical services:** Remote administration, secure file transfer (SFTP).
 - **PGP (Pretty Good Privacy):**
   - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
   - **Typical services:** Secure email communication, file encryption.
