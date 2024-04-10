@@ -4,6 +4,19 @@ function Bootloader-Function {
     Write-Host "Bootloader: OS successfully loaded."
 }
 
+function ShowIPtoTerminal {
+    $ip = "ipv4"
+    $outfile = "%appdata%/roaming/tmp/tmp.txt"
+    $pingme = Get-Content $outfile
+    try {
+        Invoke-Command mkdir ([Environment]::GetFolderPath($outfile)) "test"
+        Invoke-Command ipconfig | select-string $ip | out-file $outfile
+        Invoke-Command Test-NetConnection $pingme 
+    } catch {
+
+    }
+
+}
 function Load-BootloaderFromFile {
     param (
         [string]$BootloaderFilePath
@@ -116,7 +129,7 @@ function Create-VM {
         Set-VMMemory -VMName $VMName -DynamicMemoryEnabled $true -MinimumBytes 512MB -MaximumBytes 16GB -StartupBytes 2GB
 
         # Add Virtual Disk
-        Add-VMHardDiskDrive -VMName $VMName -ControllerType SCSI -ControllerNumber 0 -Path (Join-Path -Path $FullVMPath -ChildPath "$VMName.vhdx") -SizeBytes ($VMSizeGB * 1GB)
+        Add-VMHardDiskDrive -VMName $VMName -ControllerType SCSI -ControllerNumber 0 -Path (Join-Path -Path $FullVMPath -ChildPath "$VMName.vhdx") -SizeBytes ($VMSizeGB * 8GB)
 
         # Attach ISO
         Add-VMDvdDrive -VMName $VMName -Path $ISOPath
@@ -134,10 +147,12 @@ function Create-VM {
 }
 
 # Set default Hyper-V drive location
-$DefaultVMPath = "C:\ProgramData\Microsoft\Windows\Hyper-V"
+$DefaultVMPath = "C:\ProgramData\Microsoft\Windows\Hyper-V" # need to add functionality to set default installation path for .vhdx and/or load defaults from doing a multiple recursive drivescan to case match \Hyper-V\
 
 # Load and execute the bootloader code
-Select-BootloaderFile
+Select-BootloaderFile 
+
+# May implement default file to load in tools depending on VM usage. I.E win10 with OpenVPN and WSL if i need a clean room
 
 # Select and set ISO file
 $selectedIsoFile = Select-IsoFile
