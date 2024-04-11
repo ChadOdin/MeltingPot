@@ -206,4 +206,3 @@ if ($selectedIsoFile -ne $null) {
     }
 }
 
-# Additional code for VM creation and other functionalities...
