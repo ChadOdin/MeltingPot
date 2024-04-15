@@ -188,3 +188,23 @@
 ### Regular Expressions (Advanced)
 - Explanation: More advanced usage of regular expressions.
 - Example: Lookaheads, lookbehinds, capturing groups.
+
+### File Permissions
+- Explanation: Understanding file permissions in Unix-like systems and how to change them.
+- Example: `chmod u+x script.sh`
+
+### Process Management
+- Explanation: More advanced process management techniques such as backgrounding processes, job control, and process manipulation.
+- Example: `ps aux | grep process_name`
+
+### Scripting Best Practices
+- Explanation: Guidelines for writing clean, efficient, and maintainable Bash scripts.
+- Example: Proper commenting, code organization, and error handling.
+
+### Advanced Text Processing
+- Explanation: Techniques for advanced text processing using tools like `awk`, `sed`, and `cut`.
+- Example: `awk '{print $1}' file.txt`
+
+### Shell Variables
+- Explanation: More in-depth coverage of shell variables, including environment variables, local variables, and special variables.
+- Example: `$USER`, `$HOME`, `$?`
