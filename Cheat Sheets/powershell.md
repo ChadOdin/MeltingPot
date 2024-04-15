@@ -169,8 +169,9 @@
 ### Best Practices
 - Description: Best practices for writing PowerShell scripts.
 - Example: 
+  - sanatize all inputs, loops and outputs. this can be done by clearing credentials or loops every time it processes and/or once you no longer need them.
   - Use meaningful variable names
-  - Comment your code
+  - Comment your code only while testing beta versions. a full script should have cryptic and minimal comments. this helps to reduce attack surface for bad actors.
 
 ### Online Resources
 - Description: References to online documentation and communities.
