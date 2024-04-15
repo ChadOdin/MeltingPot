@@ -158,3 +158,33 @@
 ### Command Substitution
 - Explanation: How to use command substitution to capture the output of a command.
 - Example: `result=$(ls -l)`
+
+## Advanced Topics
+
+### Shell Scripting
+- Explanation: How to write and execute shell scripts.
+- Example: `#!/bin/bash`, `chmod +x script.sh`, `./script.sh`
+
+### Arrays
+- Explanation: How to declare and use arrays in Bash.
+- Example: `my_array=(element1 element2 element3)`, `${my_array[0]}`
+
+### Error Handling
+- Explanation: Techniques for error handling in Bash scripts.
+- Example: `set -e`, `trap 'error_handling_function' ERR`
+
+### Debugging
+- Explanation: Methods for debugging Bash scripts.
+- Example: `set -x`, `echo "Debugging message"`
+
+### String Manipulation
+- Explanation: Advanced string manipulation techniques.
+- Example: `substring=${string:start:length}`
+
+### Arithmetic Operations
+- Explanation: Performing arithmetic operations in Bash.
+- Example: `result=$(( 5 + 3 ))`
+
+### Regular Expressions (Advanced)
+- Explanation: More advanced usage of regular expressions.
+- Example: Lookaheads, lookbehinds, capturing groups.
