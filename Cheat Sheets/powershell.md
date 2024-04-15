@@ -174,7 +174,7 @@
 
 ### Online Resources
 - Description: References to online documentation and communities.
-- Example: 
+- Example: ```
   - [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
   - [PowerShell.org Forums](https://powershell.org/forums/)
   ```
