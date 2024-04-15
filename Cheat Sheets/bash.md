@@ -115,3 +115,46 @@
   ```bash
   nano file.txt
   ```
+
+### Environment Variables
+- Explanation: How to view, set, and use environment variables.
+- Example: `PATH`, `HOME`, `USER`.
+
+### Redirection
+- Explanation: How to redirect input and output streams.
+- Example: `command > output.txt`, `command < input.txt`, `command 2> error.txt`.
+
+### Conditional Statements
+- Explanation: Basic conditional statements using `if`, `elif`, and `else`.
+- Example: 
+  ```bash
+  if [ "$variable" -eq 1 ]; then
+      echo "Variable is equal to 1"
+  elif [ "$variable" -gt 1 ]; then
+      echo "Variable is greater than 1"
+  else
+      echo "Variable is less than 1"
+  fi
+  ```
+
+### Loops
+- Explanation: Basic loop constructs such as `for` and `while`.
+- Example:
+  ```bash
+  for i in {1..5}; do
+      echo $i
+  done
+  ```
+
+### Functions
+- Explanation: How to define and use functions in Bash scripts.
+- Example:
+  ```bash
+  my_function() {
+      echo "Hello, world!"
+  }
+  ```
+
+### Command Substitution
+- Explanation: How to use command substitution to capture the output of a command.
+- Example: `result=$(ls -l)`
