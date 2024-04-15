@@ -326,5 +326,29 @@
 - Example: `rsync -avz /source/path/ /destination/path/`
 
 ### System Recovery
-- Explanation: Recovering the system from backups or system images.
-- Example: Using `tar` or `dd` to restore backups or system images.
+- Explanation: Basic steps for system recovery in case of boot issues or system failures, including using recovery modes and Live CDs.
+- Example: Booting into a Live CD and using it to repair the system.
+
+### Disk Partitioning
+- Explanation: Strategies for disk partitioning and tools like `fdisk` or `parted` for creating and managing partitions.
+- Example: `sudo fdisk /dev/sda`
+
+### File Compression
+- Explanation: Techniques for compressing and decompressing files and directories using tools like `gzip` and `tar`.
+- Example: `tar -czvf archive.tar.gz directory`
+
+### System Updates
+- Explanation: Updating the system and installing security patches using package managers like `apt` or `yum`.
+- Example: `sudo apt update && sudo apt upgrade`
+
+### Customization
+- Explanation: Tips for customizing the Linux desktop environment, including changing themes, wallpapers, and desktop layouts.
+- Example: Installing and applying a new GTK theme using a package manager.
+
+### System Logs
+- Explanation: Introduction to system log files and how to view and analyze them for troubleshooting purposes.
+- Example: Viewing the system log file `/var/log/syslog` using `less` or `tail`.
+
+### Modifying the Kernel
+- Explanation: Overview of modifying and recompiling the Linux kernel, including adding or removing kernel modules and configuring kernel parameters.
+- Example: Downloading the Linux kernel source code, modifying kernel configuration options using `make menuconfig`, and compiling the kernel.
