@@ -253,3 +253,78 @@
 
 - Explanation: Understanding the file system structure is crucial for navigating and managing files and directories effectively in Linux-based systems.
 - Example: Knowing the location of important directories such as `/etc` for system configuration files and `/home` for user home directories.
+
+
+## Networking Commands
+
+### ifconfig
+- Explanation: View and configure network interfaces.
+- Example: `ifconfig eth0`
+
+### netstat
+- Explanation: Display network connections, routing tables, interface statistics, masquerade connections, and multicast memberships.
+- Example: `netstat -ano`
+
+### ip
+- Explanation: Show and manipulate routing, devices, policy routing, and tunnels.
+- Example: `ip addr show`
+
+### ss
+- Explanation: Utility to investigate sockets.
+- Example: `ss -tuln`
+
+## Package Management
+
+### apt (Debian/Ubuntu)
+- Explanation: Advanced Package Tool for managing software packages.
+- Example: `apt-get install package_name`
+
+### yum/dnf (Red Hat/CentOS/Fedora)
+- Explanation: Yellowdog Updater Modified and Dandified Yum (DNF) for managing software packages.
+- Example: `yum install package_name` or `dnf install package_name`
+
+### pacman (Arch Linux)
+- Explanation: Package manager for Arch Linux and its derivatives.
+- Example: `pacman -S package_name`
+
+### zypper (openSUSE)
+- Explanation: Package manager for openSUSE and its derivatives.
+- Example: `zypper install package_name`
+
+## System Administration
+
+### User and Group Management
+- Explanation: Managing users and groups on the system.
+- Example: `useradd username` or `groupadd groupname`
+
+### Service Management
+- Explanation: Starting, stopping, and managing system services.
+- Example: `systemctl start service_name`
+
+### System Performance Monitoring
+- Explanation: Tools for monitoring system performance and resource usage.
+- Example: `top` or `htop`
+
+## Security
+
+### Firewall Configuration
+- Explanation: Configuring firewall rules to control incoming and outgoing network traffic.
+- Example: `iptables -A INPUT -p tcp --dport 22 -j ACCEPT`
+
+### User Permissions
+- Explanation: Setting permissions on files and directories to control access.
+- Example: `chmod 755 filename` or `chown user:group filename`
+
+### SSH Access Management
+- Explanation: Managing SSH access to the system.
+- Example: Editing `/etc/ssh/sshd_config` to configure SSH settings.
+
+## Backup and Recovery
+
+### Data Backup
+- Explanation: Strategies and tools for backing up data.
+- Example: `rsync -avz /source/path/ /destination/path/`
+
+### System Recovery
+- Explanation: Recovering the system from backups or system images.
+- Example: Using `tar` or `dd` to restore backups or system images.
