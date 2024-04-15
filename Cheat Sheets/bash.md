@@ -208,3 +208,48 @@
 ### Shell Variables
 - Explanation: More in-depth coverage of shell variables, including environment variables, local variables, and special variables.
 - Example: `$USER`, `$HOME`, `$?`
+
+
+## File System Structure (Linux)
+
+### Linux File System Hierarchy Standard (FHS)
+
+- Explanation: The Linux File System Hierarchy Standard defines the structure and organization of files and directories in Linux-based operating systems.
+- Example: 
+
+  ```plaintext
+  /           Root directory
+  ├── bin     Essential command binaries
+  ├── boot    Boot loader files
+  ├── dev     Device files
+  ├── etc     System configuration files
+  ├── home    User home directories
+  ├── lib     Shared libraries
+  ├── media   Removable media mounts
+  ├── mnt     Mount points for temporary file systems
+  ├── opt     Add-on application software packages
+  ├── proc    Virtual file system providing process information
+  ├── root    Home directory for the root user
+  ├── run     Application state information
+  ├── srv     Data for services provided by the system
+  ├── sys     Virtual file system providing kernel and hardware information
+  ├── tmp     Temporary files
+  ├── usr     User utilities and applications
+  └── var     Variable data files
+  ```
+
+### Distribution-Specific Variations
+
+- Explanation: Different Linux distributions may have variations in their file system structures, but they generally adhere to the Linux FHS to maintain compatibility and interoperability.
+- Example: 
+
+  - **Ubuntu/Debian**: Follows the FHS closely with `/bin`, `/etc`, `/home`, `/lib`, `/usr`, and `/var` directories.
+  - **Red Hat/CentOS**: Similar to Ubuntu/Debian but may have differences in package management and configuration directories.
+  - **Arch Linux**: Minimalistic approach with `/bin`, `/etc`, `/home`, `/usr`, and `/var` directories. Uses the `/mnt` directory for mounting drives.
+  - **Fedora**: Similar to Red Hat/CentOS but may have newer software versions and additional development tools.
+  - **openSUSE**: Similar to Red Hat/CentOS but may have differences in package management and system configuration.
+
+### Understanding the File System
+
+- Explanation: Understanding the file system structure is crucial for navigating and managing files and directories effectively in Linux-based systems.
+- Example: Knowing the location of important directories such as `/etc` for system configuration files and `/home` for user home directories.
