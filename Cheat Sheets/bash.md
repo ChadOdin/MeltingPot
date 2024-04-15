@@ -341,10 +341,6 @@
 - Explanation: Updating the system and installing security patches using package managers like `apt` or `yum`.
 - Example: `sudo apt update && sudo apt upgrade`
 
-### Customization
-- Explanation: Tips for customizing the Linux desktop environment, including changing themes, wallpapers, and desktop layouts.
-- Example: Installing and applying a new GTK theme using a package manager.
-
 ### System Logs
 - Explanation: Introduction to system log files and how to view and analyze them for troubleshooting purposes.
 - Example: Viewing the system log file `/var/log/syslog` using `less` or `tail`.
