@@ -32,8 +32,6 @@
 - Define a function: `def function_name(parameters):`
 - Call a function: `function_name(arguments)`
 
-## Intermediate
-
 ### List Manipulation
 
 - Accessing elements: `list[index]`
@@ -52,8 +50,6 @@
 - Opening a file: `open("filename", "mode")`
 - Reading from a file: `file.read()`
 - Writing to a file: `file.write()`
-
-## Advanced
 
 ### Object-Oriented Programming
 
@@ -128,10 +124,6 @@
 - Creating lists: `[expression for item in iterable if condition]`
 - Nested list comprehensions
 
-### Lambda Functions
-
-- Creating anonymous functions: `lambda parameters: expression`
-
 ### Regular Expressions
 
 - Matching patterns: `import re`, `re.match(pattern, string)`
@@ -155,8 +147,6 @@
 
 - Installing packages: `pip install package_name`
 - Managing dependencies: `pip freeze`, `pip install -r requirements.txt`
-
-## Further Advanced
 
 ### Metaprogramming
 
@@ -189,7 +179,3 @@
 ### Extension Modules
 
 - Writing and using C extensions or Cython for performance-critical parts of Python code.
-
-### Web Development
-
-- Advanced topics in web development using frameworks like Django or Flask, including RESTful APIs, authentication, and deployment strategies.

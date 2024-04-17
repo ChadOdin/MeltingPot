@@ -21,13 +21,13 @@ GPG is a hybrid encryption software that combines symmetric-key encryption (such
 
 ```powershell
 # Using a password
-$plaintext = "YourPlainText"
-$password = "YourPassword" | ConvertTo-SecureString -AsPlainText -Force
-$encrypted = $plaintext | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString -Key $password
+$Credential = Get-Credential
+$password = Read-Host | ConvertTo-SecureString -AsPlainText -Force
+$encrypted = $Credential | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString -Key $password
 $encrypted | Out-File "Encrypted.txt"
 
 # Using a certificate
-$plaintext = "YourPlainText"
+$Credential = Get-Credential
 $cert = Get-ChildItem -Path "YourCertificate.pfx" | Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My
 $encrypted = $plaintext | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString -Certificate $cert
 $encrypted | Out-File "Encrypted.txt"
