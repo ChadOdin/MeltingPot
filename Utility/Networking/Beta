@@ -1,1 +1,83 @@
- 
+$ErrorCodes = @{
+    'CustomErrorCode1' = 1001
+    'CustomErrorCode2' = 1002
+}
+
+function Get-OpenPorts {
+    param(
+        [int]$topPorts = 2048,
+        [switch]$TCP,
+        [switch]$UDP,
+        [string]$LocalAddress,
+        [string]$PortState
+    )
+
+    try {
+        Clear-Host
+        Start-Transcript -Path "$scriptDir\error_log.txt" -Append
+
+        $portTable = @()
+
+        $tcpPorts = Get-NetTCPConnection | Where-Object {$_.LocalPort -le $topPorts}
+        $udpPorts = Get-NetUDPEndpoint | Where-Object {$_.LocalPort -le $topPorts}
+
+        if ($LocalAddress) {
+            $tcpPorts = $tcpPorts | Where-Object {$_.LocalAddress -eq $LocalAddress}
+            $udpPorts = $udpPorts | Where-Object {$_.LocalAddress -eq $LocalAddress}
+        }
+
+        if ($PortState) {
+            $tcpPorts = $tcpPorts | Where-Object {$_.State -eq $PortState}
+            $udpPorts = $udpPorts | Where-Object {$_.State -eq $PortState}
+        }
+
+        if ($TCP) {
+            $tcpPorts | ForEach-Object {
+                $process = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue
+                $processName = if ($process) { $process.ProcessName } else { "Unknown" }
+
+                $portInfo = [PSCustomObject]@{
+                    LocalAddress = $_.LocalAddress
+                    LocalPort = $_.LocalPort
+                    Protocol = 'TCP'
+                    ProcessName = $processName
+                }
+                $portTable += $portInfo
+            }
+        }
+
+        if ($UDP) {
+            $udpPorts | ForEach-Object {
+                $process = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue
+                $processName = if ($process) { $process.ProcessName } else { "Unknown" }
+
+                $portInfo = [PSCustomObject]@{
+                    LocalAddress = $_.LocalAddress
+                    LocalPort = $_.LocalPort
+                    Protocol = 'UDP'
+                    ProcessName = $processName
+                }
+                $portTable += $portInfo
+            }
+        }
+
+        $portTable | Format-Table -AutoSize
+
+        Stop-Transcript
+    }
+    catch {
+        Write-Error $_.Exception.Message -ErrorId $ErrorCodes['CustomErrorCode1']
+    }
+}
+
+$topPorts = Read-Host "Enter the number of top ports to display (default is 2048):"
+if ($topPorts -eq '') {
+    $topPorts = 2048
+}
+
+$TCP = Read-Host "Display TCP ports? (Y/N)"
+$UDP = Read-Host "Display UDP ports? (Y/N)"
+$LocalAddress = Read-Host "Enter the local address to filter ports (optional):"
+$PortState = Read-Host "Enter the port state to filter (Listen/TimeWait/Closed):"
+
+Get-OpenPorts -topPorts $topPorts -TCP:($TCP -eq 'Y') -UDP:($UDP -eq 'Y') -LocalAddress $LocalAddress -PortState $PortState 
