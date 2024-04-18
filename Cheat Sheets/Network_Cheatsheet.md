@@ -10,6 +10,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - [Subnetting Basics](#subnetting-basics)
 - [Routing Protocols](#routing-protocols)
 - [Common Ports and Protocols](#common-ports-and-protocols)
+- [Firewalls](#firewalls)
 
 ## OSI 7 Layer Model
 
@@ -99,4 +100,33 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ## Common Ports and Protocols:
 
  **HTTP (Hypertext Transfer Protocol):**
-   - Port 80 (TCP)
+   - Port 80 / 8080 (TCP)
+   - Used for transferring web pages and related content on the World Wide Web.
+
+ **HTTPS (Hypertext Transfer Protocol Secure):**
+   - Port 443 (TCP)
+   - Secure version of HTTP, encrypted using SSL/TLS.
+
+ **DNS (Domain Name System):**
+   - Port 53 (UDP/TCP)
+   - Resolves domain names to IP addresses and vice versa.
+
+ **FTP (File Transfer Protocol):**
+   - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
+   - Used for transferring files between a client and server on a network.
+
+ **SSH (Secure Shell):**
+   - Port 22 (TCP)
+   - Provides secure remote access to a device or server over a network.
+
+ **SMTP (Simple Mail Transfer Protocol):**
+   - Port 25 (TCP)
+   - Used for sending email messages between servers.
+
+ **POP3 (Post Office Protocol version 3):**
+   - Port 110 (TCP)
+   - Retrieves email from a remote server to a local client.
+
+ **IMAP (Internet Message Access Protocol):**
+   - Port 143 (TCP)
+   - Allows an email client to access email on a remote server.
