@@ -4,14 +4,12 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ## Table of Contents:
 
-| Section                                               | Link                 |
-|-------------------------------------------------------|----------------------|
-| Ethernet Cable Classifications and Speeds             | [Link](#ethernet-cable-classifications-and-speeds) |
-| IP Addressing, DHCP, and DNS                          | [Link](#ip-addressing-dhcp-and-dns) |
-| Encryption                                            | [Link](#encryption) |
-| Subnetting Basics                                     | [Link](#subnetting-basics) |
-| Routing Protocols                                     | [Link](#routing-protocols) |
-| Common Ports and Protocols                            | [Link](#common-ports-and-protocols) |
+- [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
+- [IP Addressing, DHCP, and DNS](#ip-addressing-dhcp-and-dns)
+- [Encryption](#encryption)
+- [Subnetting Basics](#subnetting-basics)
+- [Routing Protocols](#routing-protocols)
+- [Common Ports and Protocols](#common-ports-and-protocols)
 
 ## OSI 7 Layer Model
 
@@ -24,18 +22,21 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - **Layer 7 - Application:** Interacts directly with end-users and provides network services to applications.
 
 ## Ethernet Cable Classifications and Speeds:
+
 - **Category 5e (Cat5e):** Enhanced version of Cat5 cable, supports Gigabit Ethernet and is backward compatible with Cat5.
 - **Category 6 (Cat6):** Provides higher performance than Cat5e, supporting 10 Gigabit Ethernet over shorter distances.
 - **Category 6a (Cat6a):** Augmented version of Cat6, supports 10 Gigabit Ethernet over longer distances.
 - **Category 7 (Cat7):** Offers even better performance and shielding than Cat6a, supporting 10 Gigabit Ethernet over longer distances.
 
 ## IP Addressing, DHCP, and DNS
+
 - **IPv4 (Internet Protocol version 4):**
 - **IPv6 (Internet Protocol version 6):**
 - **DHCP (Dynamic Host Configuration Protocol):**
 - **DNS (Domain Name System):**
 
 ## Encryption
+
 - **SSL/TLS (Secure Sockets Layer/Transport Layer Security):**
 - **IPSec (Internet Protocol Security):**
 - **SSH (Secure Shell):**
@@ -99,32 +100,3 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
  **HTTP (Hypertext Transfer Protocol):**
    - Port 80 (TCP)
-   - Used for transferring web pages and related content on the World Wide Web.
-
- **HTTPS (Hypertext Transfer Protocol Secure):**
-   - Port 443 (TCP)
-   - Secure version of HTTP, encrypted using SSL/TLS.
-
- **DNS (Domain Name System):**
-   - Port 53 (UDP/TCP)
-   - Resolves domain names to IP addresses and vice versa.
-
- **FTP (File Transfer Protocol):**
-   - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
-   - Used for transferring files between a client and server on a network.
-
- **SSH (Secure Shell):**
-   - Port 22 (TCP)
-   - Provides secure remote access to a device or server over a network.
-
- **SMTP (Simple Mail Transfer Protocol):**
-   - Port 25 (TCP)
-   - Used for sending email messages between servers.
-
- **POP3 (Post Office Protocol version 3):**
-   - Port 110 (TCP)
-   - Retrieves email from a remote server to a local client.
-
- **IMAP (Internet Message Access Protocol):**
-   - Port 143 (TCP)
-   - Allows an email client to access email on a remote server.
