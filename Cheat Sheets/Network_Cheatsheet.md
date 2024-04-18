@@ -32,24 +32,84 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ## IP Addressing, DHCP, and DNS
 
 - **IPv4 (Internet Protocol version 4):**
+  - **Definition:** The fourth version of the Internet Protocol, using 32-bit addresses.
+  - **Typical services:** Host addressing, packet routing.
 - **IPv6 (Internet Protocol version 6):**
+  - **Definition:** The sixth version of the Internet Protocol, using 128-bit addresses.
+  - **Typical services:** Address space expansion, improved security.
 - **DHCP (Dynamic Host Configuration Protocol):**
+  - **Definition:** Protocol used to dynamically assign IP addresses and network configuration parameters to devices on a network.
+  - **Typical services:** IP address allocation, subnet configuration, DNS server assignment.
 - **DNS (Domain Name System):**
+  - **Definition:** Protocol used to translate domain names into IP addresses and vice versa.
+  - **Typical services:** Domain name resolution, IP address management.
 
-## Encryption
+## Routing Protocols:
 
-- **SSL/TLS (Secure Sockets Layer/Transport Layer Security):**
-  - **Definition:** Protocols used to secure communications over a computer network.
-  - **Typical services:** Web browsing (HTTPS), email encryption.
-- **IPSec (Internet Protocol Security):**
-  - **Definition:** Suite of protocols used to ensure the secure exchange of packets at the IP layer.
-  - **Typical services:** VPNs, secure data transmission over IP networks.
-- **SSH (Secure Shell):**
-  - **Definition:** Protocol used to securely connect to a remote computer or server.
-  - **Typical services:** Remote administration, secure file transfer (SFTP).
-- **PGP (Pretty Good Privacy):**
-  - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
-  - **Typical services:** Secure email communication, file encryption.
+- **OSPF (Open Shortest Path First):**
+  - **Description:** Link-state routing protocol.
+  - **Algorithm:** Uses Dijkstra's algorithm to calculate the shortest path.
+  - **Usage:** Commonly used in large networks.
+- **BGP (Border Gateway Protocol):**
+  - **Description:** Path vector routing protocol.
+  - **Usage:** Used between different autonomous systems (ASes) on the internet.
+  - **Emphasis:** Policy-based routing decisions.
+- **EIGRP (Enhanced Interior Gateway Routing Protocol):**
+  - **Description:** Cisco proprietary routing protocol.
+  - **Features:** Hybrid distance vector and link-state protocol.
+  - **Support:** Variable-length subnet masks (VLSM) and rapid convergence.
+- **RIP (Routing Information Protocol):**
+  - **Description:** Distance vector routing protocol.
+  - **Features:** Simple and easy to configure.
+  - **Usage:** Commonly used in small to medium-sized networks.
+- **IS-IS (Intermediate System to Intermediate System):**
+  - **Description:** Link-state routing protocol.
+  - **Usage:** Commonly used in large service provider networks.
+- **Babel:**
+  - **Description:** Distance vector routing protocol.
+  - **Features:** Designed for wireless mesh networks and multi-hop ad hoc networks.
+- **TCP (Transmission Control Protocol):**
+  - **Description:** Connection-oriented protocol used for reliable, ordered delivery of data packets.
+  - **Features:** Provides error checking and flow control mechanisms.
+  - **Usage:** Widely used in applications such as web browsing, email, file transfer.
+- **UDP (User Datagram Protocol):**
+  - **Description:** Connectionless protocol used for faster, but unreliable, communication.
+  - **Features:** Minimal overhead compared to TCP, suitable for real-time applications.
+  - **Usage:** Commonly used in streaming media, online gaming, DNS.
+
+## Common Ports and Protocols:
+
+ **HTTP (Hypertext Transfer Protocol):**
+   - Port 80 / 8080 (TCP)
+   - Used for transferring web pages and related content on the World Wide Web.
+
+ **HTTPS (Hypertext Transfer Protocol Secure):**
+   - Port 443 (TCP)
+   - Secure version of HTTP, encrypted using SSL/TLS.
+
+ **DNS (Domain Name System):**
+   - Port 53 (UDP/TCP)
+   - Resolves domain names to IP addresses and vice versa.
+
+ **FTP (File Transfer Protocol):**
+   - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
+   - Used for transferring files between a client and server on a network.
+
+ **SSH (Secure Shell):**
+   - Port 22 (TCP)
+   - Provides secure remote access to a device or server over a network.
+
+ **SMTP (Simple Mail Transfer Protocol):**
+   - Port 25 (TCP)
+   - Used for sending email messages between servers.
+
+ **POP3 (Post Office Protocol version 3):**
+   - Port 110 (TCP)
+   - Retrieves email from a remote server to a local client.
+
+ **IMAP (Internet Message Access Protocol):**
+   - Port 143 (TCP)
+   - Allows an email client to access email on a remote server.
 
 ## Subnetting Basics:
 
@@ -93,57 +153,6 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - /31: 2 IPs
 - /32: 1 IP
 
-## Routing Protocols:
-
- **OSPF (Open Shortest Path First):**
-   - Link-state routing protocol.
-   - Uses Dijkstra's algorithm to calculate the shortest path.
-   - Commonly used in large networks.
-
- **BGP (Border Gateway Protocol):**
-   - Path vector routing protocol.
-   - Used between different autonomous systems (ASes) on the internet.
-   - Emphasizes policy-based routing decisions.
-
- **EIGRP (Enhanced Interior Gateway Routing Protocol):**
-   - Cisco proprietary routing protocol.
-   - Hybrid distance vector and link-state protocol.
-   - Supports variable-length subnet masks (VLSM) and rapid convergence.
-
-## Common Ports and Protocols:
-
- **HTTP (Hypertext Transfer Protocol):**
-   - Port 80 / 8080 (TCP)
-   - Used for transferring web pages and related content on the World Wide Web.
-
- **HTTPS (Hypertext Transfer Protocol Secure):**
-   - Port 443 (TCP)
-   - Secure version of HTTP, encrypted using SSL/TLS.
-
- **DNS (Domain Name System):**
-   - Port 53 (UDP/TCP)
-   - Resolves domain names to IP addresses and vice versa.
-
- **FTP (File Transfer Protocol):**
-   - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
-   - Used for transferring files between a client and server on a network.
-
- **SSH (Secure Shell):**
-   - Port 22 (TCP)
-   - Provides secure remote access to a device or server over a network.
-
- **SMTP (Simple Mail Transfer Protocol):**
-   - Port 25 (TCP)
-   - Used for sending email messages between servers.
-
- **POP3 (Post Office Protocol version 3):**
-   - Port 110 (TCP)
-   - Retrieves email from a remote server to a local client.
-
- **IMAP (Internet Message Access Protocol):**
-   - Port 143 (TCP)
-   - Allows an email client to access email on a remote server.
-
 ## Firewalls
 
 - **Definition:** A security device or software that monitors and controls incoming and outgoing network traffic based on predetermined security rules.
@@ -153,3 +162,18 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Proxy Firewalls:** Act as intermediaries between internal and external networks, inspecting and filtering traffic at the application layer.
 - **Firewall Rules:** Configurations that dictate how a firewall should handle traffic. Rules can allow, block, or restrict specific types of traffic based on various criteria.
 - **Intrusion Detection and Prevention Systems (IDPS):** Often integrated with firewalls, IDPS monitors network traffic for suspicious activities and can take action to block or alert on detected threats.
+
+## Encryption
+
+- **SSL/TLS (Secure Sockets Layer/Transport Layer Security):**
+  - **Definition:** Protocols used to secure communications over a computer network.
+  - **Typical services:** Web browsing (HTTPS), email encryption.
+- **IPSec (Internet Protocol Security):**
+  - **Definition:** Suite of protocols used to ensure the secure exchange of packets at the IP layer.
+  - **Typical services:** VPNs, secure data transmission over IP networks.
+- **SSH (Secure Shell):**
+  - **Definition:** Protocol used to securely connect to a remote computer or server.
+  - **Typical services:** Remote administration, secure file transfer (SFTP).
+- **PGP (Pretty Good Privacy):**
+  - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
+  - **Typical services:** Secure email communication, file encryption.
