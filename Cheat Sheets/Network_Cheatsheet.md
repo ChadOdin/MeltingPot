@@ -39,9 +39,17 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ## Encryption
 
 - **SSL/TLS (Secure Sockets Layer/Transport Layer Security):**
+  - **Definition:** Protocols used to secure communications over a computer network.
+  - **Typical services:** Web browsing (HTTPS), email encryption.
 - **IPSec (Internet Protocol Security):**
+  - **Definition:** Suite of protocols used to ensure the secure exchange of packets at the IP layer.
+  - **Typical services:** VPNs, secure data transmission over IP networks.
 - **SSH (Secure Shell):**
+  - **Definition:** Protocol used to securely connect to a remote computer or server.
+  - **Typical services:** Remote administration, secure file transfer (SFTP).
 - **PGP (Pretty Good Privacy):**
+  - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
+  - **Typical services:** Secure email communication, file encryption.
 
 ## Subnetting Basics:
 
