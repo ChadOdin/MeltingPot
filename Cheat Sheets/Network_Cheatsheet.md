@@ -130,3 +130,13 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
  **IMAP (Internet Message Access Protocol):**
    - Port 143 (TCP)
    - Allows an email client to access email on a remote server.
+
+## Firewalls
+
+- **Definition:** A security device or software that monitors and controls incoming and outgoing network traffic based on predetermined security rules.
+- **Types of Firewalls:**
+  - **Packet Filtering Firewalls:** Examines packets and filters them based on criteria such as source and destination IP addresses, ports, and protocols.
+  - **Stateful Inspection Firewalls:** Tracks the state of active connections and makes decisions based on the context of the traffic.
+  - **Proxy Firewalls:** Act as intermediaries between internal and external networks, inspecting and filtering traffic at the application layer.
+- **Firewall Rules:** Configurations that dictate how a firewall should handle traffic. Rules can allow, block, or restrict specific types of traffic based on various criteria.
+- **Intrusion Detection and Prevention Systems (IDPS):** Often integrated with firewalls, IDPS monitors network traffic for suspicious activities and can take action to block or alert on detected threats.
