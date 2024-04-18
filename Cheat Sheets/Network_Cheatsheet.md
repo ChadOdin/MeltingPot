@@ -1,4 +1,6 @@
-# Packet Protocol Cheat Sheet
+# Networking Cheat Sheet
+
+a comprehensive cheatsheet with all my current knowledge on networking, IP Addressing, ports and packet protocols
 
 ## OSI 7 Layer Model
 - **Layer 1 - Physical:** Involves the physical aspects of transmitting data, such as voltage levels, cable types, and physical network topologies.  
