@@ -119,7 +119,7 @@
    - Hybrid distance vector and link-state protocol.
    - Supports variable-length subnet masks (VLSM) and rapid convergence.
 
-### Common Ports and Protocols:
+## Common Ports and Protocols:
 
  **HTTP (Hypertext Transfer Protocol)**:
    - Port 80 (TCP)
