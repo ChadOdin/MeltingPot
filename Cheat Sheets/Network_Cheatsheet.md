@@ -1,16 +1,27 @@
 # Networking Cheat Sheet
-
-A comprehensive cheatsheet with all my current knowledge on networking, IP Addressing, ports and packet protocols.
-
+A comprehensive cheatsheet with all my current knowledge on networking, IP Addressing, ports and packet protocols as well as general knowledge i've picked up.
 ## Table of Contents:
-
+### Physical
 - [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
-- [IP Addressing, DHCP, and DNS](#ip-addressing-dhcp-and-dns)
-- [Encryption](#encryption)
-- [Subnetting Basics](#subnetting-basics)
+
+### Core Networking
 - [Routing Protocols](#routing-protocols)
+- [Network Address Translation](#network-address-translation-nat)
+- [IP Addressing, DHCP, and DNS](#ip-addressing-dhcp-and-dns)
 - [Common Ports and Protocols](#common-ports-and-protocols)
+- [Subnetting Basics](#subnetting-basics)
+- [Wireless Networking](#wireless-networking)
+
+### General Networking
+- [Software-Defined Networking](#software-defined-networking-sdn)
+- [Container Networking](#container-networking)
+- [Websockets](#websockets)
+- [Encryption](#encryption)
 - [Firewalls](#firewalls)
+
+### VPN Networking
+- [Load Balancing](#load-balancing)
+- [Virtual Private Networks (VPN)](#virtual-private-networks-vpns)
 
 ## OSI 7 Layer Model
 
@@ -79,18 +90,6 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ## Common Ports and Protocols:
 
- **HTTP (Hypertext Transfer Protocol):**
-   - Port 80 / 8080 (TCP)
-   - Used for transferring web pages and related content on the World Wide Web.
-
- **HTTPS (Hypertext Transfer Protocol Secure):**
-   - Port 443 (TCP)
-   - Secure version of HTTP, encrypted using SSL/TLS.
-
- **DNS (Domain Name System):**
-   - Port 53 (UDP/TCP)
-   - Resolves domain names to IP addresses and vice versa.
-
  **FTP (File Transfer Protocol):**
    - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
    - Used for transferring files between a client and server on a network.
@@ -103,6 +102,14 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
    - Port 25 (TCP)
    - Used for sending email messages between servers.
 
+ **DNS (Domain Name System):**
+   - Port 53 (UDP/TCP)
+   - Resolves domain names to IP addresses and vice versa.
+
+ **HTTP (Hypertext Transfer Protocol):**
+   - Port 80 / 8080 (TCP)
+   - Used for transferring web pages and related content on the World Wide Web.
+
  **POP3 (Post Office Protocol version 3):**
    - Port 110 (TCP)
    - Retrieves email from a remote server to a local client.
@@ -110,6 +117,73 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
  **IMAP (Internet Message Access Protocol):**
    - Port 143 (TCP)
    - Allows an email client to access email on a remote server.
+
+ **HTTPS (Hypertext Transfer Protocol Secure):**
+   - Port 443 (TCP)
+   - Secure version of HTTP, encrypted using SSL/TLS.
+   - Also used for VPN services and Websockets (SSL Hooks)
+
+  **SQL (Structured Query Language):**
+   - Port 118 & Port 156
+
+  **NTP (Network Time Protocol):**
+   - Port 123
+   - Used for time synchronization across a network
+
+  **EPMAP (End Point Mapper):**
+   - Port 135
+   - Used to remotely manage services like DHCP server, DNS server and WINS. Also used by DCOM.
+
+  **NETBIOS (NetBIOS):**
+   - Ports 137-139
+   - NetBIOS Name Service used for name registration and resolution on Port 137
+   - NetBIOS Datagram Service on Port 138
+   - NetBIOS Session Serivce on Port 139
+
+  **IMAP (Internet Message Access Protocol):**
+   - Port 143
+   - Used for managment of electronic mail messages on servers.
+
+  **ADDS (Active Directory Domain Services):**
+   - Port 445
+   - Used by both ADDS and SMB (Net Shares)
+
+### KERBEROS PORTS
+
+ **KERBEROS (Kerberos):**
+   - Port 88 & 464
+   - Used in conjunction with NTLM and LDAP
+   - Standard way to authenticate sessions and users within an Active Directory Domain.
+   - Port 464 is used for Changing & Setting passwords.
+  
+  **KLOGIN (Kerberos Login):**
+   - Port 543
+
+  **KSHELL (Kerberos Remote Shell):**
+   - Port 544
+
+  **Kerberos Administration:**
+   - Port 749
+
+  **Kerberos-iv (Version IV):**
+   - Port 750
+
+  **Kerberos_Master (Kerberos Authentication):**
+   - Port 751
+
+  **PASSWD_SERVER (Kerberos Password "kpasswd" Server):**
+   - Port 752
+
+  **KRB5_PROP (Kerberos v5 Slave Propagation):**
+   - Port 754
+
+  **KRBUPDATE [KREG] (Kerberos Registration)**
+   - Port 760
+
+  **FTPS (File Transfer Protocol Secure):**
+   - Ports 989-990
+   - 989 is used for data over TLS/SSL
+   - 990 is used for control over TLS/SSL
 
 ## Subnetting Basics:
 
@@ -177,3 +251,91 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - **PGP (Pretty Good Privacy):**
   - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
   - **Typical services:** Secure email communication, file encryption.
+
+## WebSockets
+
+- **Definition:** WebSockets is a communication protocol that provides full-duplex communication channels over a single, long-lived TCP connection. It enables bi-directional communication between a client and server.
+- **Features:**
+  - **Full-duplex Communication:** Allows both the client and server to send messages to each other simultaneously.
+  - **Low Latency:** Maintains a persistent connection, reducing overhead compared to traditional HTTP requests.
+  - **Efficiency:** Eliminates the need for repeated HTTP header negotiation, resulting in lower latency and bandwidth usage.
+  - **Real-time Updates:** Ideal for applications requiring real-time updates or notifications, such as chat applications, online gaming, and financial trading platforms.
+- **Usage:** WebSockets are commonly used in web applications to enable real-time, interactive features without the need for continuous polling or frequent HTTP requests.
+- **Protocol:** WebSockets use a handshake mechanism to establish a connection between the client and server, followed by message framing to exchange data.
+- **Supported Platforms:** WebSockets are supported by most modern web browsers and can be implemented using various programming languages and frameworks, such as JavaScript, Python, and Node.js.
+
+## Network Address Translation (NAT):
+
+- **Definition:** Network Address Translation (NAT) is a technique used to modify network address information in packet headers while in transit, typically to map private IP addresses to public IP addresses and vice versa.
+- **Types of NAT:**
+  - **Static NAT:** Maps a private IP address to a single public IP address on a one-to-one basis.
+  - **Dynamic NAT:** Dynamically assigns a public IP address from a pool of available addresses to private IP addresses on a one-to-one basis as needed.
+  - **Port Address Translation (PAT):** Maps multiple private IP addresses to a single public IP address by using different port numbers to distinguish between connections.
+  - **Overloading:** Another term for PAT, where multiple private IP addresses are mapped to a single public IP address.
+- **Applications:** NAT is commonly used in home and enterprise networks to conserve public IP addresses, enable communication between private and public networks, and enhance network security.
+
+## Load Balancing:
+
+- **Definition:** Load balancing is the process of distributing incoming network traffic across multiple servers to optimize resource utilization, ensure high availability, and improve performance.
+- **Load Balancing Algorithms:**
+  - **Round Robin:** Distributes traffic evenly across servers in a sequential manner.
+  - **Least Connections:** Routes traffic to the server with the fewest active connections, minimizing response time and avoiding overloading.
+  - **Least Response Time:** Directs traffic to the server with the fastest response time based on historical performance data.
+- **Implementation:** Load balancing can be achieved through hardware load balancers, software-based load balancers, or cloud-based load balancers.
+- **Applications:** Load balancing is essential for distributing workloads across servers in web applications, ensuring scalability, fault tolerance, and optimal performance.
+
+## Software-Defined Networking (SDN):
+
+- **Definition:** Software-Defined Networking (SDN) is an approach to networking that decouples the control plane from the data plane, allowing network administrators to programmatically control network behavior through centralized software-based controllers.
+- **Key Components:**
+  - **SDN Controller:** Centralized software platform that manages the network and communicates with switches and routers using protocols like OpenFlow.
+  - **Southbound APIs:** Interfaces that allow the SDN controller to communicate with network devices, controlling their behavior.
+  - **Northbound APIs:** Interfaces that enable integration with higher-level network management applications and orchestration systems.
+- **Benefits:**
+  - **Centralized Management:** Simplifies network configuration, monitoring, and troubleshooting.
+  - **Dynamic Provisioning:** Enables automated provisioning and deployment of network resources based on application requirements.
+  - **Scalability and Flexibility:** Allows for rapid scalability and adaptation to changing network demands.
+- **Applications:** SDN is used in data centers, campus networks, and wide-area networks (WANs) to improve network agility, efficiency, and security.
+
+## Container Networking:
+
+- **Definition:** Container networking refers to the networking capabilities and configurations associated with containerized applications deployed in container runtime environments such as Docker, Kubernetes, and others.
+- **Key Concepts:**
+  - **Container Networking Interface (CNI):** Specification for network plugins in container runtimes, enabling containers to connect to networks and each other.
+  - **Overlay Networks:** Virtual networks created on top of existing physical networks to facilitate communication between containers across different hosts.
+  - **Service Discovery:** Mechanisms for automatically detecting and connecting containerized services within a network, often using DNS or service registries.
+- **Networking Models:**
+  - **Bridge Networking:** Containers share the host's network stack, each with its own IP address and network namespace.
+  - **Host Networking:** Containers share the host's network stack and IP address, bypassing network isolation but offering better performance.
+  - **Overlay Networking:** Containers communicate over an overlay network, abstracting underlying physical network details and enabling multi-host communication.
+- **Tools and Technologies:** Various container networking solutions exist, including Docker Networking, Kubernetes networking plugins (e.g., Flannel, Calico), and container orchestration platforms.
+- **Use Cases:** Container networking enables microservices architectures, facilitates application scalability, and supports cloud-native development and deployment practices.
+
+## Wireless Networking:
+
+- **Definition:** Wireless networking refers to the technology that enables communication between devices without the use of physical wired connections, typically using radio frequency signals.
+- **Key Concepts:**
+  - **Wi-Fi (802.11):** Standard for wireless local area networking (WLAN) that allows devices to connect to a network wirelessly within a limited range.
+  - **Bluetooth:** Wireless technology used for short-range communication between devices, such as smartphones, laptops, and peripherals.
+  - **Zigbee:** Low-power wireless communication protocol commonly used in home automation, industrial control, and sensor networks.
+- **Security Considerations:**
+  - **Encryption:** Implementing security protocols like WPA2 (Wi-Fi Protected Access 2) to encrypt wireless communications and prevent unauthorized access.
+  - **Access Control:** Configuring MAC address filtering, disabling SSID broadcasting, and using strong passwords to control access to wireless networks.
+- **Best Practices:**
+  - **Placement of Access Points:** Strategically placing access points to ensure adequate coverage and minimize interference in wireless networks.
+  - **Firmware Updates:** Regularly updating firmware for wireless routers and access points to address security vulnerabilities and improve performance.
+- **Challenges:** Wireless networking faces challenges such as signal interference, limited range, and security vulnerabilities, which require careful consideration and mitigation strategies.
+
+## Virtual Private Networks (VPNs):
+
+- **Definition:** A Virtual Private Network (VPN) is a secure and encrypted connection established over a public network, such as the internet, to provide privacy and security for users accessing resources from remote locations.
+- **VPN Protocols:**
+  - **OpenVPN:** Open-source VPN protocol known for its flexibility, cross-platform compatibility, and strong security features.
+  - **IPSec (Internet Protocol Security):** Suite of protocols used for secure communication over IP networks, commonly used in site-to-site VPNs and remote access VPNs.
+  - **L2TP/IPSec (Layer 2 Tunneling Protocol/IPSec):** Combines the features of L2TP and IPSec to provide a secure and encrypted tunnel for VPN connections.
+  - **SSL/TLS VPN:** Utilizes SSL/TLS protocols to establish a secure VPN connection, often used for remote access to web-based applications.
+- **VPN Types:**
+  - **Remote Access VPN:** Allows individual users to connect securely to a corporate network from remote locations using VPN client software.
+  - **Site-to-Site VPN:** Establishes secure connections between multiple networks, such as branch offices or data centers, over the internet.
+- **VPN Security:** VPNs use encryption and authentication mechanisms to ensure the confidentiality, integrity, and authenticity of transmitted data.
+- **Benefits:** VPNs provide secure remote access to corporate resources, enable anonymous browsing and access to geo-restricted content, and enhance network security and privacy.
