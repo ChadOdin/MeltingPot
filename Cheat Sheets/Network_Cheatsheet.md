@@ -45,6 +45,11 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ## Subnetting Basics:
 
+- **Subnet Mask:** Determines network and host portions of an IP address.
+- **CIDR Notation:** Shorthand for subnet masks (/x format).
+- **IP Address Range:** Range of IP addresses within a subnet.
+- **Max IP Availability:** Maximum available IP addresses for each subnet.
+
 ### Max IP Availability:
 
 - /1: 2,147,483,646 IPs
