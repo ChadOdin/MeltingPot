@@ -59,3 +59,45 @@
 - **PGP (Pretty Good Privacy):**
   - **Definition:** Encryption program that provides cryptographic privacy and authentication for data communication.
   - **Typical services:** Secure email communication, file encryption.
+
+## Subnetting Basics:
+
+- **Subnet Mask**: Determines network and host portions of an IP address.
+- **CIDR Notation**: Shorthand for subnet masks (/x format).
+- **IP Address Range**: Range of IP addresses within a subnet.
+- **Max IP Availability**: Maximum available IP addresses for each subnet.
+
+#### Max IP Availability:
+
+- /1: 2,147,483,646 IPs
+- /2: 1,073,741,822 IPs
+- /3: 536,870,910 IPs
+- /4: 268,435,454 IPs
+- /5: 134,217,726 IPs
+- /6: 67,108,862 IPs
+- /7: 33,554,430 IPs
+- /8: 16,777,214 IPs
+- /9: 8,388,606 IPs
+- /10: 4,194,302 IPs
+- /11: 2,097,150 IPs
+- /12: 1,048,574 IPs
+- /13: 524,286 IPs
+- /14: 262,142 IPs
+- /15: 131,070 IPs
+- /16: 65,534 IPs
+- /17: 32,766 IPs
+- /18: 16,382 IPs
+- /19: 8,190 IPs
+- /20: 4,094 IPs
+- /21: 2,046 IPs
+- /22: 1,022 IPs
+- /23: 510 IPs
+- /24: 254 IPs
+- /25: 126 IPs
+- /26: 62 IPs
+- /27: 30 IPs
+- /28: 14 IPs
+- /29: 6 IPs
+- /30: 2 IPs
+- /31: 2 IPs
+- /32: 1 IP
