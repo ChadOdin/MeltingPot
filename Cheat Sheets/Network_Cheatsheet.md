@@ -101,3 +101,54 @@
 - /30: 2 IPs
 - /31: 2 IPs
 - /32: 1 IP
+
+## Routing Protocols:
+
+1. **OSPF (Open Shortest Path First)**:
+   - Link-state routing protocol.
+   - Uses Dijkstra's algorithm to calculate the shortest path.
+   - Commonly used in large networks.
+   
+2. **BGP (Border Gateway Protocol)**:
+   - Path vector routing protocol.
+   - Used between different autonomous systems (ASes) on the internet.
+   - Emphasizes policy-based routing decisions.
+
+3. **EIGRP (Enhanced Interior Gateway Routing Protocol)**:
+   - Cisco proprietary routing protocol.
+   - Hybrid distance vector and link-state protocol.
+   - Supports variable-length subnet masks (VLSM) and rapid convergence.
+
+### Common Ports and Protocols:
+
+1. **HTTP (Hypertext Transfer Protocol)**:
+   - Port 80 (TCP)
+   - Used for transferring web pages and related content on the World Wide Web.
+
+2. **HTTPS (Hypertext Transfer Protocol Secure)**:
+   - Port 443 (TCP)
+   - Secure version of HTTP, encrypted using SSL/TLS.
+
+3. **DNS (Domain Name System)**:
+   - Port 53 (UDP/TCP)
+   - Resolves domain names to IP addresses and vice versa.
+
+4. **FTP (File Transfer Protocol)**:
+   - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
+   - Used for transferring files between a client and server on a network.
+
+5. **SSH (Secure Shell)**:
+   - Port 22 (TCP)
+   - Provides secure remote access to a device or server over a network.
+
+6. **SMTP (Simple Mail Transfer Protocol)**:
+   - Port 25 (TCP)
+   - Used for sending email messages between servers.
+
+7. **POP3 (Post Office Protocol version 3)**:
+   - Port 110 (TCP)
+   - Retrieves email from a remote server to a local client.
+
+8. **IMAP (Internet Message Access Protocol)**:
+   - Port 143 (TCP)
+   - Allows an email client to access email on a remote server.
