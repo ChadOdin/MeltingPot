@@ -356,3 +356,22 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Enhanced Reliability:** SD-WAN enhances network reliability by leveraging multiple transport links, such as MPLS, broadband internet, and LTE, and automatically rerouting traffic in case of link failures.
   - **Cost Savings:** SD-WAN reduces WAN costs by leveraging cost-effective internet connections, minimizing reliance on expensive MPLS circuits, and optimizing bandwidth usage.
 - **Use Cases:** SD-WAN is used by organizations to improve branch connectivity, support cloud migration, enhance application performance, and reduce operational costs.
+
+### Network Monitoring and Management:
+
+- **Definition:** Network monitoring and management involves the use of tools, protocols, and techniques to monitor, analyze, and manage the performance, availability, and security of computer networks.
+- **Key Components:**
+  - **Network Monitoring Tools:** Software applications used to collect and analyze network traffic data, monitor device performance, and detect anomalies or security threats.
+  - **Network Management Protocols:** Protocols such as SNMP (Simple Network Management Protocol) and NetFlow used to manage network devices, monitor performance metrics, and configure network settings remotely.
+- **Monitoring Techniques:**
+  - **Traffic Analysis:** Analyzing network traffic patterns, bandwidth utilization, and packet-level details to identify performance bottlenecks, troubleshoot issues, and detect security threats.
+  - **Performance Monitoring:** Monitoring key performance indicators (KPIs) such as latency, packet loss, and throughput to ensure optimal network performance and identify areas for improvement.
+  - **Alerting and Notification:** Configuring alerts and notifications to proactively identify and respond to network issues, security breaches, or performance degradation.
+- **Management Practices:**
+  - **Configuration Management:** Managing and maintaining device configurations, ensuring consistency, compliance with security policies, and efficient network operation.
+  - **Change Management:** Implementing processes and procedures to plan, schedule, and document changes to the network infrastructure, minimizing disruption and ensuring stability.
+  - **Capacity Planning:** Forecasting future network requirements, analyzing current usage trends, and scaling network resources to accommodate growth and maintain performance.
+- **Tools and Solutions:**
+  - **Network Monitoring Software:** Commercial and open-source tools such as Nagios, Zabbix, and PRTG used for real-time monitoring, alerting, and reporting.
+  - **Network Management Systems (NMS):** Integrated platforms for network monitoring, configuration management, performance analysis, and troubleshooting.
+- **Best Practices:** Implementing network monitoring and management best practices such as regular monitoring, proactive maintenance, documentation, and collaboration between IT teams to ensure efficient network operation and security.
