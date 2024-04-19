@@ -23,7 +23,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ### VPN Networking
 - [Load Balancing](#load-balancing)
-- [Virtual Private Networks (VPN)](#virtual-private-networks-vpns)
+  - [Virtual Private Networks (VPN)](#virtual-private-networks-vpns)
 
 ## OSI 7 Layer Model
 
