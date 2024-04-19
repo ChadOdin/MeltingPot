@@ -5,6 +5,9 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ### Physical
 - [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
 - [Physical Networking](#physical-networking)
+  -[Switches](#switches)
+  -[Access Points](#access-points)
+  -[Exchanges](#exchanges)
 
 ### Core Networking
 - [Routing Protocols](#routing-protocols)
