@@ -3,7 +3,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ## Table of Contents:
 
 ### Physical
-- [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
+- [Cable Classifications and Speeds](#cable-classifications-and-speeds)
 - [Physical Networking](#physical-networking)
   - [Switches](#switches)
   - [Access Points](#access-points)
@@ -13,13 +13,15 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - [Routing Protocols](#routing-protocols)
 - [Network Address Translation](#network-address-translation-nat)
 - [IP Addressing, DHCP, and DNS](#ip-addressing-dhcp-and-dns)
-- [Common Ports and Protocols](#common-ports-and-protocols)
-- [Subnetting Basics](#subnetting-basics)
+  - [Common Ports and Protocols](#common-ports-and-protocols)
+  - [Subnetting Basics](#subnetting-basics)
 - [Wireless Networking](#wireless-networking)
+  - [SMB Network Shares](#smb-network-shares)
+- [Network Monitoring and Management](#network-monitoring-and-management)
 
 ### General Networking
 - [Software-Defined Networking](#software-defined-networking-sdn)
-- [Software Defined WAN](#software-defined-WAN)
+- [Software Defined WAN](#software-defined-wan-sd-wan)
 - [Container Networking](#container-networking)
 - [Websockets](#websockets)
 - [Encryption](#encryption)
@@ -39,12 +41,25 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - **Layer 6 - Presentation:** Responsible for data translation, encryption, and compression.
 - **Layer 7 - Application:** Interacts directly with end-users and provides network services to applications.
 
-## Ethernet Cable Classifications and Speeds:
+## Cable Classifications and Speeds:
+
+### Ethernet Cables
 
 - **Category 5e (Cat5e):** Enhanced version of Cat5 cable, supports Gigabit Ethernet and is backward compatible with Cat5.
 - **Category 6 (Cat6):** Provides higher performance than Cat5e, supporting 10 Gigabit Ethernet over shorter distances.
 - **Category 6a (Cat6a):** Augmented version of Cat6, supports 10 Gigabit Ethernet over longer distances.
 - **Category 7 (Cat7):** Offers even better performance and shielding than Cat6a, supporting 10 Gigabit Ethernet over longer distances.
+
+### Network Switch Cables:
+
+- **Network switch cables** connect devices like computers and printers to a network switch, enabling data transmission within a LAN.
+- **Types:** Commonly include Ethernet cables (e.g., Cat5e, Cat6).
+
+### Patch Cables:
+
+- **Patch cables** are short Ethernet cables used to connect devices to a patch panel or network switch, allowing flexible connections in network racks or cabinets.
+- **Connectors:** Typically feature RJ45 connectors on both ends.
+
 
 ## IP Addressing, DHCP, and DNS
 
@@ -85,16 +100,39 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - **Babel:**
   - **Description:** Distance vector routing protocol.
   - **Features:** Designed for wireless mesh networks and multi-hop ad hoc networks.
-- **TCP (Transmission Control Protocol):**
+
+## Common Ports and Protocols:
+
+ **TCP (Transmission Control Protocol):**
   - **Description:** Connection-oriented protocol used for reliable, ordered delivery of data packets.
   - **Features:** Provides error checking and flow control mechanisms.
   - **Usage:** Widely used in applications such as web browsing, email, file transfer.
-- **UDP (User Datagram Protocol):**
+ **UDP (User Datagram Protocol):**
   - **Description:** Connectionless protocol used for faster, but unreliable, communication.
   - **Features:** Minimal overhead compared to TCP, suitable for real-time applications.
   - **Usage:** Commonly used in streaming media, online gaming, DNS.
 
-## Common Ports and Protocols:
+**SCTP (Stream Control Transmission Protocol):**
+  - **Description:** SCTP is a connection-oriented protocol used for reliable, ordered delivery of data packets. It offers additional features such as multi-homing and multi-streaming.
+  - **Features:** Provides reliability and congestion control similar to TCP, along with enhanced fault tolerance and performance.
+  - **Usage:** Used in applications where improved fault tolerance and performance are required, such as telecommunications and Voice over IP (VoIP).
+
+**DCCP (Datagram Congestion Control Protocol):**
+  - **Description:** DCCP is a transport layer protocol designed to provide unreliable, connection-oriented communication similar to UDP but with congestion control mechanisms similar to TCP.
+  - **Features:** Offers unreliable communication similar to UDP with congestion control mechanisms similar to TCP.
+  - **Usage:** Used for real-time multimedia streaming applications where some packet loss is acceptable, but congestion control is still necessary.
+
+**RTP (Real-time Transport Protocol):**
+  - **Description:** RTP is a higher-level protocol commonly used for real-time multimedia streaming applications such as VoIP and video conferencing.
+  - **Features:** Provides timestamping, sequence numbering, and payload identification for real-time data streams.
+  - **Usage:** Often used in conjunction with UDP for transporting real-time data packets.
+
+**QUIC (Quick UDP Internet Connections):**
+  - **Description:** QUIC is a transport layer protocol developed by Google that runs over UDP. It aims to provide low-latency communication with built-in encryption and congestion control.
+  - **Features:** Offers low-latency communication, built-in encryption, and congestion control.
+  - **Usage:** Designed to address some of the limitations of TCP, such as the latency introduced by TCP's handshake process.
+
+### Ports:
 
  **FTP (File Transfer Protocol):**
    - Port 20 (FTP Data) and Port 21 (FTP Control) (TCP)
@@ -192,6 +230,8 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
    - 990 is used for control over TLS/SSL
 
 ## Subnetting Basics:
+
+- Two IP addresses are always reserved within a subnet. One for the broadcast and one for the network address. So a /24 network would have 254 rather than 256.
 
 - **Subnet Mask:** Determines network and host portions of an IP address.
 - **CIDR Notation:** Shorthand for subnet masks (/x format).
@@ -331,6 +371,25 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Placement of Access Points:** Strategically placing access points to ensure adequate coverage and minimize interference in wireless networks.
   - **Firmware Updates:** Regularly updating firmware for wireless routers and access points to address security vulnerabilities and improve performance.
 - **Challenges:** Wireless networking faces challenges such as signal interference, limited range, and security vulnerabilities, which require careful consideration and mitigation strategies.
+
+### SMB Network Shares:
+
+- **Definition:** SMB (Server Message Block) network shares allow users to access files and folders stored on remote servers over a network, providing a centralized storage solution for sharing resources within a workgroup or domain.
+- **Key Components:**
+  - **Shared Folders:** Directories or volumes on a file server that are made accessible to network users through SMB shares.
+  - **Permissions:** Access control settings that determine which users or groups have read, write, or modify permissions on shared folders.
+  - **Mapping Drives:** Associating a drive letter with an SMB network share for easier access and navigation.
+- **Authentication Methods:**
+  - **Workgroup Authentication:** Users provide credentials specific to the server hosting the SMB share.
+  - **Domain Authentication:** Users authenticate against a centralized domain controller, allowing for unified access control and management.
+- **Access Protocols:**
+  - **SMBv1:** Legacy version of the SMB protocol with known security vulnerabilities. Deprecated in modern environments due to security risks.
+  - **SMBv2/v3:** Improved versions of the SMB protocol with enhanced security features, better performance, and support for features like encryption and opportunistic locking.
+- **Best Practices:**
+  - **Security Hardening:** Disabling SMBv1 where possible, implementing secure authentication mechanisms (e.g., Kerberos), and enforcing strict access controls to mitigate security risks.
+  - **Data Backup:** Regularly backing up data stored on SMB network shares to prevent data loss in case of hardware failures, user errors, or security breaches.
+
+
 
 ## Virtual Private Networks (VPNs):
 
