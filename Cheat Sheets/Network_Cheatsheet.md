@@ -1,8 +1,9 @@
 # Networking Cheat Sheet
 A comprehensive cheatsheet with all my current knowledge on networking, IP Addressing, ports and packet protocols as well as general knowledge i've picked up.
 ## Table of Contents:
-### Physical
+### Physical Networking
 - [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
+- [Switches](#switches)
 
 ### Core Networking
 - [Routing Protocols](#routing-protocols)
