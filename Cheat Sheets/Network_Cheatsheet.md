@@ -14,7 +14,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ### General Networking
 - [Software-Defined Networking](#software-defined-networking-sdn)
-- [SD-WAN](#SD-WAN)
+- [Software Defined WAN](#software-defined-WAN)
 - [Container Networking](#container-networking)
 - [Websockets](#websockets)
 - [Encryption](#encryption)
