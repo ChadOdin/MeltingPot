@@ -375,3 +375,32 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Network Monitoring Software:** Commercial and open-source tools such as Nagios, Zabbix, and PRTG used for real-time monitoring, alerting, and reporting.
   - **Network Management Systems (NMS):** Integrated platforms for network monitoring, configuration management, performance analysis, and troubleshooting.
 - **Best Practices:** Implementing network monitoring and management best practices such as regular monitoring, proactive maintenance, documentation, and collaboration between IT teams to ensure efficient network operation and security.
+
+### Physical Networking:
+
+  #### Switches:
+  - **Definition:** Switches are networking devices that connect multiple devices within a local area network (LAN) and forward data packets between them based on their MAC addresses.
+  - **Key Features:**
+    - Port Density: Number of ports available on the switch for connecting devices.
+    - VLAN Support: Ability to segment the network into virtual LANs for improved performance and security.
+    - PoE (Power over Ethernet): Capability to provide power to connected devices such as IP phones and wireless access points over Ethernet cables.
+  - **Switch Languages:**
+    - **CLI (Command Line Interface):** Text-based interface used for configuring and managing switches through commands.
+    - **GUI (Graphical User Interface):** Visual interface with menus and icons for configuring switches, suitable for less experienced users.
+  - **Best Practices:** Implementing switch redundancy with features like Spanning Tree Protocol (STP) or Rapid Spanning Tree Protocol (RSTP) to ensure network reliability.
+
+  #### Access Points:
+  - **Definition:** Access points (APs) are devices that provide wireless connectivity to devices within a network by creating a wireless LAN (WLAN) infrastructure.
+  - **Key Features:**
+    - Wireless Standards: Support for Wi-Fi standards such as 802.11ac, 802.11ax (Wi-Fi 6), and 802.11ad (WiGig).
+    - Dual-band or Tri-band: Ability to operate on multiple frequency bands (2.4 GHz and 5 GHz) for improved performance and flexibility.
+    - Wireless Security: Implementation of encryption protocols like WPA2/WPA3 and wireless intrusion detection/prevention systems (WIDS/WIPS).
+  - **Deployment Considerations:** Placement of access points for optimal coverage and signal strength, considering factors like building layout, interference, and client density.
+
+  #### Exchanges:
+  - **Definition:** Exchanges, or network exchanges, are facilities where network service providers interconnect their networks to exchange traffic.
+  - **Key Functions:**
+    - **Peering:** Establishment of direct connections between networks to exchange traffic without traversing the public internet.
+    - **Routing:** Directing traffic between interconnected networks based on routing policies and agreements.
+    - **Interconnection Services:** Offering services such as colocation, cross-connects, and internet exchange points (IXPs) to facilitate network interconnection.
+  - **Types of Exchanges:** Internet exchanges (IXs), carrier-neutral data centers, and network access points (NAPs) are examples of facilities that serve as network exchanges.
