@@ -342,7 +342,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 - **VPN Security:** VPNs use encryption and authentication mechanisms to ensure the confidentiality, integrity, and authenticity of transmitted data.
 - **Benefits:** VPNs provide secure remote access to corporate resources, enable anonymous browsing and access to geo-restricted content, and enhance network security and privacy.
 
-### Software-Defined WAN (SD-WAN):
+## Software-Defined WAN (SD-WAN):
 
 - **Definition:** Software-Defined WAN (SD-WAN) is a technology that simplifies the management and operation of a wide-area network (WAN) by separating the network hardware from its control mechanism and using software to intelligently direct traffic across the WAN.
 - **Key Features:**
@@ -358,7 +358,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Cost Savings:** SD-WAN reduces WAN costs by leveraging cost-effective internet connections, minimizing reliance on expensive MPLS circuits, and optimizing bandwidth usage.
 - **Use Cases:** SD-WAN is used by organizations to improve branch connectivity, support cloud migration, enhance application performance, and reduce operational costs.
 
-### Network Monitoring and Management:
+## Network Monitoring and Management:
 
 - **Definition:** Network monitoring and management involves the use of tools, protocols, and techniques to monitor, analyze, and manage the performance, availability, and security of computer networks.
 - **Key Components:**
@@ -377,7 +377,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Network Management Systems (NMS):** Integrated platforms for network monitoring, configuration management, performance analysis, and troubleshooting.
 - **Best Practices:** Implementing network monitoring and management best practices such as regular monitoring, proactive maintenance, documentation, and collaboration between IT teams to ensure efficient network operation and security.
 
-### Physical Networking:
+## Physical Networking:
 
   #### Switches:
   - **Definition:** Switches are networking devices that connect multiple devices within a local area network (LAN) and forward data packets between them based on their MAC addresses.
