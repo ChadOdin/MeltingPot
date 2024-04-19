@@ -14,6 +14,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ### General Networking
 - [Software-Defined Networking](#software-defined-networking-sdn)
+- [SD-WAN](#SD-WAN)
 - [Container Networking](#container-networking)
 - [Websockets](#websockets)
 - [Encryption](#encryption)
@@ -339,3 +340,19 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
   - **Site-to-Site VPN:** Establishes secure connections between multiple networks, such as branch offices or data centers, over the internet.
 - **VPN Security:** VPNs use encryption and authentication mechanisms to ensure the confidentiality, integrity, and authenticity of transmitted data.
 - **Benefits:** VPNs provide secure remote access to corporate resources, enable anonymous browsing and access to geo-restricted content, and enhance network security and privacy.
+
+### Software-Defined WAN (SD-WAN):
+
+- **Definition:** Software-Defined WAN (SD-WAN) is a technology that simplifies the management and operation of a wide-area network (WAN) by separating the network hardware from its control mechanism and using software to intelligently direct traffic across the WAN.
+- **Key Features:**
+  - **Centralized Management:** SD-WAN solutions offer centralized control and management of network resources, allowing administrators to configure policies, monitor performance, and optimize traffic flow from a single interface.
+  - **Dynamic Path Selection:** SD-WAN dynamically selects the best path for network traffic based on application requirements, network conditions, and business policies, improving performance and reliability.
+  - **Application Visibility and Control:** SD-WAN provides visibility into application traffic and enables granular control over how applications are routed and prioritized across the network.
+- **Deployment Models:**
+  - **On-Premises SD-WAN:** Deployed as physical or virtual appliances within the enterprise network infrastructure, providing direct control over network traffic and security policies.
+  - **Cloud-based SD-WAN:** Hosted and managed by a third-party service provider, offering scalability, flexibility, and simplified management for distributed organizations.
+- **Benefits:**
+  - **Improved Performance:** SD-WAN optimizes network traffic and application performance by dynamically routing traffic over the most efficient path.
+  - **Enhanced Reliability:** SD-WAN enhances network reliability by leveraging multiple transport links, such as MPLS, broadband internet, and LTE, and automatically rerouting traffic in case of link failures.
+  - **Cost Savings:** SD-WAN reduces WAN costs by leveraging cost-effective internet connections, minimizing reliance on expensive MPLS circuits, and optimizing bandwidth usage.
+- **Use Cases:** SD-WAN is used by organizations to improve branch connectivity, support cloud migration, enhance application performance, and reduce operational costs.
