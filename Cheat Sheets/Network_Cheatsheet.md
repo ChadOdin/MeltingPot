@@ -3,7 +3,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 ## Table of Contents:
 ### Physical Networking
 - [Ethernet Cable Classifications and Speeds](#ethernet-cable-classifications-and-speeds)
-- [Switches](#switches)
+- [Physical Networking](#physical-networking)
 
 ### Core Networking
 - [Routing Protocols](#routing-protocols)
@@ -23,7 +23,7 @@ A comprehensive cheatsheet with all my current knowledge on networking, IP Addre
 
 ### VPN Networking
 - [Load Balancing](#load-balancing)
-  - [Virtual Private Networks (VPN)](#virtual-private-networks-vpns)
+- [Virtual Private Networks (VPN)](#virtual-private-networks-vpns)
 
 ## OSI 7 Layer Model
 
