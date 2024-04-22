@@ -36,9 +36,11 @@ Terraform configuration is written in HashiCorp Configuration Language (HCL). It
 # Define the infrastructure resources to be managed by Terraform.
 resource "aws_instance" "example" {
   # AMI (Amazon Machine Image) specifies the operating system and software installed on the instance.
-  ami = "ami-0c55b159cbfafe1f0"
+  # Choose the appropriate AMI for your use case. You can find the latest AMI IDs in the AWS Console.
+  ami = "ami-0c55b159cbfafe1f0"  # Ubuntu 18.04 LTS
 
   # Instance Type determines the computing capacity and performance characteristics of the instance.
+  # Choose the appropriate instance type based on your application's requirements.
   instance_type = "t2.micro"
 }
 
@@ -50,9 +52,21 @@ variable "region" {
 }
 ```
 
-- **AMI (Amazon Machine Image):** The AMI specifies the operating system and software installed on the instance. It provides the basis for the instance's root volume. Users can choose from a variety of pre-configured AMIs provided by AWS or create custom ones.
-  
-- **Instance Type:** The instance type determines the computing capacity and performance characteristics of the instance, such as CPU, memory, storage, and network performance. Different instance types are optimized for various workloads and use cases. For example, `t2.micro` is a general-purpose instance type suitable for low to moderate traffic applications.
+In this example:
+
+- **AMI (Amazon Machine Image):** The AMI specifies the operating system and software installed on the instance. You can choose the appropriate AMI for your use case. Common examples include:
+
+    - `ami-0c55b159cbfafe1f0`: Ubuntu 18.04 LTS
+    - `ami-0c1a7f89451184c8b`: Amazon Linux 2
+    - `ami-052c08d70def0ac62`: CentOS 7
+    - `ami-09e67e426f25ce0d7`: Red Hat Enterprise Linux 8
+
+- **Instance Type:** The instance type determines the computing capacity and performance characteristics of the instance. You can choose the appropriate instance type based on your application's requirements. Common examples include:
+
+    - `t2.micro`: General-purpose, suitable for low to moderate traffic applications.
+    - `t3.medium`: Burstable performance, suitable for small to medium-sized applications.
+    - `m5.large`: Balanced compute, memory, and network resources, suitable for a wide range of applications.
+    - `c5.large`: Compute-optimized, suitable for compute-intensive applications.
 
 ## Commands <a name="commands"></a>
 
