@@ -28,28 +28,31 @@ terraform destroy
 
 ## Configuration <a name="configuration"></a>
 
+Terraform configuration is written in HashiCorp Configuration Language (HCL). It defines the desired state of infrastructure resources. Below are some key elements of Terraform configuration:
+
 ```hcl
-# Create Resource: Defines a resource block to create an AWS instance with specified attributes.
+### Resource Blocks
+
+# Define the infrastructure resources to be managed by Terraform.
 resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0"
+  # AMI (Amazon Machine Image) specifies the operating system and software installed on the instance.
+  ami = "ami-0c55b159cbfafe1f0"
+
+  # Instance Type determines the computing capacity and performance characteristics of the instance.
   instance_type = "t2.micro"
 }
 
-# Variables: Defines a variable for the Terraform configuration.
+### Variables
+
+# Define variables to parameterize the configuration and make it reusable.
 variable "region" {
   default = "us-west-2"
 }
-
-# Output Values: Defines an output to display the public IP of the AWS instance.
-output "instance_ip" {
-  value = aws_instance.example.public_ip
-}
-
-# Modules: Defines a module to encapsulate reusable configurations.
-module "vpc" {
-  source = "./vpc"
-}
 ```
+
+- **AMI (Amazon Machine Image):** The AMI specifies the operating system and software installed on the instance. It provides the basis for the instance's root volume. Users can choose from a variety of pre-configured AMIs provided by AWS or create custom ones.
+  
+- **Instance Type:** The instance type determines the computing capacity and performance characteristics of the instance, such as CPU, memory, storage, and network performance. Different instance types are optimized for various workloads and use cases. For example, `t2.micro` is a general-purpose instance type suitable for low to moderate traffic applications.
 
 ## Commands <a name="commands"></a>
 
