@@ -49,6 +49,7 @@ output "instance_ip" {
 module "vpc" {
   source = "./vpc"
 }
+```
 
 ## Commands <a name="commands"></a>
 
