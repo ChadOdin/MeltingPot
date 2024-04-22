@@ -59,7 +59,7 @@ module "vpc" {
 terraform show
 
 ## Example <a name="example"></a>
-
+```
 Suppose we want to provision an AWS EC2 instance using Terraform:
 
 1. First, create a `main.tf` file with the following configuration:
