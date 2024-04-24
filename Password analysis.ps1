@@ -51,6 +51,9 @@ function Count-CharactersAndWords {
 
         Write-Host "Output saved."
     }
+    catch {
+        Write-Host "Error occurred during file processing: $_"
+    }
     finally {
         $streamReader.Close()
         $fileStream.Close()
@@ -97,7 +100,7 @@ try {
     Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV -bufferSize 65536
 }
 catch {
-    Write-Host "An error occurred: $_"
+    Write-Host "An error occurred during file processing: $_"
     Save-Progress
 }
 finally {
