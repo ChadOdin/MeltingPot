@@ -58,7 +58,7 @@ function Count-CharactersAndWords {
 }
 
 function On-ScriptExit {
-    Write-Host "Script 2 exiting..."
+    Write-Host "Script exiting..."
     $activeJobs = Get-Job -State Running
     if ($activeJobs) {
         Write-Host "Waiting for active jobs to complete..."
