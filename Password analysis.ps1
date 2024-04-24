@@ -3,7 +3,7 @@ function Count-CharactersAndWords {
         [string]$filePath,
         [string]$charOutputCSV,
         [string]$wordOutputCSV,
-        [int]$bufferSize = 65536
+        [int]$bufferSize = 65536 # 64kb buffer
     )
 
     Write-Host "Reading file: $filePath"
@@ -69,11 +69,11 @@ function On-ScriptExit {
 }
 
 function Save-Progress {
-    Write-Host "Script 2 exiting, saving progress..."
+    Write-Host "Script exiting, saving progress..."
     Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV -bufferSize 65536
 }
 
-Write-Host "Script 2 started successfully."
+Write-Host "Script started successfully."
 
 $FilePath = "C:\path\to\your\file.txt"
 $CharOutputCSV = "C:\path\to\output\character_count_script2.csv"
