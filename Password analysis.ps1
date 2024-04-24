@@ -76,8 +76,8 @@ function Save-Progress {
 Write-Host "Script started successfully."
 
 $FilePath = "C:\path\to\your\file.txt"
-$CharOutputCSV = "C:\path\to\output\character_count_script2.csv"
-$WordOutputCSV = "C:\path\to\output\word_count_script2.csv"
+$CharOutputCSV = "C:\path\to\output\character_count_script.csv"
+$WordOutputCSV = "C:\path\to\output\word_count_script.csv"
 
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { On-ScriptExit }
 
