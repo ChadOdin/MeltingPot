@@ -13,6 +13,7 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Network monitoring scripts
  - virtualization with Hyper-V
  - Vagrant
+ - permission elevation
 
 these scripts all have their own folders/sub-folders in the repo.
 
