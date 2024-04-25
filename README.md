@@ -3,6 +3,7 @@
 A collection of scripts and cheatsheets I've worked on for various things including:
 
 ### Scripts
+
  - Active Directory
  - Domain controller querying
  - On-prem exchange servers
@@ -10,6 +11,8 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Password dump analysis
  - Formatting data
  - Network monitoring scripts
+ - virtualization with Hyper-V
+ - Vagrant
 
 these scripts all have their own folders/sub-folders in the repo.
 
