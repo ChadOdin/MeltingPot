@@ -2,37 +2,30 @@ function Count-CharactersAndWords {
     param (
         [string]$filePath,
         [string]$charOutputCSV,
-        [string]$wordOutputCSV,
-        [int]$bufferSize = 65536 # 64kb buffer
+        [string]$wordOutputCSV
     )
 
-    Write-Host "Reading file: $filePath"
-
     $charCounts = @{}
-    $wordCounts = @{}
-    $totalFileSize = (Get-Item $filePath).Length
-    $readBufferSize = [Math]::Min($totalFileSize, $bufferSize)
-    $processedChars = 0
-    $progressWidth = 50
-
-    $fileStream = [System.IO.File]::OpenRead($filePath)
-    $streamReader = [System.IO.StreamReader]::new($fileStream)
-
-    $buffer = New-Object byte[] $readBufferSize
+    $wordCounts = {}
 
     try {
-        while ($streamReader.Peek() -ne -1) {
-            $bytesRead = $streamReader.BaseStream.Read($buffer, 0, $buffer.Length)
-            $data = [System.Text.Encoding]::UTF8.GetString($buffer, 0, $bytesRead)
+        $totalFileSize = (Get-Item $filePath).Length
+        $progressWidth = 50
+        $processedChars = 0
 
-            $data.ToCharArray() | ForEach-Object {
+        $streamReader = [System.IO.StreamReader]::new($filePath)
+
+        while (-not $streamReader.EndOfStream) {
+            $line = $streamReader.ReadLine()
+            $processedChars += $line.Length
+
+            $line.ToCharArray() | ForEach-Object {
                 if ($_ -match '[a-zA-Z0-9]') {
                     $charCounts[$_]++
-                    $processedChars++
                 }
             }
 
-            $words = $data -split '\W+'
+            $words = $line -split '\W+'
             $words | ForEach-Object {
                 if ($_ -match '\w') {
                     $wordCounts[$_]++
@@ -43,7 +36,7 @@ function Count-CharactersAndWords {
             $completedChars = [Math]::Floor(($progress / 100) * $progressWidth)
             $remainingChars = $progressWidth - $completedChars
             $progressBar = ('#' * $completedChars) + ('-' * $remainingChars)
-            Write-Host ("Processing file`nProgress: [{0}] {1,3}%" -f $progressBar, $progress)
+            Write-Host ("Progress: [{0}] {1,3}%" -f $progressBar, $progress)
         }
 
         $charCounts.GetEnumerator() | Sort-Object -Property Key | Select-Object Key, Value | Export-Csv -Path $charOutputCSV -NoTypeInformation
@@ -51,12 +44,8 @@ function Count-CharactersAndWords {
 
         Write-Host "Output saved."
     }
-    catch {
-        Write-Host "Error occurred during file processing: $_"
-    }
     finally {
         $streamReader.Close()
-        $fileStream.Close()
     }
 }
 
@@ -73,14 +62,25 @@ function On-ScriptExit {
 
 function Save-Progress {
     Write-Host "Script exiting, saving progress..."
-    Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV -bufferSize 65536
+    Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV
 }
 
 Write-Host "Script started successfully."
 
-$FilePath = "C:\path\to\your\file.txt"
-$CharOutputCSV = "C:\path\to\output\character_count_script.csv"
-$WordOutputCSV = "C:\path\to\output\word_count_script.csv"
+$FilePath = Read-Host "Enter the path to the file:"
+if (-not (Test-Path $FilePath)) {
+    Write-Host "Invalid file path."
+    exit
+}
+
+$ext = [System.IO.Path]::GetExtension($FilePath)
+if (($ext -ne ".txt") -and ($ext -ne ".csv")) {
+    Write-Host "Unsupported file format. Please provide a .txt or .csv file."
+    exit
+}
+
+$CharOutputCSV = Read-Host "Enter the path to save character counts (CSV):"
+$WordOutputCSV = Read-Host "Enter the path to save word counts (CSV):"
 
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { On-ScriptExit }
 
@@ -97,10 +97,10 @@ while ($true) {
 }
 
 try {
-    Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV -bufferSize 65536
+    Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV
 }
 catch {
-    Write-Host "An error occurred during file processing: $_"
+    Write-Host "An error occurred: $_"
     Save-Progress
 }
 finally {
