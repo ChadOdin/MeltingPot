@@ -53,8 +53,6 @@ function Count-CharactersAndWords {
     $charCounts = @{}
     $wordCounts = {}
 
-    Write-Host "Reading file: $filePath"
-
     $totalFileSize = (Get-Item $filePath).Length
     $processedChars = 0
     $progressWidth = 50
