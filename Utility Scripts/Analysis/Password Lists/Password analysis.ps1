@@ -51,7 +51,7 @@ function Count-CharactersAndWords {
     )
 
     $charCounts = @{}
-    $wordCounts = @{}
+    $wordCounts = {}
 
     Write-Host "Reading file: $filePath"
 
