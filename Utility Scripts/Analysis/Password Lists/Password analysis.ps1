@@ -1,3 +1,48 @@
+function Select-InputFile {
+    $validExtensions = @("*.txt", "*.csv")
+    $files = Get-ChildItem -Path $scriptRoot -Filter *.txt,*.csv -File
+    $customFilePathOption = "Custom filepath"
+
+    if ($files.Count -eq 0) {
+        Write-Host "No .txt or .csv files found in the script root directory."
+        return $null
+    }
+
+    Write-Host "Select an input file:"
+    for ($i = 0; $i -lt $files.Count; $i++) {
+        Write-Host "$($i + 1): $($files[$i].Name)"
+    }
+    Write-Host "$($files.Count + 1): $customFilePathOption"
+
+    $selection = Read-Host "Enter the number of the file to use"
+    if (-not [int]::TryParse($selection, [ref]$null) -or $selection -lt 1 -or $selection -gt ($files.Count + 1)) {
+        Write-Host "Invalid selection. Please enter a number between 1 and $($files.Count + 1)."
+        return $null
+    }
+
+    if ($selection -eq ($files.Count + 1)) {
+        $customFilePath = Read-Host "Enter the custom file path"
+        if (-not (Test-Path $customFilePath)) {
+            Write-Host "Invalid file path. Please enter a valid file path."
+            return $null
+        }
+
+        $selectedFile = Get-Item $customFilePath
+    }
+    else {
+        $selectedFile = $files[$selection - 1]
+    }
+
+    $extension = $selectedFile.Extension.ToLower()
+
+    if ($extension -notin @(".txt", ".csv")) {
+        Write-Host "Invalid file type. Please select a .txt or .csv file."
+        return $null
+    }
+
+    return $selectedFile.FullName
+}
+
 function Count-CharactersAndWords {
     param (
         [string]$filePath,
@@ -6,26 +51,28 @@ function Count-CharactersAndWords {
     )
 
     $charCounts = @{}
-    $wordCounts = {}
+    $wordCounts = @{}
+
+    Write-Host "Reading file: $filePath"
+
+    $totalFileSize = (Get-Item $filePath).Length
+    $processedChars = 0
+    $progressWidth = 50
+
+    $streamReader = [System.IO.StreamReader]::new($filePath)
 
     try {
-        $totalFileSize = (Get-Item $filePath).Length
-        $progressWidth = 50
-        $processedChars = 0
-
-        $streamReader = [System.IO.StreamReader]::new($filePath)
-
         while (-not $streamReader.EndOfStream) {
-            $line = $streamReader.ReadLine()
-            $processedChars += $line.Length
+            $data = $streamReader.ReadLine()
 
-            $line.ToCharArray() | ForEach-Object {
+            $data.ToCharArray() | ForEach-Object {
                 if ($_ -match '[a-zA-Z0-9]') {
                     $charCounts[$_]++
+                    $processedChars++
                 }
             }
 
-            $words = $line -split '\W+'
+            $words = $data -split '\W+'
             $words | ForEach-Object {
                 if ($_ -match '\w') {
                     $wordCounts[$_]++
@@ -51,58 +98,29 @@ function Count-CharactersAndWords {
 
 function On-ScriptExit {
     Write-Host "Script exiting..."
-    $activeJobs = Get-Job -State Running
-    if ($activeJobs) {
-        Write-Host "Waiting for active jobs to complete..."
-        Wait-Job -Job $activeJobs
-    }
-    Save-Progress
     exit
-}
-
-function Save-Progress {
-    Write-Host "Script exiting, saving progress..."
-    Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV
 }
 
 Write-Host "Script started successfully."
 
-$FilePath = Read-Host "Enter the path to the file:"
-if (-not (Test-Path $FilePath)) {
-    Write-Host "Invalid file path."
+$scriptRoot = Split-Path $MyInvocation.MyCommand.Path
+
+$FilePath = Select-InputFile
+
+if (-not $FilePath) {
+    Write-Host "No valid input file selected. Exiting script."
     exit
 }
 
-$ext = [System.IO.Path]::GetExtension($FilePath)
-if (($ext -ne ".txt") -and ($ext -ne ".csv")) {
-    Write-Host "Unsupported file format. Please provide a .txt or .csv file."
-    exit
-}
-
-$CharOutputCSV = Read-Host "Enter the path to save character counts (CSV):"
-$WordOutputCSV = Read-Host "Enter the path to save word counts (CSV):"
+$CharOutputCSV = Join-Path -Path $scriptRoot -ChildPath "character_count_script.csv"
+$WordOutputCSV = Join-Path -Path $scriptRoot -ChildPath "word_count_script.csv"
 
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { On-ScriptExit }
-
-$null = [System.Console]::TreatControlCAsInput = $false
-while ($true) {
-    if ([System.Console]::KeyAvailable) {
-        $key = [System.Console]::ReadKey($true)
-        if (($key.Modifiers -band [System.ConsoleModifiers]::Control) -and ($key.Key -eq [System.ConsoleKey]::C)) {
-            Write-Host "Ctrl+C detected. Exiting script..."
-            Save-Progress
-        }
-    }
-    Start-Sleep -Milliseconds 100
-}
 
 try {
     Count-CharactersAndWords -filePath $FilePath -charOutputCSV $CharOutputCSV -wordOutputCSV $WordOutputCSV
 }
 catch {
     Write-Host "An error occurred: $_"
-    Save-Progress
-}
-finally {
-    Save-Progress
+    exit 1
 }
