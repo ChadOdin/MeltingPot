@@ -1,8 +1,8 @@
 # Read the CSV file
-$data = Import-Csv -Path "input.csv"
+$data = Import-Csv -Path "input.csv" #  <----- change to desired filepath for CSV or use $psscriptroot\file if in same directory
 
 # Define the domain
-$domain = "domainhere"
+$domain = "domainhere"  # <---- change this to desired domain
 
 # Initialize an array to store the results
 $output = @()
