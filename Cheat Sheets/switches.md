@@ -1,8 +1,8 @@
 # Cisco IOS Switch Commands Cheat Sheet
 
-- **Interface Configuration**```
-
- **Enable privileged mode:**  
+- **Interface Configuration**
+  ```
+  Enable privileged mode
   shell
   enable
   ```
