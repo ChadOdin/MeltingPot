@@ -1,3 +1,4 @@
+```
 C:\
 └── Windows
     └── System32
@@ -30,6 +31,8 @@ C:\
         ├── wbem             # Windows Management Instrumentation (WMI)
         ├── winsxs           # Windows side-by-side assemblies
         └── ...
+```
+
 
 ## Default Extensions
 
