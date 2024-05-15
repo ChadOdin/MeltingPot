@@ -53,6 +53,14 @@ C:\
 ## CMD CLI Commands
 
 - **cd**: Change directory
+```cmd
+
+C:\# cd C:\windows\system32
+
+C:\windows\system32# ls
+C:\windows\system32
+
+```
 - **dir**: List directory contents
 - **mkdir**: Make directory
 - **rmdir**: Remove directory
