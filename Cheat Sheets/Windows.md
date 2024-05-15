@@ -55,13 +55,15 @@ C:\
 - **cd**: Change directory
 ```cmd
 
-C:\# cd C:\windows\system32
-
-C:\windows\system32# ls
-C:\windows\system32
+C:\$ cd C:\windows\system32
 
 ```
 - **dir**: List directory contents
+```cmd
+C:\windows\system32$ dir
+C:\windows\system32
+
+```
 - **mkdir**: Make directory
 - **rmdir**: Remove directory
 - **copy**: Copy files and directories
