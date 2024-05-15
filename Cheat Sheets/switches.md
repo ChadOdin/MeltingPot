@@ -1,7 +1,6 @@
 # Cisco IOS Switch Commands Cheat Sheet
 
-```
-## Interface Configuration
+- **Interface Configuration**
 
 - **Enable privileged mode:**  
   ```shell
@@ -51,10 +50,30 @@
   vlan <vlan_id>
   ```
 
-- **Set VLAN name:**  
+  - **Set VLAN name:**  
+    ```shell
+    name <vlan_name>
+    ```
+
+- **View VLANs:**  
   ```shell
-  name <vlan_name>
+  show vlan
   ```
+
+  - **View VLAN information:**  
+    ```shell
+    show vlan id <vlan_id>
+    ```
+
+- **Configure VLAN Trunking Protocol (VTP):**  
+  ```shell
+  vtp mode <mode>
+  ```
+
+  - **Set VTP domain:**  
+    ```shell
+    vtp domain <domain_name>
+    ```
 
 ## Spanning Tree Protocol (STP)
 
