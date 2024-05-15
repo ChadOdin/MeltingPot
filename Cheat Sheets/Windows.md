@@ -54,17 +54,20 @@ C:\
 
 - **cd**: Change directory
 ```cmd
-
 C:\$ cd C:\windows\system32
-
 ```
 - **dir**: List directory contents
 ```cmd
 C:\windows\system32$ dir
 C:\windows\system32
-
 ```
 - **mkdir**: Make directory
+```cmd
+C:\windows\system32$ mkdir temp
+C:\windows\system32$ cd /temp/
+
+C:\windows\system32\temp$
+```
 - **rmdir**: Remove directory
 - **copy**: Copy files and directories
 - **move**: Move files and directories
