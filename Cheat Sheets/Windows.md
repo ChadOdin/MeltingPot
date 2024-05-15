@@ -69,6 +69,9 @@ C:\windows\system32$ cd /temp/
 C:\windows\system32\temp$
 ```
 - **rmdir**: Remove directory
+```cmd
+C:\windows\system32$ rmdir /temp/
+```
 - **copy**: Copy files and directories
 - **move**: Move files and directories
 - **del**: Delete files
