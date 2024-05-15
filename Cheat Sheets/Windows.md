@@ -73,25 +73,86 @@ C:\windows\system32\temp$
 C:\windows\system32$ rmdir /temp/
 ```
 - **copy**: Copy files and directories
+```cmd
+C:\windows\system32$ copy file.txt C:\temp\file.txt
+```
 - **move**: Move files and directories
+```cmd
+C:\windows\system32$ move file.txt C:\temp\file.txt
+```
 - **del**: Delete files
+```cmd
+C:\windows\system32$ del file.txt
+```
 - **ren**: Rename files and directories
+```cmd
+C:\windows\system32$ ren file.txt newfile.txt
+```
 - **cls**: Clear the command prompt screen
+```cmd
+C:\windows\system32$ cls
+```
 - **echo**: Display message or enable/disable echoing of commands
+```cmd
+C:\windows\system32$ echo Hello!
+Hello!
+```
 - **type**: Display the contents of a file
+```cmd
+C:\windows\system32$ type file.txt
+```
 - **ipconfig**: Display TCP/IP network configuration
+```cmd
+C:\windows\system32$ ipconfig
+```
 - **ping**: Test network connection
+```cmd
+C:\windows\system32$ ping google.com
+```
 - **tasklist**: List running processes
+```cmd
+C:\windows\system32$ tasklist
+```
 - **taskkill**: Terminate processes by process ID or image name
+```cmd
+
+```
 - **shutdown**: Shutdown or restart the computer
+```cmd
+
+```
 - **net**: Network commands (e.g., net user, net share)
+```cmd
+
+```
 - **reg**: Registry manipulation commands
+```cmd
+
+```
 - **sfc**: System File Checker
+```cmd
+
+```
 - **chkdsk**: Check disk for errors
+```cmd
+
+```
 - **format**: Format a disk
+```cmd
+
+```
 - **sc**: Service Control Manager commands
+```cmd
+
+```
 - **gpupdate**: Update Group Policy settings
+```cmd
+
+```
 - **wmic**: Windows Management Instrumentation Command-line
+```cmd
+
+```
 
 ## System Utilities
 
