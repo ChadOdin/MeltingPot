@@ -1,0 +1,1 @@
+0 2 * * * /path/to/file_integrity_check.sh && grep -q FAILED /var/log/file_integrity_check.log && echo "Discrepancies found in file integrity check. See log for details: /var/log/file_integrity_check.log" | mail -s "File Integrity Check Alert" your@email.com
