@@ -8,9 +8,9 @@ function Send-EmailAlert {
         [string]$body
     )
 
-    $smtpServer = "your_smtp_server"
-    $from = "sender@example.com"
-    $to = "recipient@example.com"
+    $smtpServer = "exchange-server"
+    $from = "first.last@domain"
+    $to = "distrogroup@domain"
     $hostname = $env:COMPUTERNAME
     
     $msg = New-Object Net.Mail.MailMessage($from, $to)
