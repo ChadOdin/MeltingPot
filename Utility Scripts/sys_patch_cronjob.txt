@@ -1,0 +1,1 @@
+0 2 * * * /path/to/system_update.sh >> /var/log/system_update.log 2>&1
