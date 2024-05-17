@@ -2,6 +2,14 @@
 
 KERNEL_VERSION="5.10"  # Kernel Version
 IMAGE_PATH="/path/to/backup.img"  # Path to save image
+REMOTE_USER="your_remote_user"
+REMOTE_HOST="your_remote_host"
+REMOTE_PATH="/path/to/remote/backup.img"
+STATIC_IP="192.168.1.100"
+STATIC_NETMASK="255.255.255.0"
+STATIC_GATEWAY="192.168.1.1"
+DNS_SERVERS="8.8.8.8,8.8.4.4"
+
 MODULES_TO_DISABLE=(
     "FLOPPY"
     "PARPORT"
