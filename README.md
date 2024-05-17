@@ -4,16 +4,30 @@ A collection of scripts and cheatsheets I've worked on for various things includ
 
 ### Scripts
 
+ **Windows**
+
  - Active Directory
+ - Interaction with AAD (Azure Active Directory)
+ - Configuration of service accounts
  - Domain controller querying
  - On-prem exchange servers
  - Cloud exchange servers
+
+ **Virtualization**
+ - Virtualization with Hyper-V
+ - Vagrant
+ - Terraform
+
+**Utility**
  - Password dump analysis
  - Formatting data
- - Network monitoring scripts
- - virtualization with Hyper-V
- - Vagrant
- - permission elevation
+ - Permission elevation
+
+ **Linux**
+ - Kernel Module Disabling
+ - ELK configuration and setup
+ - SElinux configuration and setup
+ - App Armour configuration and setup
 
 these scripts all have their own folders/sub-folders in the repo.
 
