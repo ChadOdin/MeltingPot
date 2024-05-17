@@ -1,14 +1,14 @@
 #!/bin/bash
 
-KERNEL_VERSION="5.10"  # Kernel Version
-IMAGE_PATH="/path/to/backup.img"  # Path to save image
-REMOTE_USER="your_remote_user"
-REMOTE_HOST="your_remote_host"
-REMOTE_PATH="/path/to/remote/backup.img"
-STATIC_IP="192.168.1.100"
+KERNEL_VERSION="5.10"
+IMAGE_PATH="//backup.img"
+REMOTE_USER=""
+REMOTE_HOST=""
+REMOTE_PATH="//"
+STATIC_IP=""
 STATIC_NETMASK="255.255.255.0"
-STATIC_GATEWAY="192.168.1.1"
-DNS_SERVERS="8.8.8.8,8.8.4.4"
+STATIC_GATEWAY=""
+DNS_SERVERS=""
 
 MODULES_TO_DISABLE=(
     "FLOPPY"
@@ -41,7 +41,6 @@ MODULES_TO_DISABLE=(
     "APPLETALK"
 )
 
-# List software to install
 SOFTWARE_TO_INSTALL=(
     "net-tools"
     "selinux"
@@ -136,6 +135,21 @@ sudo make install || { echo "Failed to install kernel. Exiting..."; exit 1; }
 sudo update-grub || { echo "Failed to update grub. Exiting..."; exit 1; }
 
 install_packages "${SOFTWARE_TO_INSTALL[@]}"
+
+send_image() {
+  echo "Sending Master via SFTP"
+  sftp ${REMOTE_USER@${REMOTE_HOST}} <<EOF
+put ${IMAGE_PATH}
+exit
+EOF
+
+  if [ $? -eq 0]; then
+    echo "Master image successfully sent to ${REMOTE_HOST}:${REMOTE_PATH}"
+  else
+    echo "Master image failed being transfered to ${REMOTE_HOST}:${REMOTE_PATH}"
+  exit 1
+  fi
+}
 
 # Configure ELK
 configure_elk
