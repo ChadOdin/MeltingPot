@@ -33,7 +33,7 @@ MODULES_TO_DISABLE=(
     "APPLETALK"
 )
 
-# List of additional software packages to install
+# List software to install
 SOFTWARE_TO_INSTALL=(
     "net-tools"
     "selinux"
@@ -56,7 +56,7 @@ configure_elk() {
     # Elasticsearch Config
     sudo sed -i 's/#cluster.name: my-application/cluster.name: my-cluster/' /etc/elasticsearch/elasticsearch.yml || { echo "Failed to configure Elasticsearch. Exiting..."; exit 1; }
 
-    # Configure Logstash (Example configuration)
+    # Logstash config
     sudo cat << EOF > /etc/logstash/conf.d/01-my-input.conf || { echo "Failed to configure Logstash input. Exiting..."; exit 1; }
 input {
   beats {
