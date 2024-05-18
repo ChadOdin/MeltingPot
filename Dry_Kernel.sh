@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DRY_RUN=true # Set to false to execute the actual commands
+DRY_RUN=true  # Set to false to execute the actual commands
 KERNEL_VERSION="5.10"
 IMAGE_PATH="/path/to/backup.img"
 # REMOTE_USER="your_remote_user"
