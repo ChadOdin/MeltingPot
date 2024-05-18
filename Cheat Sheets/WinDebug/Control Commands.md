@@ -8,7 +8,6 @@ Control Commands:
 .chain: Displays the debugger extension DLL chain.
 .echo: Displays a message.
 .printf: Formats and prints data.
-
 Thread Commands:
 ~: Switches to a different thread context (e.g., ~0s switches to thread 0).
 ~*: Executes a command on all threads.
@@ -16,7 +15,6 @@ Thread Commands:
 !threads: Lists all managed threads.
 !thread: Displays information about the current thread.
 !teb: Displays information about the Thread Environment Block (TEB).
-
 Process and Module Commands:
 !process: Displays information about the current process.
 !peb: Displays the Process Environment Block for the current process.
@@ -24,21 +22,18 @@ Process and Module Commands:
 lm: Lists loaded modules (DLLs).
 !address: Displays information about a specific memory address.
 !handle: Displays information about open handles.
-
 Memory Commands:
 dd, db, dq: Display memory contents in different formats.
 dps: Display pointers and symbols.
 !address: Display memory allocation details.
 !poolused: Display pool memory usage.
 !heap: Displays information about the process heap.
-
 Analysis Commands:
 !analyze: Automatically analyzes the dump file.
 !analyze -v: Performs verbose analysis.
 !analyze -hang: Analyzes a hanging system.
 !analyze -hang -v: Performs verbose analysis on a hanging system.
 !analyze -f: Forces analysis without prompting for confirmation.
-
 Extension Commands:
 !lmi: Lists module information.
 !obj: Displays object details.
