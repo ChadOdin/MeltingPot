@@ -62,7 +62,6 @@ install_packages() {
     if [ "$DRY_RUN" = true ]; then
         echo "Simulating package installation: ${@}"
         sleep 1
-        sudo apt-get --simulate install -y "${@}"
     else
         sudo apt-get update | tee -a $LOG_FILE || { echo "Failed to update package lists. Exiting..."; exit 1; }
         sudo apt-get install -y "${@}" | tee -a $LOG_FILE || { echo "Failed to install packages. Exiting..."; exit 1; }
