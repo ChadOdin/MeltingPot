@@ -38,6 +38,7 @@ these scripts all have their own folders/sub-folders in the repo.
 ### Cheatsheets
 I've self taught myself all of the information available on these sheets:
 
+- **C**              *Basic*
 - **SQL**            *Basic*
 - **Disassembly**    *Basic*
 - **Kubernetes**     *Basic*
