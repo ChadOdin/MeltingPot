@@ -19,7 +19,7 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Vagrant
  - Terraform
 
- -im currently looking into using minikube for kubernetes as well as helm and ansible
+ - I'm currently looking into using minikube for kubernetes as well as helm and ansible
 
 **Utility**
  - Password dump analysis
