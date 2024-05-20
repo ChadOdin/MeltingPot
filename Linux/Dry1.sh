@@ -1,11 +1,7 @@
 #!/bin/bash
 
 KERNEL_VERSION="5.10"  # Kernel Version
-KERNEL_URL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${KERNEL_VERSION}.tar.xz"
-KERNEL_DIR="/usr/src/linux-${KERNEL_VERSION}"
 IMAGE_PATH="/path/to/backup.img"  # Path to save image
-LOG_FILE="/var/log/kernel_build.log"
-
 MODULES_TO_DISABLE=(
     "FLOPPY"
     "PARPORT"
@@ -37,6 +33,7 @@ MODULES_TO_DISABLE=(
     "APPLETALK"
 )
 
+# List software to install
 SOFTWARE_TO_INSTALL=(
     "net-tools"
     "selinux-utils"
@@ -45,116 +42,147 @@ SOFTWARE_TO_INSTALL=(
     "fail2ban"
     "unattended-upgrades"
     "ufw"
-    "wget"
-    "build-essential"
-    "libncurses-dev"
-    "bison"
-    "flex"
-    "libssl-dev"
-    "libelf-dev"
-    "bc"
-    "dpkg-dev"
+    "elasticsearch"
+    "logstash"
+    "kibana"
 )
-
-DRY_RUN=true  # Set to true for dry run, false for actual execution
 
 install_packages() {
     if [ "$DRY_RUN" = true ]; then
+        echo "Simulating package installation..."
         for package in "${@}"; do
-            echo "Simulating package installation: $package"
+            echo "Simulating installation of package: $package"
             sleep 1
         done
     else
-        sudo apt-get update | tee -a $LOG_FILE || { echo "Failed to update package lists. Exiting..."; exit 1; }
-        sudo apt-get install -y "${@}" | tee -a $LOG_FILE || { echo "Failed to install packages. Exiting..."; exit 1; }
+        sudo apt-get update || { echo "Failed to update package lists. Exiting..."; exit 1; }
+        sudo apt-get install -y "${@}" || { echo "Failed to install packages. Exiting..."; exit 1; }
     fi
 }
 
-download_kernel_source() {
-    cd /usr/src || { echo "Failed to change directory to /usr/src. Exiting..."; exit 1; }
+configure_elk() {
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating ELK configuration..."
+        sleep 1
+    else
+        # Elasticsearch Config
+        sudo sed -i 's/#cluster.name: my-application/cluster.name: my-cluster/' /etc/elasticsearch/elasticsearch.yml || { echo "Failed to configure Elasticsearch. Exiting..."; exit 1; }
 
-    if [ ! -d "$KERNEL_DIR" ]; then
-        if [ ! -f "linux-${KERNEL_VERSION}.tar.xz" ]; then
-            if [ "$DRY_RUN" = true ]; then
-                echo "Simulating download of kernel source from $KERNEL_URL"
-                sleep 1
-            else
-                wget "$KERNEL_URL" | tee -a $LOG_FILE || { echo "Failed to download kernel source. Exiting..."; exit 1; }
-            fi
-        fi
-        if [ "$DRY_RUN" = true ]; then
-            echo "Simulating extraction of kernel source"
+        # Logstash config
+        sudo cat << EOF > /etc/logstash/conf.d/01-my-input.conf || { echo "Failed to configure Logstash input. Exiting..."; exit 1; }
+input {
+  beats {
+    port => 5044
+  }
+}
+EOF
+
+        # Logstash filter
+        sudo cat << EOF > /etc/logstash/conf.d/02-my-filter.conf || { echo "Failed to configure Logstash filter. Exiting..."; exit 1; }
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+EOF
+
+        # Logstash output
+        sudo cat << EOF > /etc/logstash/conf.d/03-my-output.conf || { echo "Failed to configure Logstash output. Exiting..."; exit 1; }
+output {
+  elasticsearch {
+    hosts => ["localhost:9200"]
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+  }
+}
+EOF
+
+        # Kibana Config
+        sudo sed -i 's/#server.host: "localhost"/server.host: "localhost"/' /etc/kibana/kibana.yml || { echo "Failed to configure Kibana. Exiting..."; exit 1; }
+
+        sudo systemctl enable elasticsearch || { echo "Failed to enable Elasticsearch service. Exiting..."; exit 1; }
+        sudo systemctl start elasticsearch || { echo "Failed to start Elasticsearch service. Exiting..."; exit 1; }
+        sudo systemctl enable logstash || { echo "Failed to enable Logstash service. Exiting..."; exit 1; }
+        sudo systemctl start logstash || { echo "Failed to start Logstash service. Exiting..."; exit 1; }
+        sudo systemctl enable kibana || { echo "Failed to enable Kibana service. Exiting..."; exit 1; }
+        sudo systemctl start kibana || { echo "Failed to start Kibana service. Exiting..."; exit 1; }
+    fi
+}
+
+disable_modules() {
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating module disabling..."
+        for module in "${MODULES_TO_DISABLE[@]}"; do
+            echo "Simulating disabling of module: $module"
             sleep 1
-        else
-            tar -xf "linux-${KERNEL_VERSION}.tar.xz" | tee -a $LOG_FILE || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
-        fi
+        done
+    else
+        # Actual module disabling
+        for module in "${MODULES_TO_DISABLE[@]}"; do
+            # Replace "y" and "m" with "n"
+            sudo sed -i "s/CONFIG_${
+            # Replace "y" and "m" with "n"
+            sudo sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
+            sudo sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }  # Also disable modules set as loadable
+        done
     fi
 }
 
 configure_kernel() {
-    cd "$KERNEL_DIR" || { echo "Failed to change directory to $KERNEL_DIR. Exiting..."; exit 1; }
+    cd /usr/src || { echo "Failed to change directory. Exiting..."; exit 1; }
 
-    if [ "$DRY_RUN" = true ]; then
-        echo "Simulating copying of current kernel config"
-        sleep 1
-    else
-        sudo cp /boot/config-$(uname -r) .config | tee -a $LOG_FILE || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
-    fi
-
-    for module in "${MODULES_TO_DISABLE[@]}"; do
+    # Check if kernel source exists
+    if [ ! -d "linux-source-${KERNEL_VERSION}" ]; then
+        echo "Kernel source not found. Downloading..."
         if [ "$DRY_RUN" = true ]; then
-            echo "Simulating disabling module ${module}"
-            sleep 1
+            echo "Simulating kernel source download..."
         else
-            sudo sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
-            sudo sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
+            wget https://www.kernel.org/pub/linux/kernel/v${KERNEL_VERSION%.*}.x/linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to download kernel source. Exiting..."; exit 1; }
+            tar -xf linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
+            rm linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to remove downloaded kernel source archive. Exiting..."; exit 1; }
         fi
-    done
+    fi
 
-    if [ "$DRY_RUN" = true ]; then
-        echo "Simulating enabling of SCSI disk and Ethernet bridging support"
-        sleep 1
-    else
-        sudo sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
-        sudo sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
+    cd linux-source-${KERNEL_VERSION} || { echo "Failed to change directory. Exiting..."; exit 1; }
+
+    # Check if kernel config exists
+    if [ ! -f "/boot/config-${KERNEL_VERSION}" ]; then
+        echo "Kernel config not found. Exiting..."
+        exit 1
     fi
 
     if [ "$DRY_RUN" = true ]; then
-        echo "Simulating make olddefconfig"
-        sleep 1
+        echo "Simulating kernel config copy..."
     else
-        make olddefconfig | tee -a $LOG_FILE || { echo "Failed to apply kernel config. Exiting..."; exit 1; }
+        cp /boot/config-${KERNEL_VERSION} .config || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
     fi
-}
 
-compile_kernel() {
+    disable_modules
+
+    # SCSI enable
+    sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
+
+    # Ethernet Bridging enable
+    sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
+
     if [ "$DRY_RUN" = true ]; then
-        echo "Simulating kernel compilation and installation"
+        echo "Simulating kernel compilation..."
         sleep 1
     else
-        make -j$(nproc) | tee -a $LOG_FILE || { echo "Failed to compile kernel. Exiting..."; exit 1; }
-        sudo make modules_install | tee -a $LOG_FILE || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
-        sudo make install | tee -a $LOG_FILE || { echo "Failed to install kernel. Exiting..."; exit 1; }
-        sudo update-grub | tee -a $LOG_FILE || { echo "Failed to update grub. Exiting..."; exit 1; }
-    fi
-}
-
-create_golden_image() {
-    if [ "$DRY_RUN" = true ]; then
-        echo "Simulating creation of golden image"
-        sleep 1
-    else
-        echo "Creating golden image..." | tee -a $LOG_FILE
-        sudo dd if=/dev/sda of=${IMAGE_PATH} bs=4M status=progress | tee -a $LOG_FILE || { echo "Failed to create golden image. Exiting..."; exit 1; }
-        echo "Golden image created at ${IMAGE_PATH}" | tee -a $LOG_FILE
+        make olddefconfig || { echo "Failed to run make olddefconfig. Exiting..."; exit 1; }
+        make -j$(nproc) || { echo "Failed to compile kernel. Exiting..."; exit 1; }
+        sudo make modules_install || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
+        sudo make install || { echo "Failed to install kernel. Exiting..."; exit 1; }
+        sudo update-grub || { echo "Failed to update grub. Exiting..."; exit 1; }
     fi
 }
 
-# Main script execution
 install_packages "${SOFTWARE_TO_INSTALL[@]}"
-download_kernel_source
-configure_kernel
-compile_kernel
 
-echo "Kernel compilation and installation completed successfully."
-create_golden_image
+# Configure ELK
+configure_elk
+
+echo "Rebooting into the new kernel..."
+sudo reboot
