@@ -38,15 +38,17 @@ these scripts all have their own folders/sub-folders in the repo.
 ### Cheatsheets
 I've self taught myself all of the information available on these sheets:
 
- - In-depth Networks
- - SQL and SQL Queries
- - Ruby
- - Powershell
- - Python
- - Bash
- - Encryption
- - Kubernetes
- - Terraform
+ - Networking   Advanced
+ - SQL          Basic
+ - Ruby         Proficient
+ - Powershell   Advanced    
+ - Python       Intermediate
+ - Bash         Advanced     
+ - Encryption   Proficient   
+ - Kubernetes   basic level  
+ - Terraform    basic level  
+ - Windows DBG  Advanced
+ - Disassembly  Basic
 
 ### Extras
 Im currently learning disassembly, C/C++ as well as working on more advanced scripts than are currently available.
