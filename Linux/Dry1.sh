@@ -60,8 +60,10 @@ DRY_RUN=true  # Set to true for dry run, false for actual execution
 
 install_packages() {
     if [ "$DRY_RUN" = true ]; then
-        echo "Simulating package installation: ${@}"
-        sleep 1
+        for package in "${@}"; do
+            echo "Simulating package installation: $package"
+            sleep 1
+        done
     else
         sudo apt-get update | tee -a $LOG_FILE || { echo "Failed to update package lists. Exiting..."; exit 1; }
         sudo apt-get install -y "${@}" | tee -a $LOG_FILE || { echo "Failed to install packages. Exiting..."; exit 1; }
