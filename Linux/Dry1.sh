@@ -33,10 +33,9 @@ MODULES_TO_DISABLE=(
     "APPLETALK"
 )
 
-# List software to install
 SOFTWARE_TO_INSTALL=(
     "net-tools"
-    "selinux-utils"
+    "selinux"
     "apparmor"
     "openssh-server"
     "fail2ban"
@@ -47,13 +46,11 @@ SOFTWARE_TO_INSTALL=(
     "kibana"
 )
 
+DRY_RUN=false  # Set to true for a simulated run
+
 install_packages() {
     if [ "$DRY_RUN" = true ]; then
         echo "Simulating package installation..."
-        for package in "${@}"; do
-            echo "Simulating installation of package: $package"
-            sleep 1
-        done
     else
         sudo apt-get update || { echo "Failed to update package lists. Exiting..."; exit 1; }
         sudo apt-get install -y "${@}" || { echo "Failed to install packages. Exiting..."; exit 1; }
@@ -63,7 +60,6 @@ install_packages() {
 configure_elk() {
     if [ "$DRY_RUN" = true ]; then
         echo "Simulating ELK configuration..."
-        sleep 1
     else
         # Elasticsearch Config
         sudo sed -i 's/#cluster.name: my-application/cluster.name: my-cluster/' /etc/elasticsearch/elasticsearch.yml || { echo "Failed to configure Elasticsearch. Exiting..."; exit 1; }
@@ -113,20 +109,35 @@ EOF
 
 disable_modules() {
     if [ "$DRY_RUN" = true ]; then
-        echo "Simulating module disabling..."
-        for module in "${MODULES_TO_DISABLE[@]}"; do
-            echo "Simulating disabling of module: $module"
-            sleep 1
-        done
+        echo "Simulating disabling of kernel modules..."
     else
-        # Actual module disabling
+        # Disable unnecessary kernel modules
+        sudo apt-get update || { echo "Failed to update package lists. Exiting..."; exit 1; }
+        sudo apt-get install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev linux-source || { echo "Failed to install build dependencies. Exiting..."; exit 1; }
+
+        cd /usr/src || { echo "Failed to change directory. Exiting..."; exit 1; }
+        tar -xf linux-source-${KERNEL_VERSION}.tar.xz || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
+        cd linux-source-${KERNEL_VERSION} || { echo "Failed to change directory. Exiting..."; exit 1; }
+
+        cp /boot/config-$(uname -r) .config || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
+
         for module in "${MODULES_TO_DISABLE[@]}"; do
-            # Replace "y" and "m" with "n"
-            sudo sed -i "s/CONFIG_${
-            # Replace "y" and "m" with "n"
-            sudo sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
-            sudo sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }  # Also disable modules set as loadable
+            sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
+            sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }  # Also disable modules set as loadable
         done
+
+        # SCSI enable
+        sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
+
+        # Ethernet Bridging enable
+        sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
+
+        make menuconfig || { echo "Failed to run make menuconfig. Exiting..."; exit 1; }
+
+        make -j$(nproc) || { echo "Failed to compile kernel. Exiting..."; exit 1; }
+        sudo make modules_install || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
+        sudo make install || { echo "Failed to install kernel. Exiting..."; exit 1; }
+        sudo update-grub || { echo "Failed to update grub. Exiting..."; exit 1; }
     fi
 }
 
@@ -137,52 +148,51 @@ configure_kernel() {
     if [ ! -d "linux-source-${KERNEL_VERSION}" ]; then
         echo "Kernel source not found. Downloading..."
         if [ "$DRY_RUN" = true ]; then
-            echo "Simulating kernel source download..."
+            echo "Simulating download of kernel source..."
         else
-            wget https://www.kernel.org/pub/linux/kernel/v${KERNEL_VERSION%.*}.x/linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to download kernel source. Exiting..."; exit 1; }
+            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to download kernel source. Exiting..."; exit 1; }
             tar -xf linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
-            rm linux-${KERNEL_VERSION}.tar.xz || { echo "Failed to remove downloaded kernel source archive. Exiting..."; exit 1; }
+            mv linux-${KERNEL_VERSION} linux-source-${KERNEL_VERSION} || { echo "Failed to move kernel source. Exiting..."; exit 1; }
         fi
     fi
 
     cd linux-source-${KERNEL_VERSION} || { echo "Failed to change directory. Exiting..."; exit 1; }
 
-    # Check if kernel config exists
-    if [ ! -f "/boot/config-${KERNEL_VERSION}" ]; then
-        echo "Kernel config not found. Exiting..."
+    # Make sure .config files exist
+    if [ ! -f ".config" ]; then
+        echo "Kernel config file not found. Exiting..."
         exit 1
     fi
 
-    if [ "$DRY_RUN" = true ]; then
-        echo "Simulating kernel config copy..."
-    else
-        cp /boot/config-${KERNEL_VERSION} .config || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
+    # Run make olddefconfig to update .config
+    make olddefconfig || { echo "Failed to run make olddefconfig. Exiting..."; exit 1; }
+
+    # Check if .config has been updated
+    if ! grep -q '^# CONFIG_' .config; then
+        echo "Kernel config not updated. Exiting..."
+        exit 1
     fi
 
     disable_modules
+}
 
-    # SCSI enable
-    sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
-
-    # Ethernet Bridging enable
-    sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
-
+create_golden_image() {
     if [ "$DRY_RUN" = true ]; then
-        echo "Simulating kernel compilation..."
-        sleep 1
+        echo "Simulating creation of golden image..."
     else
-        make olddefconfig || { echo "Failed to run make olddefconfig. Exiting..."; exit 1; }
-        make -j$(nproc) || { echo "Failed to compile kernel. Exiting..."; exit 1; }
-        sudo make modules_install || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
-        sudo make install || { echo "Failed to install kernel. Exiting..."; exit 1; }
-        sudo update-grub || { echo "Failed to update grub. Exiting..."; exit 1; }
+        echo "Creating golden image..."
+        sudo dd if=/dev/sda of=${IMAGE_PATH} bs=4M status=progress || { echo "Failed to create golden image. Exiting..."; exit 1; }
+        echo "Golden image created at ${IMAGE_PATH}"
     fi
 }
 
-install_packages "${SOFTWARE_TO_INSTALL[@]}"
+# Main script execution
+echo "Starting kernel configuration..."
 
-# Configure ELK
+install_packages "${SOFTWARE_TO_INSTALL[@]}"
 configure_elk
+configure_kernel
+create_golden_image
 
 echo "Rebooting into the new kernel..."
 sudo reboot
