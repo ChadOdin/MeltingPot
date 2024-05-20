@@ -38,17 +38,17 @@ these scripts all have their own folders/sub-folders in the repo.
 ### Cheatsheets
 I've self taught myself all of the information available on these sheets:
 
- - Networking   Advanced
- - SQL          Basic
- - Ruby         Proficient
- - Powershell   Advanced    
- - Python       Intermediate
- - Bash         Advanced     
- - Encryption   Proficient   
- - Kubernetes   basic level  
- - Terraform    basic level  
- - Windows DBG  Advanced
- - Disassembly  Basic
+- Networking   <span style="color:green">Advanced</span>
+- SQL          <span style="color:blue">Basic</span>
+- Ruby         <span style="color:orange">Proficient</span>
+- Powershell   <span style="color:green">Advanced</span>
+- Python       <span style="color:purple">Intermediate</span>
+- Bash         <span style="color:green">Advanced</span>
+- Encryption   <span style="color:orange">Proficient</span>
+- Kubernetes   <span style="color:blue">Basic</span> level
+- Terraform    <span style="color:blue">Basic</span> level
+- Windows DBG  <span style="color:green">Advanced</span>
+- Disassembly  <span style="color:blue">Basic</span>
 
 ### Extras
 Im currently learning disassembly, C/C++ as well as working on more advanced scripts than are currently available.
