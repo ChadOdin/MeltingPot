@@ -53,11 +53,19 @@ SOFTWARE_TO_INSTALL=(
     "libssl-dev"
     "libelf-dev"
     "bc"
+    "dpkg-dev"
 )
 
+DRY_RUN=true  # Set to true for dry run, false for actual execution
+
 install_packages() {
-    sudo apt-get update | tee -a $LOG_FILE || { echo "Failed to update package lists. Exiting..."; exit 1; }
-    sudo apt-get install -y "${@}" | tee -a $LOG_FILE || { echo "Failed to install packages. Exiting..."; exit 1; }
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating package installation: ${@}"
+        sudo apt-get --simulate install -y "${@}"
+    else
+        sudo apt-get update | tee -a $LOG_FILE || { echo "Failed to update package lists. Exiting..."; exit 1; }
+        sudo apt-get install -y "${@}" | tee -a $LOG_FILE || { echo "Failed to install packages. Exiting..."; exit 1; }
+    fi
 }
 
 download_kernel_source() {
@@ -65,34 +73,78 @@ download_kernel_source() {
 
     if [ ! -d "$KERNEL_DIR" ]; then
         if [ ! -f "linux-${KERNEL_VERSION}.tar.xz" ]; then
-            wget "$KERNEL_URL" | tee -a $LOG_FILE || { echo "Failed to download kernel source. Exiting..."; exit 1; }
+            if [ "$DRY_RUN" = true ]; then
+                echo "Simulating download of kernel source from $KERNEL_URL"
+            else
+                wget "$KERNEL_URL" | tee -a $LOG_FILE || { echo "Failed to download kernel source. Exiting..."; exit 1; }
+            fi
         fi
-        tar -xf "linux-${KERNEL_VERSION}.tar.xz" | tee -a $LOG_FILE || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
+        if [ "$DRY_RUN" = true ]; then
+            echo "Simulating extraction of kernel source"
+        else
+            tar -xf "linux-${KERNEL_VERSION}.tar.xz" | tee -a $LOG_FILE || { echo "Failed to extract kernel source. Exiting..."; exit 1; }
+        fi
+    fi
+}
+
+configure_kernel() {
+    cd "$KERNEL_DIR" || { echo "Failed to change directory to $KERNEL_DIR. Exiting..."; exit 1; }
+
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating copying of current kernel config"
+    else
+        sudo cp /boot/config-$(uname -r) .config | tee -a $LOG_FILE || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
+    fi
+
+    for module in "${MODULES_TO_DISABLE[@]}"; do
+        if [ "$DRY_RUN" = true ]; then
+            echo "Simulating disabling module ${module}"
+        else
+            sudo sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
+            sudo sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
+        fi
+    done
+
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating enabling of SCSI disk and Ethernet bridging support"
+    else
+        sudo sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
+        sudo sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
+    fi
+
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating make olddefconfig"
+    else
+        make olddefconfig | tee -a $LOG_FILE || { echo "Failed to apply kernel config. Exiting..."; exit 1; }
     fi
 }
 
 compile_kernel() {
-    cd "$KERNEL_DIR" || { echo "Failed to change directory to $KERNEL_DIR. Exiting..."; exit 1; }
-
-    sudo cp /boot/config-$(uname -r) .config | tee -a $LOG_FILE || { echo "Failed to copy kernel config. Exiting..."; exit 1; }
-
-    for module in "${MODULES_TO_DISABLE[@]}"; do
-        sudo sed -i "s/CONFIG_${module}=y/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
-        sudo sed -i "s/CONFIG_${module}=m/CONFIG_${module}=n/" .config || { echo "Failed to disable module ${module}. Exiting..."; exit 1; }
-    done
-
-    sudo sed -i "s/# CONFIG_SCSI_DISK is not set/CONFIG_SCSI_DISK=y/" .config || { echo "Failed to enable SCSI disk support. Exiting..."; exit 1; }
-    sudo sed -i "s/# CONFIG_BRIDGE is not set/CONFIG_BRIDGE=y/" .config || { echo "Failed to enable Ethernet bridging support. Exiting..."; exit 1; }
-
-    make olddefconfig | tee -a $LOG_FILE || { echo "Failed to apply kernel config. Exiting..."; exit 1; }
-    make -j$(nproc) | tee -a $LOG_FILE || { echo "Failed to compile kernel. Exiting..."; exit 1; }
-    sudo make modules_install | tee -a $LOG_FILE || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
-    sudo make install | tee -a $LOG_FILE || { echo "Failed to install kernel. Exiting..."; exit 1; }
-    sudo update-grub | tee -a $LOG_FILE || { echo "Failed to update grub. Exiting..."; exit 1; }
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating kernel compilation and installation"
+    else
+        make -j$(nproc) | tee -a $LOG_FILE || { echo "Failed to compile kernel. Exiting..."; exit 1; }
+        sudo make modules_install | tee -a $LOG_FILE || { echo "Failed to install kernel modules. Exiting..."; exit 1; }
+        sudo make install | tee -a $LOG_FILE || { echo "Failed to install kernel. Exiting..."; exit 1; }
+        sudo update-grub | tee -a $LOG_FILE || { echo "Failed to update grub. Exiting..."; exit 1; }
+    fi
 }
 
+create_golden_image() {
+    if [ "$DRY_RUN" = true ]; then
+        echo "Simulating creation of golden image"
+    else
+        echo "Creating golden image..." | tee -a $LOG_FILE
+        sudo dd if=/dev/sda of=${IMAGE_PATH} bs=4M status=progress | tee -a $LOG_FILE || { echo "Failed to create golden image. Exiting..."; exit 1; }
+        echo "Golden image created at ${IMAGE_PATH}" | tee -a $LOG_FILE
+    fi
+}
+
+# Main script execution
 install_packages "${SOFTWARE_TO_INSTALL[@]}"
 download_kernel_source
+configure_kernel
 compile_kernel
 
 echo "Kernel compilation and installation completed successfully."
+create_golden_image
