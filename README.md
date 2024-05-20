@@ -38,19 +38,19 @@ these scripts all have their own folders/sub-folders in the repo.
 ### Cheatsheets
 I've self taught myself all of the information available on these sheets:
 
-- **C**------------*Basic*
-- **SQL**----------*Basic*
-- **Disassembly**--*Basic*
-- **Kubernetes**---*Basic*
-- **Terraform**----*Basic*
-- **Python**-------*Intermediate*
-- **Windows CMD**--*Proficient*
-- **Ruby**---------*Proficient*
-- **Encryption**---*Proficient*
-- **Networking**---*Advanced*
-- **Powershell**---*Advanced*
-- **Bash**---------*Advanced*
-- **Windows DBG**--*Advanced*
+- **C**---------------*Basic*
+- **SQL**-------------*Basic*
+- **Disassembly**-----*Basic*
+- **Kubernetes**------*Basic*
+- **Terraform**-------*Basic*
+- **Python**----------*Intermediate*
+- **Windows CMD**-----*Proficient*
+- **Ruby**------------*Proficient*
+- **Encryption**------*Proficient*
+- **Networking**------*Advanced*
+- **Powershell**------*Advanced*
+- **Bash**------------*Advanced*
+- **Windows DBG**-----*Advanced*
 
 ### Extras
 Im currently learning disassembly, C/C++ as well as working on more advanced scripts than are currently available.
