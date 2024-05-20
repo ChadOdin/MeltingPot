@@ -13,6 +13,8 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - On-prem exchange servers
  - Cloud exchange servers
  - Custom powershell toolkit script which compiles all .PS1 files into a menu for use
+ - Scheduled tasks
+ - Memory management and script optimisation
 
  **Virtualization**
  - Virtualization with Hyper-V
@@ -32,6 +34,8 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - ELK configuration and setup
  - SElinux configuration and setup
  - App Armour configuration and setup
+ - Cronjobs 
+ - Daemons
 
 these scripts all have their own folders/sub-folders in the repo.
 
