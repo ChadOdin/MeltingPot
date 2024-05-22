@@ -152,6 +152,24 @@ configure_kernel() {
     fi
 }
 
+install_kernel() {
+    read -p "Do you want to proceed with kernel installation? (y/n): " choice
+    case "$choice" in
+      y|Y )
+        compile_kernel
+        ;;
+      n|N )
+        echo "Kernel installation aborted."
+        ;;
+      * )
+        echo "Invalid choice. Please enter 'y' or 'n'."
+        install_kernel
+        ;;
+    esac
+}
+
+install_kernel
+
 compile_kernel() {
     if [ "$DRY_RUN" = true ]; then
         echo "Simulating kernel compilation and installation"
@@ -179,6 +197,7 @@ install_packages "${SOFTWARE_TO_INSTALL[@]}"
 verify_package_installation || install_packages "${SOFTWARE_TO_INSTALL[@]}"
 download_kernel_source
 configure_kernel
+install_kernel
 compile_kernel
 create_golden_image
 
