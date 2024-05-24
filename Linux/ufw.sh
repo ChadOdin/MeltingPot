@@ -1,7 +1,9 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]; then
-  exit
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run with superuser privileges. Running with sudo..."
+    sudo "$0" "$@"
+    exit $?
 fi
 
 read -p "Enter the IP address allowed to connect via SSH: " ALLOWED_IP
