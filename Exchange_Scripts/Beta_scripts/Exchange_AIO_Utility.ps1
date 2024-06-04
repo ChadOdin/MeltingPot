@@ -1,142 +1,128 @@
-# Function to add or remove users from distribution group
-function ManageDistributionGroup {
-    param (
-        [string]$action,
-        [string]$userUPN
-    )
+if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
+    Install-Module -Name ExchangeOnlineManagement -Scope AllUsers -Force
+}
 
-#function to create shared mailbox with custom OU setting for ActiveDirectory
+function Show-Menu {
+    Clear-Host
+    Write-Host "Select a menu option to run`n"
+    Write-Host "1: Bulk Addition to Distribution Group`n"
+    Write-Host "2: Bulk Removal from Distribution Group`n"
+    Write-Host "3: Singular Addition to Distribution Group`n"
+    Write-Host "4: Singular Removal from Distribtution Group`n"
+    Write-Host "5: Mailbox Creation`n"
+    Write-Host "6: Bulk Addition to Calendar`n"
+    Write-Host "7: Bulk Removal from Calendar`n"
+    Write-Host "8: Single Addition to Calendar`n"
+    Write-Host "9: Single Removal from calendar`n"
 
-function CreateSharedMailbox {
-    param (
-        [string]$Input
-    )
 
-    # Parse the input to derive values for first name, last name, email name, and UPN
-    $FirstName, $LastName, $EmailName = $Input -split ' ', 3
-    $UPN = "$EmailName@yourdomain.com"
-    $SamAccountName = "$FirstName.$LastName"
 
-    $mailboxName = $null
+}
 
-    # Loop until a unique name is provided
-    do
-    {
-        $mailboxName = Read-Host "Enter the name for the shared mailbox"
+do {
+    
+} until (
+    $choice -eq 10
+) {
+    show-menu
+    $choice = Read-Host -Prompt "Enter Choice of Operation"
+
+    switch ($choice) {
+        1 {
+            Write-Host "Bulk Addition to Distribution Group Selected"
+            $Group = Read-Host -Prompt "Please specify group"
+            $csv = Read-Host -Prompt "Please specify path for CSV file"
         
-        # Check if the mailbox name already exists
-        $existingMailbox = Get-Mailbox -Filter {DisplayName -eq $mailboxName} -ErrorAction SilentlyContinue
+            Connect-ExchangeOnline
+            Import-CSV $csv | ForEach-Object {Add-DistributionGroupMember -Identity $Group -Member $_.UPN}
+    }
+        2 {
+            Write-Host "Bulk Removal to Distribution Group Selected"
+            $Group = Read-Host -Prompt "Please specify group"
+            $csv = Read-Host -Prompt "Please specify path for CSV file"
 
-        if ($existingMailbox) {
-            Write-Host "The mailbox name '$mailboxName' is already in use. Please choose a different name."
+            Connect-ExchangeOnline
+            Import-CSV $csv | ForEach-Object {Remove-DistributionGroupMember -Identity $Group -Member $_.UPN}   
         }
 
-    } while ($existingMailbox)
+        3 {
+            Write-Host "Singular Addition to Distribution Group"
+            $user = Read-Host -Prompt "Please Specify Users Email I.E (First.Last@placesforpeople.co.uk NOT payroll)"
+            $Group = Read-Host -Prompt "Please specify the Distribution Group"
 
-    # Create the shared mailbox with derived attributes
-    New-Mailbox -Alias $EmailName -Name "$FirstName $LastName" -FirstName $FirstName -LastName $LastName -UserPrincipalName $UPN -SamAccountName $SamAccountName -Shared
+            Connect-ExchangeOnline
+            Add-DistribtuionGroupMemeber -Identity $Group -Member $user
+        }
 
-    Write-Host "Shared mailbox '$mailboxName' created successfully."
-    Log-Action "Created shared mailbox '$mailboxName'."
+        4 {
+            Write-Host "Singular Addition to Distribution Group"
+            $user = Read-Host -Prompt "Please Specify Users Email I.E (First.Last@placesforpeople.co.uk NOT payroll)"
+            $Group = Read-Host -Prompt "Please specify the Distribution Group"
+    
+            Connect-ExchangeOnline
+            Add-DistribtuionGroupMemeber -Identity $Group -Member $user
+        }
+        
+        5{
+            $alias = Read-Host -Prompt "Enter Mailbox Alias"
+            $name = Read-Host -Prompt "Enter Mailbox Name"
+            $First = Read-Host -Prompt "Enter First Name"
+            $Last = Read-Host -Prompt "Enter Last Name"
+            $SAM = Read-Host -Prompt "Enter SAM"
+            $UPN = Read-Host -Prompt "Enter UPN `n This Script automatically appends the full email address so only enter the desired display name for the email address"
 
-    # Clear the variable after mailbox creation
-    $mailboxName = $null
+            $credentials = Get-Credential
+            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            Import-PSSession $Session
+            New-Remotemailbox -Shared -Alias $alias -Name $name -FirstName $First -LastName $Last -OnPremisesOrganizationalUnit "OU=Shared Mailbox 365,OU=Other,OU=Service Desk,DC=group,DC=net" -SamAccountName $SAM -UserPrincipalName $UPN@placesforpeople.co.uk
+        }
+
+        6{
+            $Credentials = Get-Credential
+            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            Import-PSSession $Session
+
+            $UserMailbox = Read-host -Prompt "Enter Mailbox"
+            $csvpath = Read-host -Prompt "Enter CSV Path"
+            $accessList = Import-Csv -Path $csvpath
+
+            foreach ($access in $accessList) {
+                $whoNeedsAccess = $access.UPN
+                Add-MailboxFolderPermission -Identity "$UsersMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                Set-MailboxFolderPermission -Identity "$UsersMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+            }
+        }
+
+        7 {
+            $Credentials = Get-Credential
+            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            Import-PSSession $Session
+
+            $UserMailbox = Read-host -Prompt "Enter Mailbox"
+            $csvpath = Read-host -Prompt "Enter CSV Path"
+            $accessList = Import-Csv -Path $csvpath
+
+            foreach ($access in $accessList) {
+                $whoNeedsAccess = $access.UPN
+                Add-MailboxFolderPermission -Identity "$UsersMailbox:\Calendar" -User $whoNeedsAccess -AccessRights None
+                Set-MailboxFolderPermission -Identity "$UsersMailbox:\Calendar" -User $whoNeedsAccess -AccessRights None
+        }
+
+        8 {
+            Write-Host "Single Addition to calendar"
+            $Credentials = Get-Credential
+            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://mbx900004/Powershell/ -Authentication Kerberos -Credential $Credentials
+
+            $UserMailbox = Read-Host -Prompt "Enter Mailbox"
+            $useradd = Read-Host -Prompt "Enter User's UPN"
+
+            Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+            Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+
+        }
+
+        }
+        default {write-host "invalid Choice"
+    }
+  }
 }
-
-
-
-    switch ($action) {
-        'Add' {
-            Add-DistributionGroupMember -Identity $distributionGroupName -Member $userUPN
-            Write-Host "Added $userUPN to $distributionGroupName."
-            Log-Action "Added $userUPN to $distributionGroupName."
-        }
-        'Remove' {
-            Remove-DistributionGroupMember -Identity $distributionGroupName -Member $userUPN -Confirm:$false
-            Write-Host "Removed $userUPN from $distributionGroupName."
-            Log-Action "Removed $userUPN from $distributionGroupName."
-        }
-        default {
-            Write-Host "Invalid choice. Please enter 'Add' or 'Remove'."
-        }
-    }
-}
-
-# Connect to Exchange server
-$exchangeCredential = Get-Credential -Message "Enter your Exchange admin credentials"
-$session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$exchangeServer/PowerShell/ -Authentication Kerberos -Credential $exchangeCredential
-Import-PSSession $session -DisableNameChecking -AllowClobber -ErrorAction Stop
-
-# Clear the console screen
-Clear-Host
-
-# Prompt for distribution group name
-$distributionGroupName = Read-Host "Enter distribution group name for all actions"
-
-# Print the header for the Exchange Toolset menu
-Write-Host "Exchange Toolset" -ForegroundColor Yellow
-
-# Main menu to choose between adding or removing users from distribution groups
-$mainChoice = Read-Host "`nSelect an option:`n1. Adding users to distribution groups`n2. Removing users from distribution groups`nEnter 1 or 2"
-
-switch ($mainChoice) {
-    1 {
-        # Adding users to distribution groups
-        # Submenu to choose between adding a single user and adding users from CSV
-        $submenuChoice = Read-Host "`nSelect an option:`n1. Add single user to distribution group`n2. Add users from CSV to distribution group`nEnter 1 or 2"
-
-        switch ($submenuChoice) {
-            1 {
-                # Adding a single user to distribution group
-                $userUPN = Read-Host "Enter user UPN"
-                ManageDistributionGroup -action 'Add' -userUPN $userUPN
-            }
-            2 {
-                # Adding users from CSV to distribution group
-                $csvPath = Read-Host "Enter the path to the CSV file"
-                $userList = Import-Csv $csvPath
-
-                foreach ($user in $userList) {
-                    ManageDistributionGroup -action 'Add' -userUPN $user.UPN
-                }
-            }
-            default {
-                Write-Host "Invalid choice. Please enter 1 or 2."
-            }
-        }
-    }
-    2 {
-        # Removing users from distribution groups
-        $submenuChoice = Read-Host "`nSelect an option:`n1. Remove single user from distribution group`n2. Remove users from CSV from distribution group`nEnter 1 or 2"
-
-        switch ($submenuChoice) {
-            1 {
-                # Removing a single user from distribution group
-                $userUPN = Read-Host "Enter user UPN"
-                ManageDistributionGroup -action 'Remove' -userUPN $userUPN
-            }
-            2 {
-                # Removing users from CSV from distribution group
-                $csvPath = Read-Host "Enter the path to the CSV file"
-                $userList = Import-Csv $csvPath
-
-                foreach ($user in $userList) {
-                    ManageDistributionGroup -action 'Remove' -userUPN $user.UPN
-                }
-            }
-            default {
-                Write-Host "Invalid choice. Please enter 1 or 2."
-            }
-        }
-    }
-    default {
-        Write-Host "Invalid choice. Please enter 1 or 2."
-    }
-}
-
-# Disconnect from the Exchange server
-Remove-PSSession $session
-
-Clear-Host
-Write-Host "Script exited successfully. All user actions have been logged for
-auditing purposes."
