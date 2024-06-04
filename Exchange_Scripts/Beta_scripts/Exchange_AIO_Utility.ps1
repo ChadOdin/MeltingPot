@@ -72,14 +72,14 @@ do {
             $UPN = Read-Host -Prompt "Enter UPN `n This Script automatically appends the full email address so only enter the desired display name for the email address"
 
             $credentials = Get-Credential
-            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
             Import-PSSession $Session
             New-Remotemailbox -Shared -Alias $alias -Name $name -FirstName $First -LastName $Last -OnPremisesOrganizationalUnit "OU=Shared Mailbox 365,OU=Other,OU=Service Desk,DC=group,DC=net" -SamAccountName $SAM -UserPrincipalName $UPN@placesforpeople.co.uk
         }
 
         6{
             $Credentials = Get-Credential
-            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
             Import-PSSession $Session
 
             $UserMailbox = Read-host -Prompt "Enter Mailbox"
@@ -95,7 +95,7 @@ do {
 
         7 {
             $Credentials = Get-Credential
-            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://mbx900004.group.net/Powershell/ -Authentication Kerberos -Credential $credentials
+            $Session = New-PSSession -ConfiguartionName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
             Import-PSSession $Session
 
             $UserMailbox = Read-host -Prompt "Enter Mailbox"
