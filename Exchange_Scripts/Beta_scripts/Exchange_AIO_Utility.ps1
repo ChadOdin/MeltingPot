@@ -1,7 +1,3 @@
-if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
-    Install-Module -Name ExchangeOnlineManagement -Scope AllUsers -Force
-}
-
 function Show-Menu {
     Clear-Host
     Write-Host "Select a menu option to run`n"
@@ -17,6 +13,28 @@ function Show-Menu {
     Write-Host "10: Exit`n"
 }
 
+function Connect-Exchange {
+    if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
+        Install-Module -Name ExchangeOnlineManagement -Scope AllUsers -Force
+    }
+    Connect-ExchangeOnline -UserPrincipalName your-email@domain.com -ShowProgress $true
+}
+
+function Get-MailboxLocation($mailbox) {
+    try {
+        $mailboxDetails = Get-Mailbox -Identity $mailbox -ErrorAction Stop
+        if ($mailboxDetails.RecipientTypeDetails -eq 'UserMailbox') {
+            return 'Cloud'
+        } elseif ($mailboxDetails.RecipientTypeDetails -eq 'MailUser') {
+            return 'OnPrem'
+        } else {
+            throw "Unable to determine mailbox location for $mailbox"
+        }
+    } catch {
+        throw "Error fetching mailbox location for $mailbox: $_"
+    }
+}
+
 do {
     Show-Menu
     $choice = Read-Host -Prompt "Enter Choice of Operation"
@@ -26,28 +44,28 @@ do {
             Write-Host "Bulk Addition to Distribution Group Selected"
             $Group = Read-Host -Prompt "Please specify group"
             $csv = Read-Host -Prompt "Please specify path for CSV file"
-            Connect-ExchangeOnline
+            Connect-Exchange
             Import-CSV $csv | ForEach-Object {Add-DistributionGroupMember -Identity $Group -Member $_.UPN}
         }
         2 {
             Write-Host "Bulk Removal from Distribution Group Selected"
             $Group = Read-Host -Prompt "Please specify group"
             $csv = Read-Host -Prompt "Please specify path for CSV file"
-            Connect-ExchangeOnline
+            Connect-Exchange
             Import-CSV $csv | ForEach-Object {Remove-DistributionGroupMember -Identity $Group -Member $_.UPN}
         }
         3 {
             Write-Host "Singular Addition to Distribution Group"
             $user = Read-Host -Prompt "Please Specify User's Email"
             $Group = Read-Host -Prompt "Please specify the Distribution Group"
-            Connect-ExchangeOnline
+            Connect-Exchange
             Add-DistributionGroupMember -Identity $Group -Member $user
         }
         4 {
             Write-Host "Singular Removal from Distribution Group"
             $user = Read-Host -Prompt "Please Specify User's Email"
             $Group = Read-Host -Prompt "Please specify the Distribution Group"
-            Connect-ExchangeOnline
+            Connect-Exchange
             Remove-DistributionGroupMember -Identity $Group -Member $user
         }
         5 {
@@ -63,51 +81,111 @@ do {
             New-RemoteMailbox -Shared -Alias $alias -Name $name -FirstName $First -LastName $Last -OnPremisesOrganizationalUnit "OU=Shared Mailbox 365,OU=Other,OU=Service Desk,DC=group,DC=net" -SamAccountName $SAM -UserPrincipalName "$UPN@placesforpeople.co.uk"
         }
         6 {
-            $credentials = Get-Credential
-            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
-            Import-PSSession $Session
+            Write-Host "Bulk Addition to Calendar Selected"
             $UserMailbox = Read-Host -Prompt "Enter Mailbox"
             $csvpath = Read-Host -Prompt "Enter CSV Path"
             $accessList = Import-Csv -Path $csvpath
+
+            Connect-Exchange
+
+            $location = Get-MailboxLocation $UserMailbox
+
             foreach ($access in $accessList) {
                 $whoNeedsAccess = $access.UPN
-                Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
-                Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                try {
+                    if ($location -eq 'Cloud') {
+                        Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                        Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                    } elseif ($location -eq 'OnPrem') {
+                        # Replace with the on-premises equivalent cmdlets or actions if needed
+                        Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                        Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess -AccessRights Reviewer
+                    }
+                    Write-Host "Permissions added for $whoNeedsAccess on $UserMailbox"
+                } catch {
+                    Write-Error "Failed to add permissions for $whoNeedsAccess on $UserMailbox"
+                }
             }
         }
         7 {
-            $credentials = Get-Credential
-            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
-            Import-PSSession $Session
+            Write-Host "Bulk Removal from Calendar Selected"
             $UserMailbox = Read-Host -Prompt "Enter Mailbox"
             $csvpath = Read-Host -Prompt "Enter CSV Path"
             $accessList = Import-Csv -Path $csvpath
+
+            Connect-Exchange
+
+            $location = Get-MailboxLocation $UserMailbox
+
             foreach ($access in $accessList) {
                 $whoNeedsAccess = $access.UPN
-                Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess
+                try {
+                    if ($location -eq 'Cloud') {
+                        Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess
+                    } elseif ($location -eq 'OnPrem') {
+                        # Replace with the on-premises equivalent cmdlets or actions if needed
+                        Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $whoNeedsAccess
+                    }
+                    Write-Host "Permissions removed for $whoNeedsAccess on $UserMailbox"
+                } catch {
+                    Write-Error "Failed to remove permissions for $whoNeedsAccess on $UserMailbox"
+                }
             }
         }
         8 {
-            Write-Host "Single Addition to Calendar"
-            $credentials = Get-Credential
-            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
-            Import-PSSession $Session
+            Write-Host "Single Addition to Calendar Selected"
             $UserMailbox = Read-Host -Prompt "Enter Mailbox"
             $useradd = Read-Host -Prompt "Enter User's UPN"
-            Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
-            Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+
+            Connect-Exchange
+
+            $location = Get-MailboxLocation $UserMailbox
+
+            try {
+                if ($location -eq 'Cloud') {
+                    Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+                    Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+                } elseif ($location -eq 'OnPrem') {
+                    # Replace with the on-premises equivalent cmdlets or actions if needed
+                    Add-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+                    Set-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $useradd -AccessRights Reviewer
+                }
+                Write-Host "Permissions added for $useradd on $UserMailbox"
+            } catch {
+                Write-Error "Failed to add permissions for $useradd on $UserMailbox"
+            }
         }
         9 {
-            Write-Host "Single Removal from Calendar"
-            $credentials = Get-Credential
-            $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://server/Powershell/ -Authentication Kerberos -Credential $credentials
-            Import-PSSession $Session
+            Write-Host "Single Removal from Calendar Selected"
             $UserMailbox = Read-Host -Prompt "Enter Mailbox"
             $userremove = Read-Host -Prompt "Enter User's UPN"
-            Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $userremove
+
+            Connect-Exchange
+
+            $location = Get-MailboxLocation $UserMailbox
+
+            try {
+                if ($location -eq 'Cloud') {
+                    Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $userremove
+                } elseif ($location -eq 'OnPrem') {
+                    # Replace with the on-premises equivalent cmdlets or actions if needed
+                    Remove-MailboxFolderPermission -Identity "$UserMailbox:\Calendar" -User $userremove
+                }
+                Write-Host "Permissions removed for $userremove on $UserMailbox"
+            } catch {
+                Write-Error "Failed to remove permissions for $userremove on $UserMailbox"
+            }
+        }
+        10 {
+            Write-Host "Exiting..."
         }
         default {
             Write-Host "Invalid Choice"
         }
     }
 } until ($choice -eq 10)
+
+# Disconnect from Exchange Online if connected
+if (Get-PSSession -ComputerName "ExchangeOnline" -ErrorAction SilentlyContinue) {
+    Disconnect-ExchangeOnline -Confirm:$false
+}
