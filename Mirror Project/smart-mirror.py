@@ -111,12 +111,4 @@ class SmartMirrorApp(tk.Tk):
         response = requests.get(weather_url)
         weather_data = response.json()
         if 'error' in weather_data:
-            return f'Weather data not available for {location}'
-        else:
-            temperature = weather_data['current_weather']['temperature']
-            weather_desc = weather_data['current_weather']['condition']
-            return f'{location}: {temperature}°C, {weather_desc}'
-
-if __name__ == "__main__":
-    app = SmartMirrorApp()
-    app.mainloop()
+            return
