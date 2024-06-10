@@ -112,3 +112,8 @@ class SmartMirrorApp(tk.Tk):
         weather_data = response.json()
         if 'error' in weather_data:
             return
+        
+if __name__ == "__main__":
+    app = SmartMirrorApp()
+    app.mainloop()
+
