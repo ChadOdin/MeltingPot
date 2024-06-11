@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script is designed to be ran from a minimal linux install to deploy a lightweight desktop enviroment, install python/pip and edit
+# systemd to auto-start the smart mirror script
+
 sudo apt update
 sudo apt install -y --no-install-recommends xserver-xorg xinit openbox python3 python3-pip
 pip3 install requests pillow
