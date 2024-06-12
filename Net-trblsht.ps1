@@ -1,3 +1,7 @@
+Write-Host "Network Troublshooting Script."
+Write-Host "V1.2" -ForegroundColor Green
+
+
 # Function to perform network troubleshooting
 function Test-Network {
     # Get network adapters
