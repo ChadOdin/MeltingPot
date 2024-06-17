@@ -73,7 +73,7 @@ class SmartMirrorApp(tk.Tk):
         self.after(1000, self.update_time_date)  # Update every second
 
     def update_weather(self):
-        location = "blackpool"  # Update with your location
+        location = "blackpool"  # location based weather
         weather_info = self.get_weather(location)
         self.weather_label.config(text=weather_info)
         self.after(60000, self.update_weather)  # Update every minute
