@@ -61,10 +61,10 @@ function Create-SecurityGroup {
     Authorize-SecurityGroupIngress -GroupId $sgId -IpProtocol tcp -FromPort 80 -ToPort 80 -CidrIp "0.0.0.0/0"
 }
 
-$vpcId = Create-VPC -VpcName "MyVPC" -CidrBlock "10.0.0.0/16"
+$vpcId = Create-VPC -VpcName "VPC001" -CidrBlock "10.0.0.0/16"
 
 $subnet1Id = Create-Subnet -SubnetName "PublicSubnet1" -CidrBlock "10.0.1.0/24" -VpcId $vpcId
-$subnet2Id = Create-Subnet -SubnetName "PrivateSubnet1" -CidrBlock "10.0.2.0/24" -VpcId $vpcId
+$subnet2Id = Create-Subnet -SubnetName "PrivateSubnet1" -CidrBlock "10.0.2.0/16" -VpcId $vpcId
 
 Create-InternetGateway -VpcId $vpcId
 

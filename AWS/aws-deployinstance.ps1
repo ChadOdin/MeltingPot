@@ -1,13 +1,12 @@
-# Import the necessary module
 Import-Module AWSPowerShell.NetCore
 
-# Set variables for the instance configuration
-$instanceType = "t2.micro" # change according to documentation
-$goldImageId = "ami-0abcd1234efgh5678"  # gold image AMI ID, only a placeholder
-$keyName = "YourKeyPairName" # replace with your key
-$securityGroupId = "sg-0a1b2c3d4e5f6g7h8"  # change as needed, this is a placeholder
-$vpcId = "vpc-0a1b2c3d4e5f6g7h8"  # change as needed, this is a placeholder
-$securityGroupName = "MySecurityGroup"
+# these are all placeholder values
+$instanceType = "t2.micro" 
+$goldImageId = "ami-"  
+$keyName = " " 
+$securityGroupId = "sg-"  
+$vpcId = "vpc-"  
+$securityGroupName = " "
 
 function Get-OrCreateSecurityGroup {
     param (
@@ -84,7 +83,7 @@ $instance = Deploy-Instance -instanceType $instanceType -imageId $goldImageId -k
 $instanceId = $instance.InstanceId
 $instanceRunning = Wait-ForInstance -instanceId $instanceId -timeoutMinutes 10
 
-# verify's if instance is running after 10 minutes
+# verify if instance is running after 10 minutes
 if ($instanceRunning) {
     Write-Host "Instance $instanceId is successfully deployed and running."
     Get-EC2Instance -InstanceId $instanceId

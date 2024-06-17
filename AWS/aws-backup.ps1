@@ -75,11 +75,11 @@ function Restore-EBSVolume {
 
 
 # EC2 instance
-$exampleInstanceId = "i-1234567890abcdef0"
+$exampleInstanceId = "i-"
 Backup-EC2Instance -InstanceId $exampleInstanceId
 
 # EBS volume
-$exampleVolumeId = "vol-1234567890abcdef0"
+$exampleVolumeId = "vol-"
 Backup-EBSVolume -VolumeId $exampleVolumeId
 
 # EC2 instance from AMI
