@@ -3,7 +3,7 @@
 NAMESPACE_DEFAULT="default"
 
 if ! command -v kubectl &> /dev/null; then
-  echo "kubectl could not be found, please install it and ensure it is in your PATH."
+  echo "kubectl not found"
   exit 1
 fi
 
