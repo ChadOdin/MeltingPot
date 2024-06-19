@@ -31,7 +31,7 @@ A collection of scripts and cheatsheets I've worked on for various things includ
 
  **Linux**
  - Kernel Module Disabling
- - ELK configuration and setup
+ - ELK stack configuration and setup
  - SElinux configuration and setup
  - App Armour configuration and setup
  - Cronjobs 
