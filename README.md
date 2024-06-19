@@ -46,7 +46,15 @@ a bare bones powershell script suite for the AWS module
  - Disaster recovery 
  - Automated backups
   - IAM management
- - Network configuration 
+ - Network configuration
+
+**Kubernetes (K8s)**
+
+a bash script suite for Kubernetes
+
+ - Deployment of K8s
+ - Backup of K8s ectd and restore
+ - apply rolling updates
 
 these scripts all have their own folders/sub-folders in the repo.
 
