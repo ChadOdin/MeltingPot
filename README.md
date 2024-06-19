@@ -15,6 +15,8 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Custom powershell toolkit script which compiles all .PS1 files into a menu for use
  - Scheduled tasks
  - Memory management and script optimisation
+ - SCCM troubleshooting
+ - Network configuration and card troubleshooting
 
  **Virtualization**
  - Virtualization with Hyper-V
