@@ -41,11 +41,12 @@ A collection of scripts and cheatsheets I've worked on for various things includ
 
 a bare bones powershell script suite for the AWS module
 
- - deployment
- - monitoring with cloudwatch dashboards and automatic creation
- - disaster recovery 
- - automated backups
- 
+ - Deployment
+ - Monitoring with cloudwatch dashboards and automatic creation
+ - Disaster recovery 
+ - Automated backups
+  - IAM management
+ - Network configuration 
 
 these scripts all have their own folders/sub-folders in the repo.
 
