@@ -19,11 +19,16 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Network configuration and card troubleshooting
 
  **Virtualization**
+
  - Virtualization with Hyper-V
  - Vagrant
  - Terraform
+ - Kubernetes
 
- - I'm currently looking into using minikube for kubernetes as well as helm and ansible
+**Cloud**
+
+ - AWS
+ - Azure VM management
 
 **Utility**
  - Password dump analysis
