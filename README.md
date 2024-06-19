@@ -37,6 +37,16 @@ A collection of scripts and cheatsheets I've worked on for various things includ
  - Cronjobs 
  - Daemons
 
+**AWS**
+
+a bare bones powershell script suite for the AWS module
+
+ - deployment
+ - monitoring with cloudwatch dashboards and automatic creation
+ - disaster recovery 
+ - automated backups
+ 
+
 these scripts all have their own folders/sub-folders in the repo.
 
 ### Cheatsheets
