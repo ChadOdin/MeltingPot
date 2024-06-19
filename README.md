@@ -52,9 +52,12 @@ a bare bones powershell script suite for the AWS module
 
 a bash script suite for Kubernetes
 
- - Deployment of K8s
+ - Deployment of a K8 Cluster
  - Backup of K8s ectd and restore
- - apply rolling updates
+ - Apply rolling updates
+ - Scale based off script parameters
+ - Grab logs from available pods
+ - 
 
 these scripts all have their own folders/sub-folders in the repo.
 
