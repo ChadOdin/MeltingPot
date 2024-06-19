@@ -53,11 +53,13 @@ a bare bones powershell script suite for the AWS module
 a bash script suite for Kubernetes
 
  - Deployment of a K8 Cluster
+ - Deployment of K8 as a service
  - Backup of K8s ectd and restore
  - Apply rolling updates
  - Scale based off script parameters
  - Grab logs from available pods
- - 
+ - Port forwarding
+ - Apply changes to ConfigMap
 
 these scripts all have their own folders/sub-folders in the repo.
 
