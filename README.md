@@ -70,6 +70,9 @@ a bash script suite for Kubernetes
 
 these scripts all have their own folders/sub-folders in the repo.
 
+AWS & Kubernetes scripts were based off of available documentation.
+
+
 ### Cheatsheets
 I've self taught myself all of the information available on these sheets:
 
