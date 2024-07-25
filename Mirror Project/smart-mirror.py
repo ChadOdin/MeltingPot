@@ -32,18 +32,25 @@ class SmartMirrorApp(tk.Tk):
         self.greeting_label = Label(self, text="Good Morning!", font=('Helvetica', 20), fg='white', bg='black')
         self.greeting_label.place(relx=0.5, y=20, anchor='center')
 
+        # Time and Date Labels
+        self.time_label = Label(self, text="", font=('Helvetica', 16), fg='white', bg='black')
+        self.time_label.place(relx=0.5, y=60, anchor='center')
+
+        self.date_label = Label(self, text="", font=('Helvetica', 16), fg='white', bg='black')
+        self.date_label.place(relx=0.5, y=100, anchor='center')
+
         # Weather Label
         self.weather_label = Label(self, text="", font=('Helvetica', 16), fg='white', bg='black')
-        self.weather_label.place(relx=0.05, y=60, anchor='w')
+        self.weather_label.place(relx=0.05, y=140, anchor='w')
 
         # Calendar Label
         self.calendar_title_label = Label(self, text="Today's Calendar", font=('Helvetica', 16), fg='white', bg='black')
-        self.calendar_title_label.place(relx=0.05, y=160, anchor='w')
+        self.calendar_title_label.place(relx=0.05, y=180, anchor='w')
 
         self.event_labels = []
         for i in range(5):
             event_label = Label(self, text=f"Event {i+1}", font=('Helvetica', 12), fg='white', bg='black')
-            event_label.place(relx=0.05, y=200 + i*20, anchor='w')
+            event_label.place(relx=0.05, y=220 + i*20, anchor='w')
             self.event_labels.append(event_label)
 
         # Spotify Display
@@ -73,7 +80,7 @@ class SmartMirrorApp(tk.Tk):
         self.after(1000, self.update_time_date)  # Update every second
 
     def update_weather(self):
-        location = "blackpool"  # location based weather
+        location = "Blackpool"  # location based weather
         weather_info = self.get_weather(location)
         self.weather_label.config(text=weather_info)
         self.after(60000, self.update_weather)  # Update every minute
@@ -107,13 +114,15 @@ class SmartMirrorApp(tk.Tk):
             return "Good Evening!"
 
     def get_weather(self, location):
-        weather_url = f'https://api.open-meteo.com/weather?location={location}'
+        weather_url = f'https://api.open-meteo.com/v1/forecast?latitude=53.8175&longitude=-3.0357&hourly=temperature_2m'
         response = requests.get(weather_url)
-        weather_data = response.json()
-        if 'error' in weather_data:
-            return
-        
+        if response.status_code == 200:
+            weather_data = response.json()
+            temperature = weather_data['hourly']['temperature_2m'][0]  # Example extraction
+            return f"Current temperature: {temperature}°C"
+        else:
+            return "Weather data not available"
+
 if __name__ == "__main__":
     app = SmartMirrorApp()
     app.mainloop()
-
