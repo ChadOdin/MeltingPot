@@ -2,39 +2,30 @@ $updateDirectory = "C:\"
 $progressFile = "$updateDirectory\updateProgress.txt"
 $hashFile = "$updateDirectory\Hashs.txt"
 
-# calculate SHA-512 hash of a file
-function Get-FileHashSha512($filePath) {
-    $hashAlgorithm = [System.Security.Cryptography.SHA512]::Create()
-    try {
-        $fileStream = [System.IO.File]::OpenRead($filePath)
-        $hashBytes = $hashAlgorithm.ComputeHash($fileStream)
-        $fileStream.Close()
-        return [BitConverter]::ToString($hashBytes).Replace("-", "").ToLower()
-    } catch {
-        Write-Host "Error: Unable to calculate hash for file $filePath"
-        return $null
-    }
-}
-
-# load hashes from Hashs.txt
-function Load-Hashes($hashFilePath) {
-    if (Test-Path $hashFilePath) {
+# Function to load hashes from Hashs.txt
+function Load-Hashes($hashFile) {
+    if (Test-Path $hashFile) {
         $hashDictionary = @{}
-        $hashLines = Get-Content $hashFilePath
+        $hashLines = Get-Content $hashFile
         foreach ($line in $hashLines) {
+            # Expecting the format: <hash> <filename>
             $split = $line -split '\s+'
             if ($split.Length -eq 2) {
-                $hashDictionary[$split[1].ToLower()] = $split[0].ToLower()
+                $hash = $split[0].ToLower().Trim()
+                $filename = $split[1].ToLower().Trim()
+                $hashDictionary[$filename] = $hash
+            } else {
+                Write-Host "Warning: Skipping malformed line in hash file: $line"
             }
         }
         return $hashDictionary
     } else {
-        Write-Host "Error: Hash file not found at $hashFilePath"
+        Write-Host "Error: Hash file not found at $hashFile"
         return $null
     }
 }
 
-# load hashes from the file
+# Load hashes from the file
 $hashes = Load-Hashes $hashFile
 if ($hashes -eq $null) {
     exit 1
@@ -52,12 +43,24 @@ $startIndex = [int]$lastIndex + 1
 
 for ($i = $startIndex; $i -lt $msuFiles.Count; $i++) {
     $msuFile = $msuFiles[$i]
+    $msuFileNameLower = $msuFile.Name.ToLower()
+
     Write-Host "Verifying $($msuFile.Name) ($($i+1) of $($msuFiles.Count))"
 
-    $fileHash = Get-FileHashSha512 $msuFile.FullName
+    $fileHash = (Get-FileHash -Path $msuFile.FullName -Algorithm SHA512).Hash.ToLower()
 
-    if ($fileHash -eq $null -or $hashes[$msuFile.Name.ToLower()] -ne $fileHash) {
-        Write-Host "Hash mismatch for file $($msuFile.Name). Skipping installation."
+    if ($hashes.ContainsKey($msuFileNameLower)) {
+        $expectedHash = $hashes[$msuFileNameLower]
+        
+        if ($expectedHash -ne $fileHash) {
+            Write-Host "Hash mismatch for file $($msuFile.Name)."
+            Write-Host "Expected: $expectedHash"
+            Write-Host "Found: $fileHash"
+            $i | Out-File -FilePath $progressFile -Encoding ascii
+            break
+        }
+    } else {
+        Write-Host "Error: No hash entry found for file $($msuFile.Name)."
         $i | Out-File -FilePath $progressFile -Encoding ascii
         break
     }
